@@ -1,0 +1,35 @@
+{
+    "expo": {
+        "name": "DanceFlow",
+        "slug": "danceflow-mobile",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./src/assets/icon.png",
+        "userInterfaceStyle": "automatic",
+        "splash": {
+            "image": "./src/assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#0ea5e9"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.danceflow.mobile"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./src/assets/adaptive-icon.png",
+                "backgroundColor": "#0ea5e9"
+            },
+            "package": "com.danceflow.mobile"
+        },
+        "web": {
+            "favicon": "./src/assets/favicon.png"
+        },
+        "plugins": [
+            "expo-secure-store"
+        ]
+    }
+}
