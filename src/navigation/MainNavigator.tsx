@@ -13,9 +13,9 @@ export const MainNavigator = () => {
   const [activeTab, setActiveTab] = useState('home');
 
   const tabs = [
-    { key: 'home', title: 'INICIO', icon: 'home' }, // Icono de cuadrícula
-    { key: 'classes', title: 'CLASES', icon: 'calendar-o' }, // Icono calendario lineal
-    { key: 'profile', title: 'PERFIL', icon: 'user' }, // Icono de usuario
+    { key: 'home', title: 'Inicio', icon: 'home' }, // Icono de cuadrícula
+    { key: 'classes', title: 'Clases', icon: 'calendar-o' }, // Icono calendario lineal
+    { key: 'profile', title: 'Perfil', icon: 'user' }, // Icono de usuario
   ];
 
   const renderContent = () => {
@@ -80,9 +80,9 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   tabTitle: {
-    fontSize: 10, // Texto pequeño como en el diseño
+    fontSize: 12, // Texto pequeño como en el diseño
     fontWeight: '600', // Texto en extra negrita
-    marginTop: 6,
+    marginTop: 2,
     letterSpacing: 0.5,
   }
 });

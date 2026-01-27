@@ -1,0 +1,55 @@
+|-- src
+|-- .env
+|-- .env.example
+|-- .npmrc
+|-- app.json
+|-- App.tsx
+|-- babel.config.js
+|-- estructura.txt
+|-- index.js
+|-- package.json
+|-- pnpm-lock.yaml
+|-- README.md
+|-- tsconfig.json
+  |-- components
+  |-- contexts
+  |-- navigation
+  |-- screens
+  |-- services
+  |-- theme
+  |-- types
+  |-- utils
+    |-- auth
+    |-- common
+    |-- dashboard
+      |-- ImageSlider.tsx
+      |-- Card.tsx
+      |-- SearchInput.tsx
+      |-- AttentionSection.tsx
+      |-- ClassesSection.tsx
+      |-- DashboardHeader.tsx
+      |-- NextClassBanner.tsx
+      |-- StatsSection.tsx
+    |-- AuthContext.tsx
+    |-- ThemeContext.tsx
+    |-- AppNavigator.tsx
+    |-- AuthNavigator.tsx
+    |-- MainNavigator.tsx
+    |-- auth
+    |-- main
+    |-- onboarding
+      |-- LoginScreen.tsx
+      |-- ClassesScreen.tsx
+      |-- DashboardScreen.tsx
+      |-- ProfileScreen.tsx
+      |-- OnboardingScreen.tsx
+    |-- api.ts
+    |-- auth.service.ts
+    |-- clases.service.ts
+    |-- kpi.service.js
+    |-- colors.ts
+    |-- theme.ts
+    |-- typography.ts
+    |-- index.ts
+    |-- storage.ts
+    |-- validation.ts

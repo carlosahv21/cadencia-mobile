@@ -99,12 +99,12 @@ const styles = StyleSheet.create({
     tagText: {
         color: 'white',
         fontSize: 11,
-        fontWeight: '700',
+        fontWeight: '400',
     },
     className: {
         color: 'white',
         fontSize: 26, // Título más grande e impactante
-        fontWeight: '800',
+        fontWeight: '500',
         marginBottom: 18,
         lineHeight: 30,
     },
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     detailText: {
         color: 'white',
         fontSize: 15,
-        fontWeight: '600',
+        fontWeight: '500',
     },
     rightSection: {
         marginLeft: 10,
@@ -153,6 +153,6 @@ const styles = StyleSheet.create({
     instructorNameText: {
         color: 'white',
         fontSize: 12,
-        fontWeight: '800',
+        fontWeight: '500',
     },
 });

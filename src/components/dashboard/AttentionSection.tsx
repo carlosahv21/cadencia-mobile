@@ -25,11 +25,11 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
             <View style={styles.header}>
                 <View style={styles.titleRow}>
                     {/* Icono corregido para FontAwesome */}
+                    <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Atención</Text>
                     <FontAwesome name="exclamation-triangle" size={20} color="#EF4444" />
-                    <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Attention Required</Text>
                 </View>
                 <View style={styles.badgeContainer}>
-                    <Text style={styles.badgeText}>{users.length} AT RISK</Text>
+                    <Text style={styles.badgeText}>{users.length} en riesgo</Text>
                 </View>
             </View>
 
@@ -85,14 +85,14 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     titleRow: { flexDirection: 'row', alignItems: 'center' },
-    title: { fontSize: 18, fontWeight: '700', marginLeft: 10 },
+    title: { fontSize: 18, fontWeight: '500', marginRight: 10 },
     badgeContainer: {
         backgroundColor: '#FFF1F2',
         paddingHorizontal: 8,
         paddingVertical: 4,
         borderRadius: 6,
     },
-    badgeText: { color: '#EF4444', fontSize: 11, fontWeight: '800' },
+    badgeText: { color: '#EF4444', fontSize: 11, fontWeight: '500' },
     userCard: { marginBottom: 1, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F1F5F9' },
     cardContent: { flexDirection: 'row', alignItems: 'center' },
     avatarContainer: { marginRight: 12 },
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    initialsText: { fontSize: 14, fontWeight: '700', color: '#64748B' },
+    initialsText: { fontSize: 14, fontWeight: '500', color: '#64748B' },
     infoContainer: { flex: 1 },
-    userName: { fontSize: 16, fontWeight: '700' },
+    userName: { fontSize: 16, fontWeight: '500' },
     statusText: { fontSize: 13, color: '#94A3B8', marginTop: 2 },
     waButton: { padding: 4 },
     emptyState: { padding: 20, alignItems: 'center' }

@@ -18,7 +18,7 @@ export const StatsSection = ({ stats }: any) => {
                     <Card key={stat.id} style={styles.statCard} noPadding>
                         <View style={styles.content}>
                             {/* Icono en círculo perfecto */}
-                            <View style={[styles.iconCircle, { backgroundColor: stat.color + '10' }]}>
+                            <View style={[styles.iconCircle, { backgroundColor: stat.color + '25' }]}>
                                 <FontAwesome name={stat.icon} size={18} color={stat.color} />
                             </View>
 
@@ -29,7 +29,7 @@ export const StatsSection = ({ stats }: any) => {
 
                             {/* Etiqueta en Mayúsculas */}
                             <Text style={[styles.label, { color: '#94A3B8' }]}>
-                                {stat.label.toUpperCase()}
+                                {stat.label}
                             </Text>
 
                             {/* Tendencia inferior */}
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     value: { 
-        fontSize: 22, // Un poco más grande para destacar
-        fontWeight: '800', 
+        fontSize: 22,
+        fontWeight: '600', 
         marginBottom: 2 
     },
     label: { 
         fontSize: 10, 
-        fontWeight: '700', 
+        fontWeight: '500', 
         letterSpacing: 0.5,
         marginBottom: 6,
     },
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     },
     trendText: { 
         fontSize: 12, 
-        fontWeight: '700' 
+        fontWeight: '500' 
     },
 });

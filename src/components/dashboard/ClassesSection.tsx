@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Card } from '../common/Card';
 import { useTheme } from '../../contexts/ThemeContext';
 import { DanceClass } from '../../types';
@@ -19,107 +19,164 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
         <View style={styles.sectionContainer}>
             <View style={styles.sectionHeader}>
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
-                    Today's Classes
+                    Clases de hoy
                 </Text>
-                <TouchableOpacity onPress={onViewAll}>
-                    <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>VIEW ALL</Text>
+                <TouchableOpacity onPress={onViewAll} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                    <Text style={[styles.viewAllText, { color: theme.colors.textSecondary }]}>Ver todas</Text>
                 </TouchableOpacity>
             </View>
 
             {loading ? (
                 <ActivityIndicator color={theme.colors.primary} style={{ marginTop: 20 }} />
-            ) : classes.length > 0 ? (
+            ) : (
                 classes.map((clase, index) => (
                     <View key={clase.id} style={styles.timelineRow}>
-                        {/* Columna Izquierda: Hora y Línea de tiempo */}
                         <View style={styles.hourCol}>
-                            <Text style={[styles.hourLabel, { color: '#64748B' }]}>{clase.hour}</Text>
-                            {/* La línea no se dibuja en el último elemento */}
-                            {index !== classes.length - 1 && <View style={styles.timelineLine} />}
-                            <View style={[styles.timelineDot, index === 0 && styles.activeDot]} />
+                            <View style={[styles.lineBase, { backgroundColor: theme.colors.border, top: 0, height: '40%' }]} />
+
+                            <View style={styles.centerContent}>
+                                <Text style={[styles.hourLabel, { color: theme.colors.textSecondary }]}>
+                                    {clase.hour}
+                                </Text>
+                                <View style={[
+                                    styles.timelineDot,
+                                    { backgroundColor: index === 0 ? theme.colors.primary : theme.colors.border }
+                                ]} />
+                            </View>
+
+                            <View style={[styles.lineBase, { backgroundColor: theme.colors.border, bottom: -15, top: '60%' }]} />
                         </View>
 
-                        {/* Columna Derecha: Tarjeta de Clase */}
-                        <Card 
-                            style={styles.classCard} 
+                        <Card
+                            style={styles.classCard}
                             onPress={() => onClassPress?.(clase)}
                             noPadding
                         >
                             <View style={styles.cardInternal}>
                                 <View style={styles.infoWrapper}>
+                                    <View style={styles.topRow}>
+                                        <Text style={[styles.genreText, { color: theme.colors.primary }]}>
+                                            {clase.genre.toUpperCase()} • {clase.level}
+                                        </Text>
+                                        <View style={[styles.badge, { backgroundColor: theme.mode === 'light' ? '#FEE2E2' : '#452323' }]}>
+                                            <Text style={[styles.badgeText, { color: theme.colors.error }]}>Baja ocupación</Text>
+                                        </View>
+                                    </View>
+
                                     <Text style={[styles.className, { color: theme.colors.textPrimary }]}>
                                         {clase.name}
                                     </Text>
-                                    <View style={styles.detailsRow}>
-                                        <Text style={[styles.classSub, { color: '#94A3B8' }]}>
-                                            {clase.level} • Studio A
-                                        </Text>
-                                        
-                                        <View style={styles.lowOccBadge}>
-                                            <Text style={styles.lowOccText}>LOW OCCUPANCY</Text>
+
+                                    <View style={styles.footerRow}>
+                                        <View style={styles.metaContainer}>
+                                            <View style={styles.metaItem}>
+                                                <Ionicons name="person-outline" size={13} color={theme.colors.textSecondary} />
+                                                <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>
+                                                    Prof. {clase.teacher_id}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.metaItem}>
+                                                <Ionicons name="time-outline" size={13} color={theme.colors.textSecondary} />
+                                                <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>
+                                                    {clase.duration} min
+                                                </Text>
+                                            </View>
                                         </View>
+
+                                        <FontAwesome name="angle-right" size={16} color={theme.colors.border} />
                                     </View>
                                 </View>
-                                <FontAwesome name="angle-right" size={20} color="#CBD5E1" />
                             </View>
                         </Card>
                     </View>
                 ))
-            ) : (
-                <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
-                    No hay clases programadas
-                </Text>
             )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    sectionContainer: { paddingHorizontal: 20 },
+    sectionContainer: { paddingHorizontal: 20, marginBottom: 20 },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 20
     },
-    sectionTitle: { fontSize: 18, fontWeight: '700' },
-    viewAllText: { fontSize: 12, fontWeight: '800', letterSpacing: 0.5 },
-    timelineRow: { flexDirection: 'row', marginBottom: 15, minHeight: 90 },
-    hourCol: { width: 50, alignItems: 'center', position: 'relative' },
-    hourLabel: { fontSize: 13, fontWeight: '600', marginBottom: 5 },
-    timelineLine: {
-        position: 'absolute',
-        top: 25,
-        bottom: -15,
-        width: 2,
-        backgroundColor: '#F1F5F9', // Línea gris suave
+    sectionTitle: { fontSize: 18, fontWeight: '500' },
+    viewAllText: { fontSize: 12, fontWeight: '400' },
+    timelineRow: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        minHeight: 110 
+    },
+    hourCol: { 
+        width: 60, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        alignSelf: 'stretch',
+        position: 'relative'
+    },
+    centerContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 2,
+    },
+    hourLabel: {
+        fontSize: 11, // Ajustado a escala de 12px base
+        fontWeight: '500',
+        marginBottom: 3
     },
     timelineDot: {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#CBD5E1',
-        marginTop: 8,
-        zIndex: 1,
+        width: 7,
+        height: 7,
+        borderRadius: 3.5,
     },
-    activeDot: { backgroundColor: '#3B82F6', borderWidth: 2, borderColor: '#DBEAFE' },
-    classCard: { flex: 1, marginLeft: 10, alignSelf: 'stretch' },
-    cardInternal: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 16,
+    lineBase: {
+        position: 'absolute',
+        width: 1.5,
+        left: '50%',
+        marginLeft: -0.75,
+        backgroundColor: '#E0E0E0',
+    },
+    classCard: {
         flex: 1,
+        marginLeft: 12,
+        marginBottom: 15,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.03)'
     },
+    cardInternal: { padding: 14 },
     infoWrapper: { flex: 1 },
-    className: { fontSize: 16, fontWeight: '700', marginBottom: 4 },
-    detailsRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 8 },
-    classSub: { fontSize: 12, fontWeight: '500' },
-    lowOccBadge: {
-        backgroundColor: '#FEE2E2',
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-        borderRadius: 4,
+    topRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 4
     },
-    lowOccText: { color: '#EF4444', fontSize: 10, fontWeight: '800' },
-    emptyText: { textAlign: 'center', marginTop: 20 },
+    genreText: { fontSize: 10, fontWeight: '500', letterSpacing: 0.4 },
+    badge: { paddingHorizontal: 6, paddingVertical: 1.5, borderRadius: 4 },
+    badgeText: { fontSize: 9, fontWeight: '400' },
+    className: {
+        fontSize: 15,
+        fontWeight: '500',
+        marginBottom: 10
+    },
+    footerRow: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderTopWidth: 1, 
+        borderTopColor: 'rgba(0,0,0,0.05)', 
+        paddingTop: 8,
+        marginTop: 4
+    },
+    metaContainer: { flexDirection: 'row', gap: 10 },
+    metaItem: { flexDirection: 'row', alignItems: 'center', gap: 3 },
+    metaText: { 
+        fontSize: 12, 
+        fontWeight: '400', 
+        color: '#6C757D' 
+    },
 });
