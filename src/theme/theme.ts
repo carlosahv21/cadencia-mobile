@@ -10,6 +10,7 @@ export interface Theme {
         xs: number;
         sm: number;
         md: number;
+        section: number;
         lg: number;
         xl: number;
         '2xl': number;
@@ -35,6 +36,7 @@ export const getTheme = (mode: ThemeMode): Theme => {
             xs: 4,
             sm: 8,
             md: 16,
+            section: 20,
             lg: 24,
             xl: 32,
             '2xl': 48,

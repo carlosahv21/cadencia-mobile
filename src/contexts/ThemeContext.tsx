@@ -4,6 +4,8 @@ import { storage } from '../utils/storage';
 import { ThemeMode } from '../types';
 import { getTheme, Theme } from '../theme/theme';
 import { useAuth } from './AuthContext';
+import { Provider as AntdProvider } from '@ant-design/react-native';
+import { getAntdTheme } from '../theme/antdTheme';
 
 interface ThemeContextData {
     theme: Theme;
@@ -71,7 +73,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 setThemeMode,
             }}
         >
-            {children}
+            <AntdProvider theme={getAntdTheme(theme)}>
+                {children}
+            </AntdProvider>
         </ThemeContext.Provider>
     );
 };

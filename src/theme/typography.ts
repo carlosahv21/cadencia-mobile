@@ -40,37 +40,37 @@ export const typography = {
 export const textStyles = {
     h1: {
         fontSize: typography.fontSize['3xl'],
-        fontWeight: typography.fontWeight.bold,
+        fontWeight: typography.fontWeight.medium, // 500
         lineHeight: typography.lineHeight.tight,
     },
     h2: {
         fontSize: typography.fontSize['2xl'],
-        fontWeight: typography.fontWeight.bold,
+        fontWeight: typography.fontWeight.medium, // 500
         lineHeight: typography.lineHeight.tight,
     },
     h3: {
         fontSize: typography.fontSize.xl,
-        fontWeight: typography.fontWeight.semibold,
+        fontWeight: typography.fontWeight.medium, // 500
         lineHeight: typography.lineHeight.tight,
     },
     body: {
         fontSize: typography.fontSize.base,
-        fontWeight: typography.fontWeight.regular,
+        fontWeight: typography.fontWeight.regular, // 400
         lineHeight: typography.lineHeight.normal,
     },
     bodySmall: {
         fontSize: typography.fontSize.sm,
-        fontWeight: typography.fontWeight.regular,
+        fontWeight: typography.fontWeight.regular, // 400
         lineHeight: typography.lineHeight.normal,
     },
     caption: {
         fontSize: typography.fontSize.xs,
-        fontWeight: typography.fontWeight.regular,
+        fontWeight: typography.fontWeight.regular, // 400
         lineHeight: typography.lineHeight.normal,
     },
     button: {
         fontSize: typography.fontSize.base,
-        fontWeight: typography.fontWeight.semibold,
+        fontWeight: typography.fontWeight.medium, // 500 para mas impacto
         lineHeight: typography.lineHeight.tight,
     },
 };

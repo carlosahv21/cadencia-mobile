@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-
 import { FontAwesome } from '@expo/vector-icons';
 import { Card } from '../common/Card';
 import { useTheme } from '../../contexts/ThemeContext';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface AtRiskUser {
     id: string;
@@ -21,7 +22,10 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <Animated.View
+            entering={FadeInDown.duration(600).delay(600)}
+            style={styles.container}
+        >
             <View style={styles.header}>
                 <View style={styles.titleRow}>
                     {/* Icono corregido para FontAwesome */}
@@ -72,7 +76,7 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
                     <Text style={{ color: theme.colors.textSecondary }}>No hay alumnos en riesgo</Text>
                 </View>
             )}
-        </View>
+        </Animated.View>
     );
 };
 

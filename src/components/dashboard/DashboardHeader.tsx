@@ -64,9 +64,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 15,
-        paddingBottom: 15,
+        padding: 20,
     },
     leftSection: {
         flexDirection: 'row',
@@ -87,12 +85,12 @@ const styles = StyleSheet.create({
     },
     roleText: {
         fontSize: 12,
-        fontWeight: '500',
+        fontWeight: '400', // Standard body text
         marginBottom: 2,
     },
     greetingText: {
         fontSize: 18,
-        fontWeight: '700',
+        fontWeight: '500', // Standard title weight
     },
     actionsContainer: {
         flexDirection: 'row',

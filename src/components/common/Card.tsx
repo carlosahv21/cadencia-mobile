@@ -23,7 +23,7 @@ export const Card: React.FC<CardProps> = ({ children, onPress, style, noPadding 
                 {
                     backgroundColor: theme.colors.surface,
                     borderColor: theme.colors.border,
-                    borderRadius: theme.borderRadius['2xl'],
+                    borderRadius: theme.borderRadius.xl,
                     padding: noPadding ? 0 : 16,
                 },
                 style

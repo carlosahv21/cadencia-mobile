@@ -1,9 +1,9 @@
-import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Card } from '../common/Card';
 import { useTheme } from '../../contexts/ThemeContext';
 import { DanceClass } from '../../types';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface ClassesSectionProps {
     classes: DanceClass[];
@@ -30,7 +30,11 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
                 <ActivityIndicator color={theme.colors.primary} style={{ marginTop: 20 }} />
             ) : (
                 classes.map((clase, index) => (
-                    <View key={clase.id} style={styles.timelineRow}>
+                    <Animated.View
+                        key={clase.id}
+                        entering={FadeInDown.duration(500).delay(1000 + index * 100)}
+                        style={styles.timelineRow}
+                    >
                         <View style={styles.hourCol}>
                             <View style={[styles.lineBase, { backgroundColor: theme.colors.border, top: 0, height: '40%' }]} />
 
@@ -88,7 +92,7 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
                                 </View>
                             </View>
                         </Card>
-                    </View>
+                    </Animated.View>
                 ))
             )}
         </View>
@@ -105,14 +109,14 @@ const styles = StyleSheet.create({
     },
     sectionTitle: { fontSize: 18, fontWeight: '500' },
     viewAllText: { fontSize: 12, fontWeight: '400' },
-    timelineRow: { 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        minHeight: 110 
+    timelineRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        minHeight: 110
     },
-    hourCol: { 
-        width: 60, 
-        alignItems: 'center', 
+    hourCol: {
+        width: 60,
+        alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'stretch',
         position: 'relative'
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 12,
         marginBottom: 15,
-        borderRadius: 16,
+        borderRadius: 16, // theme.borderRadius.xl
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.03)'
     },
@@ -163,20 +167,20 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginBottom: 10
     },
-    footerRow: { 
-        flexDirection: 'row', 
+    footerRow: {
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderTopWidth: 1, 
-        borderTopColor: 'rgba(0,0,0,0.05)', 
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(0,0,0,0.05)',
         paddingTop: 8,
         marginTop: 4
     },
     metaContainer: { flexDirection: 'row', gap: 10 },
     metaItem: { flexDirection: 'row', alignItems: 'center', gap: 3 },
-    metaText: { 
-        fontSize: 12, 
-        fontWeight: '400', 
-        color: '#6C757D' 
+    metaText: {
+        fontSize: 12,
+        fontWeight: '400',
+        color: '#6C757D'
     },
 });

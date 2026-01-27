@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -20,70 +20,86 @@ export const DashboardScreen = () => {
     const [classes, setClasses] = useState<DanceClass[]>([]);
     const [kpis, setKpis] = useState<DashboardStat[]>([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const getEnglishDayName = () => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         const today = new Date();
         return days[today.getDay()];
     };
+    const loadDashboardData = async () => {
+        try {
+            const day = getEnglishDayName();
+
+            const [classesRes, kpiRes] = await Promise.all([
+                classService.getTodayClasses(day),
+                kpiService.getKpis()
+            ]);
+
+            setClasses(classesRes.data || []);
+
+            const formattedStats = [
+                {
+                    id: 1,
+                    label: 'Estudiantes',
+                    value: kpiRes.data.activeStudents,
+                    icon: 'users',
+                    color: '#3B82F6',
+                    trend: "+12%",
+                    isPositive: true
+                },
+                {
+                    id: 2,
+                    label: 'Ingresos',
+                    value: `$${kpiRes.data.monthlyRevenue}`,
+                    icon: 'money',
+                    color: '#10B981',
+                    trend: "+12%",
+                    isPositive: true
+                },
+                {
+                    id: 3,
+                    label: 'Clases de hoy',
+                    value: `${kpiRes.data.todayClasses}`,
+                    icon: 'calendar',
+                    color: '#8B5CF6',
+                    trend: "+12%",
+                    isPositive: true
+                },
+            ];
+            setKpis(formattedStats);
+
+        } catch (error) {
+            console.error("Error en Dashboard:", error);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
 
     useEffect(() => {
-        const loadDashboardData = async () => {
-            try {
-                const day = getEnglishDayName(); // Tu función de día en inglés
+        loadDashboardData();
+    }, []);
 
-                // Llamadas paralelas para optimizar velocidad
-                const [classesRes, kpiRes] = await Promise.all([
-                    classService.getTodayClasses(day),
-                    kpiService.getKpis()
-                ]);
-
-                setClasses(classesRes.data || []);
-
-                // Mapeo de KPIs del backend a formato de cards móviles
-                const formattedStats = [
-                    {
-                        id: 1,
-                        label: 'Estudiantes',
-                        value: kpiRes.data.activeStudents,
-                        icon: 'users',
-                        color: '#3B82F6',
-                        trend: "+12%",
-                        isPositive: true
-                    },
-                    {
-                        id: 2,
-                        label: 'Ingresos',
-                        value: `$${kpiRes.data.monthlyRevenue}`,
-                        icon: 'money',
-                        color: '#10B981',
-                        trend: "+12%",
-                        isPositive: true
-                    },
-                    {
-                        id: 3,
-                        label: 'Clases de hoy',
-                        value: `${kpiRes.data.todayClasses}`,
-                        icon: 'calendar',
-                        color: '#8B5CF6',
-                        trend: "+12%",
-                        isPositive: true
-                    },
-                ];
-                setKpis(formattedStats);
-
-            } catch (error) {
-                console.error("Error en Dashboard:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
         loadDashboardData();
     }, []);
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        colors={[theme.colors.primary]} // Android
+                        tintColor={theme.colors.primary} // iOS
+                    />
+                }
+            >
                 <DashboardHeader />
                 <SearchInput />
                 <NextClassBanner

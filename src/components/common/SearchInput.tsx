@@ -2,19 +2,23 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 export const SearchInput = () => {
     const { theme } = useTheme();
 
     return (
-        <View style={[
-            styles.container,
-            {
-                backgroundColor: theme.colors.surface,
-                borderColor: theme.colors.border,
-                borderRadius: 32.5,
-            }
-        ]}>
+        <Animated.View
+            entering={FadeIn.duration(600).delay(200)}
+            style={[
+                styles.container,
+                {
+                    backgroundColor: theme.colors.surface,
+                    borderColor: theme.colors.border,
+                    borderRadius: 32.5,
+                }
+            ]}
+        >
             <FontAwesome
                 name="search"
                 size={20}
@@ -26,7 +30,7 @@ export const SearchInput = () => {
                 placeholderTextColor={theme.colors.textSecondary}
                 style={[styles.input, { color: theme.colors.textPrimary }]}
             />
-        </View>
+        </Animated.View>
     );
 };
 

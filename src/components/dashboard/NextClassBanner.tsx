@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface NextClassProps {
     className: string;
@@ -19,7 +20,10 @@ export const NextClassBanner = ({
     instructorImage = "https://mockmind-api.uifaces.co/content/human/221.jpg"
 }: NextClassProps) => {
     return (
-        <View style={styles.container}>
+        <Animated.View
+            entering={FadeInDown.duration(600).delay(400)}
+            style={styles.container}
+        >
             <LinearGradient
                 colors={['#2563EB', '#3B82F6']} // Degradado de azul profundo a azul claro
                 start={{ x: 0, y: 0 }}
@@ -65,7 +69,7 @@ export const NextClassBanner = ({
                     </View>
                 </View>
             </LinearGradient>
-        </View>
+        </Animated.View>
     );
 };
 
@@ -76,7 +80,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     gradient: {
-        borderRadius: 20,
+        borderRadius: 16,
         padding: 24,
         minHeight: 160,
     },
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
     },
     className: {
         color: 'white',
-        fontSize: 26, // Título más grande e impactante
+        fontSize: 26,
         fontWeight: '500',
         marginBottom: 18,
         lineHeight: 30,
