@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { TabBar, Icon } from '@ant-design/react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
-import { useAuth } from '../contexts/AuthContext';
-
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Pantallas
 import { DashboardScreen } from '../screens/main/DashboardScreen';
@@ -13,12 +10,16 @@ import { ProfileScreen } from '../screens/main/ProfileScreen';
 
 export const MainNavigator = () => {
   const { theme } = useTheme();
-  const { academy } = useAuth();
-  const [selectedTab, setSelectedTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('home');
 
-  // Renderizado condicional de la pantalla (Navegación manual ultra estable)
+  const tabs = [
+    { key: 'home', title: 'INICIO', icon: 'home' }, // Icono de cuadrícula
+    { key: 'classes', title: 'CLASES', icon: 'calendar-o' }, // Icono calendario lineal
+    { key: 'profile', title: 'PERFIL', icon: 'user' }, // Icono de usuario
+  ];
+
   const renderContent = () => {
-    switch (selectedTab) {
+    switch (activeTab) {
       case 'home': return <DashboardScreen />;
       case 'classes': return <ClassesScreen />;
       case 'profile': return <ProfileScreen />;
@@ -27,45 +28,61 @@ export const MainNavigator = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Área de contenido */}
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={{ flex: 1 }}>
         {renderContent()}
       </View>
 
-      {/* TabBar oficial de @ant-design/react-native */}
-      <TabBar
-        unselectedTintColor="#949494"
-        tintColor={theme.colors.primary}
-        barTintColor={theme.colors.surface}
-      >
-        <TabBar.Item
-          title="Inicio"
-          icon={<Icon name="home" />}
-          selected={selectedTab === 'home'}
-          onPress={() => setSelectedTab('home')}
-        >
-          {/* Dejar vacío porque renderizamos arriba */}
-        </TabBar.Item>
-        <TabBar.Item
-          title="Clases"
-          icon={<Icon name="ordered-list" />}
-          selected={selectedTab === 'classes'}
-          onPress={() => setSelectedTab('classes')}
-        />
-        <TabBar.Item
-          title="Perfil"
-          icon={<Icon name="user" />}
-          selected={selectedTab === 'profile'}
-          onPress={() => setSelectedTab('profile')}
-        />
-      </TabBar>
-    </SafeAreaView>
+      {/* TabBar Fijo Estilo Dashboard */}
+      <View style={[styles.tabBar, { backgroundColor: 'white' }]}>
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.key;
+          return (
+            <TouchableOpacity
+              key={tab.key}
+              onPress={() => setActiveTab(tab.key)}
+              style={styles.tabItem}
+              activeOpacity={0.8}
+            >
+              <FontAwesome
+                name={tab.icon as any}
+                size={22}
+                color={isActive ? '#3B82F6' : '#94A3B8'} // Azul activo vs gris suave
+              />
+              <Text style={[
+                styles.tabTitle,
+                { color: isActive ? '#3B82F6' : '#94A3B8' }
+              ]}>
+                {tab.title}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container: { flex: 1 },
+  tabBar: {
+    flexDirection: 'row',
+    height: Platform.OS === 'ios' ? 90 : 70, // Altura ajustada para safe area
+    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9', // Línea divisoria muy sutil
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
+  tabItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 12,
+  },
+  tabTitle: {
+    fontSize: 10, // Texto pequeño como en el diseño
+    fontWeight: '600', // Texto en extra negrita
+    marginTop: 6,
+    letterSpacing: 0.5,
+  }
 });

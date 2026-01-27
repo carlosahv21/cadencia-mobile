@@ -1,7 +1,8 @@
 import React from 'react';
-import { Platform, LogBox } from 'react-native';
+import { Platform, LogBox, View, ActivityIndicator } from 'react-native';
 import { ThemeProvider } from './src/contexts/ThemeContext';
-import { AuthProvider } from './src/contexts/AuthContext';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -20,14 +21,27 @@ if (Platform.OS === 'web') {
   ]);
 }
 
+const RootContent = () => {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+  return <AppNavigator />;
+};
+
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <AppNavigator />
-        </AuthProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <RootContent />
+        </ThemeProvider>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

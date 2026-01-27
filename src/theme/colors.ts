@@ -1,30 +1,27 @@
 import { ThemeColors } from '../types';
 
-// Electric Blue - Primary Brand Color
-export const ELECTRIC_BLUE = '#0ea5e9';
+export const ELECTRIC_BLUE = '#0A84FF';
 
-// Light Mode Colors
 export const lightColors: ThemeColors = {
-  primary: ELECTRIC_BLUE,
-  background: '#ffffff',
-  surface: '#f9fafb',
-  textPrimary: '#111827',
-  textSecondary: '#4b5563',
-  border: '#e5e7eb',
-  error: '#ef4444',
-  success: '#10b981',
-  warning: '#f59e0b',
+    primary: ELECTRIC_BLUE,
+    background: '#F8F9FA',
+    surface: '#FFFFFF',
+    textPrimary: '#2D3436',
+    textSecondary: '#6C757D',
+    border: '#E0E0E0',
+    error: '#EF4444',
+    success: '#10B981',
+    warning: '#F59E0B',
 };
 
-// Dark Mode Colors
 export const darkColors: ThemeColors = {
-  primary: ELECTRIC_BLUE,
-  background: '#0f172a',
-  surface: '#1e293b',
-  textPrimary: '#f1f5f9',
-  textSecondary: '#cbd5e1',
-  border: '#334155',
-  error: '#f87171',
-  success: '#34d399',
-  warning: '#fbbf24',
+    primary: ELECTRIC_BLUE,
+    background: '#121212',      // Basado en colorBgBase (Layout bodyBg)
+    surface: '#1E1E1E',         // Basado en colorBgContainer (Header/Sider Bg)
+    textPrimary: '#E0E0E0',     // Basado en colorText
+    textSecondary: '#A0A0A0',   // Basado en colorTextSecondary
+    border: '#2D2D2D',          // Basado en colorBorder
+    error: '#F87171',
+    success: '#34D399',
+    warning: '#FBBF24',
 };

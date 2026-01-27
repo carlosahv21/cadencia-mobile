@@ -48,32 +48,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const login = async (credentials: LoginCredentials) => {
         try {
-            const response = await authService.login(credentials);
+            const response = await authService.login(credentials); // Esto devuelve AuthResponse
 
-            // Verificamos que la respuesta tenga la estructura esperada
-            if (response && response.data && response.data.token) {
+            if (response.success && response.data) {
                 const { token, user, settings } = response.data;
 
-                // Guardado paralelo para mejorar la velocidad
                 await Promise.all([
                     storage.saveToken(token),
                     storage.saveUser(user),
                     storage.saveAcademy(settings),
-                    credentials.rememberMe !== undefined
-                        ? storage.saveRememberMe(credentials.rememberMe)
-                        : Promise.resolve()
                 ]);
 
                 setUser(user);
                 setAcademy(settings);
-
-                console.log('¡Login exitoso!');
-            } else {
-                throw new Error('La respuesta del servidor no contiene los datos necesarios.');
             }
         } catch (error) {
-            console.error('Error detallado en el login:', error);
-            throw error;
+            console.error('Error:', error);
         }
     };
 
