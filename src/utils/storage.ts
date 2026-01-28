@@ -101,8 +101,7 @@ export const storage = {
         await Promise.all([
             this.removeToken(),
             this.removeUser(),
-            this.removeAcademy(),
-            this.removeOnboardingStatus(),
+            this.removeAcademy()
         ]);
     },
 };

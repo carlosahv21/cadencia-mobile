@@ -1,0 +1,159 @@
+import React from 'react';
+import { View, Text, StyleSheet, Switch } from 'react-native';
+import { List } from '@ant-design/react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { useTheme } from '../../contexts/ThemeContext';
+
+export const ConfigList: React.FC = () => {
+    const { theme, themeMode, toggleTheme } = useTheme();
+
+    const IconWrapper = ({ name, color, bgColor }: { name: string; color: string; bgColor: string }) => (
+        <View style={[styles.iconWrapper, { backgroundColor: bgColor }]}>
+            <FontAwesome name={name as any} size={18} color={color} />
+        </View>
+    );
+
+    return (
+        <View style={styles.container}>
+            {/* Account & Security */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
+                    Cuenta y Seguridad
+                </Text>
+                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                    <List.Item
+                        extra={
+                            <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
+                        }
+                        thumb={
+                            <IconWrapper name="user" color="#3b82f6" bgColor="rgba(59, 130, 246, 0.1)" />
+                        }
+                        style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Editar Perfil</Text>
+                    </List.Item>
+                    <List.Item
+                        extra={
+                            <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
+                        }
+                        thumb={
+                            <IconWrapper name="lock" color="#a855f7" bgColor="rgba(168, 85, 247, 0.1)" />
+                        }
+                        style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Cambiar Contraseña</Text>
+                    </List.Item>
+                    <List.Item
+                        extra={
+                            <Switch value={true} trackColor={{ false: theme.colors.border, true: '#0ea5e9' }} />
+                        }
+                        thumb={
+                            <IconWrapper name="bell" color="#f59e0b" bgColor="rgba(245, 158, 11, 0.1)" />
+                        }
+                        style={styles.listItem}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Notificaciones</Text>
+                    </List.Item>
+                </List>
+            </View>
+
+            {/* Appearance */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
+                    Apariencia
+                </Text>
+                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                    <List.Item
+                        extra={
+                            <Switch
+                                value={themeMode === 'dark'}
+                                onValueChange={toggleTheme}
+                                trackColor={{ false: theme.colors.border, true: '#0ea5e9' }}
+                            />
+                        }
+                        thumb={
+                            <IconWrapper name={themeMode === 'dark' ? 'moon-o' : 'sun-o'} color={themeMode === 'dark' ? '#fff' : '#000'} bgColor={themeMode === 'dark' ? '#000' : '#fff'} />
+                        }
+                        style={styles.listItem}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Modo {themeMode === 'dark' ? 'Oscuro' : 'Claro'}</Text>
+                    </List.Item>
+                </List>
+            </View>
+
+            {/* Support & Legal */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
+                    Soporte y Legal
+                </Text>
+                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                    <List.Item
+                        extra={
+                            <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
+                        }
+                        thumb={
+                            <IconWrapper name="question-circle" color="#10b981" bgColor="rgba(16, 185, 129, 0.1)" />
+                        }
+                        style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Centro de Ayuda</Text>
+                    </List.Item>
+                    <List.Item
+                        extra={
+                            <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
+                        }
+                        thumb={
+                            <IconWrapper name="file-text" color="#b9104e" bgColor="rgba(185, 16, 78, 0.1)" />
+                        }
+                        style={styles.listItem}
+                        styles={{ Line: { borderBottomWidth: 0 } }}
+                    >
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Términos y Condiciones</Text>
+                    </List.Item>
+                </List>
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 20,
+    },
+    section: {
+        marginBottom: 24,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '500',
+        marginBottom: 8,
+        paddingHorizontal: 32,
+        letterSpacing: 0.5,
+    },
+    list: {
+        marginHorizontal: 20,
+        borderRadius: 12,
+        overflow: 'hidden',
+        borderWidth: 0,
+    },
+    listItem: {
+        paddingVertical: 10,
+    },
+    iconWrapper: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    itemText: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+});

@@ -68,18 +68,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const logout = async () => {
-        try {
-            await authService.logout();
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status !== 404) {
-                console.log('Error de logout:', error.message);
-            }
-        } finally {
-            // Esto es lo que activa el cambio de pantalla en AppNavigator
-            await storage.clearAuth();
-            setUser(null);
-            setAcademy(null);
-        }
+        await storage.clearAuth();
+        setUser(null);
+        setAcademy(null);
     };
 
     return (

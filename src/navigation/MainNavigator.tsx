@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Pantallas
 import { DashboardScreen } from '../screens/main/DashboardScreen';
@@ -10,6 +11,7 @@ import { ProfileScreen } from '../screens/main/ProfileScreen';
 
 export const MainNavigator = () => {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('home');
 
   const tabs = [
@@ -34,7 +36,15 @@ export const MainNavigator = () => {
       </View>
 
       {/* TabBar Fijo Estilo Dashboard */}
-      <View style={[styles.tabBar, { backgroundColor: 'white' }]}>
+      <View style={[
+        styles.tabBar,
+        {
+          backgroundColor: theme.colors.surface,
+          paddingBottom: Math.max(insets.bottom, 15),
+          height: 60 + Math.max(insets.bottom, 15),
+          borderTopColor: theme.colors.border,
+        }
+      ]}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.key;
           return (
@@ -67,8 +77,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   tabBar: {
     flexDirection: 'row',
-    height: Platform.OS === 'ios' ? 90 : 70, // Altura ajustada para safe area
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
     borderTopWidth: 1,
     borderTopColor: '#F1F5F9', // Línea divisoria muy sutil
     alignItems: 'center',

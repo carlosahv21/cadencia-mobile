@@ -81,8 +81,10 @@ const styles = StyleSheet.create({
     },
     gradient: {
         borderRadius: 16,
-        padding: 24,
-        minHeight: 160,
+        paddingTop: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 14,
+        minHeight: 130,
     },
     content: {
         flexDirection: 'row',
@@ -107,10 +109,10 @@ const styles = StyleSheet.create({
     },
     className: {
         color: 'white',
-        fontSize: 26,
-        fontWeight: '500',
-        marginBottom: 18,
-        lineHeight: 30,
+        fontSize: 22,
+        fontWeight: '600',
+        marginBottom: 14,
+        lineHeight: 26,
     },
     detailsRow: {
         flexDirection: 'row',
@@ -136,15 +138,15 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: 50,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.5)', // Aro blanco sutil
+        borderColor: 'rgba(255, 255, 255, 0.5)',
     },
     instructorPhoto: {
-        width: 75,
-        height: 75,
-        borderRadius: 37.5,
+        width: 65,
+        height: 65,
+        borderRadius: 32.5,
     },
     instructorTag: {
-        backgroundColor: '#60A5FA', // Azul brillante para el nombre
+        backgroundColor: '#60A5FA',
         paddingHorizontal: 14,
         paddingVertical: 4,
         borderRadius: 12,
