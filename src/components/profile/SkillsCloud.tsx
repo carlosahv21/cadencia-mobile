@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Tag } from '../common/Tag';
+import { Button } from '../common/Button';
+
 import { Skill } from '../../types/profile';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -18,9 +20,15 @@ export const SkillsCloud: React.FC<SkillsCloudProps> = ({ skills }) => {
                     <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
                         Especialidades
                     </Text>
-                    <TouchableOpacity style={[styles.editButton, { borderColor: theme.colors.border }]}>
-                        <MaterialIcons name="edit" size={12} color={theme.colors.textSecondary} />
-                    </TouchableOpacity>
+                    <Button
+                        onPress={() => { }}
+                        type="default"
+                        variant="filled"
+                        size="xs"
+                        icon="pencil"
+                        iconSize={12}
+                        style={{ top: -5 }}
+                    />
                 </View>
             </View>
 
@@ -31,9 +39,12 @@ export const SkillsCloud: React.FC<SkillsCloudProps> = ({ skills }) => {
             >
                 <View style={styles.tagsContainer}>
                     {skills.map((skill) => (
-                        <View key={skill.id} style={[styles.tag, { backgroundColor: 'rgba(14, 165, 233, 0.1)' }]}>
-                            <Text style={[styles.tagText, { color: theme.colors.primary }]}>{skill.label}</Text>
-                        </View>
+                        <Tag
+                            key={skill.id}
+                            label={skill.label}
+                            type="primary"
+                            size="md"
+                        />
                     ))}
                 </View>
             </ScrollView>
@@ -62,29 +73,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         letterSpacing: 0.5,
     },
-    editButton: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        borderWidth: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     tagsContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         gap: 8,
-    },
-    tag: {
-        paddingHorizontal: 15,
-        paddingVertical: 8,
-        borderRadius: 20,
-        height: 'auto',
-    },
-    tagText: {
-        color: '#0ea5e9',
-        fontSize: 14,
-        fontWeight: '400',
     },
     scrollContent: {
         paddingHorizontal: 20,

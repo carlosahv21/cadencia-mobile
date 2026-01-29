@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 12,
+    padding: 12,
   },
   tabTitle: {
     fontSize: 12, // Texto pequeño como en el diseño

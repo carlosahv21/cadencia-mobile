@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View, Text, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { StyleSheet, ScrollView, View, ActivityIndicator, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
 import { SearchInput } from '../../components/common/SearchInput';
 import { NextClassBanner } from '../../components/dashboard/NextClassBanner';
+import { AttentionSection } from '../../components/dashboard/AttentionSection';
 import { StatsSection } from '../../components/dashboard/StatsSection';
 import { ClassesSection } from '../../components/dashboard/ClassesSection';
-import { AttentionSection } from '../../components/dashboard/AttentionSection';
 
 import { classService } from '../../services/clases.service';
 import { DanceClass, DashboardStat } from '../../types';
@@ -44,7 +43,7 @@ export const DashboardScreen = () => {
                     label: 'Estudiantes',
                     value: kpiRes.data.activeStudents,
                     icon: 'users',
-                    color: '#3B82F6',
+                    color: '#0A84FF',
                     trend: "+12%",
                     isPositive: true
                 },
@@ -53,7 +52,7 @@ export const DashboardScreen = () => {
                     label: 'Ingresos',
                     value: `$${kpiRes.data.monthlyRevenue}`,
                     icon: 'money',
-                    color: '#10B981',
+                    color: '#22C55E',
                     trend: "+12%",
                     isPositive: true
                 },
@@ -62,7 +61,7 @@ export const DashboardScreen = () => {
                     label: 'Clases de hoy',
                     value: `${kpiRes.data.todayClasses}`,
                     icon: 'calendar',
-                    color: '#8B5CF6',
+                    color: '#FBBF24',
                     trend: "+12%",
                     isPositive: true
                 },

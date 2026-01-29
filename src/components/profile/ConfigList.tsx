@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { List } from '@ant-design/react-native';
+
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -20,13 +21,16 @@ export const ConfigList: React.FC = () => {
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
                     Cuenta y Seguridad
                 </Text>
-                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                <List
+                    style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+                    styles={{ Body: { borderTopWidth: 0, borderBottomWidth: 0 } }}
+                >
                     <List.Item
                         extra={
                             <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
                         }
                         thumb={
-                            <IconWrapper name="user" color="#3b82f6" bgColor="rgba(59, 130, 246, 0.1)" />
+                            <IconWrapper name="user" color="#0A84FF" bgColor="rgba(59, 130, 246, 0.1)" />
                         }
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
@@ -47,7 +51,7 @@ export const ConfigList: React.FC = () => {
                     </List.Item>
                     <List.Item
                         extra={
-                            <Switch value={true} trackColor={{ false: theme.colors.border, true: '#0ea5e9' }} />
+                            <Switch value={true} trackColor={{ false: theme.colors.border, true: '#0A84FF' }} />
                         }
                         thumb={
                             <IconWrapper name="bell" color="#f59e0b" bgColor="rgba(245, 158, 11, 0.1)" />
@@ -65,13 +69,16 @@ export const ConfigList: React.FC = () => {
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
                     Apariencia
                 </Text>
-                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                <List
+                    style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+                    styles={{ Body: { borderTopWidth: 0, borderBottomWidth: 0 } }}
+                >
                     <List.Item
                         extra={
                             <Switch
                                 value={themeMode === 'dark'}
                                 onValueChange={toggleTheme}
-                                trackColor={{ false: theme.colors.border, true: '#0ea5e9' }}
+                                trackColor={{ false: theme.colors.border, true: '#0A84FF' }}
                             />
                         }
                         thumb={
@@ -90,13 +97,16 @@ export const ConfigList: React.FC = () => {
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
                     Soporte y Legal
                 </Text>
-                <List style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+                <List
+                    style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+                    styles={{ Body: { borderTopWidth: 0, borderBottomWidth: 0 } }}
+                >
                     <List.Item
                         extra={
                             <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
                         }
                         thumb={
-                            <IconWrapper name="question-circle" color="#10b981" bgColor="rgba(16, 185, 129, 0.1)" />
+                            <IconWrapper name="question-circle" color="#22C55E" bgColor="rgba(16, 185, 129, 0.1)" />
                         }
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
@@ -147,7 +157,7 @@ const styles = StyleSheet.create({
     iconWrapper: {
         width: 44,
         height: 44,
-        borderRadius: 22,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,

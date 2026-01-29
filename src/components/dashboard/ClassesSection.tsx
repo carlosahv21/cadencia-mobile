@@ -1,9 +1,12 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Card } from '../common/Card';
-import { useTheme } from '../../contexts/ThemeContext';
-import { DanceClass } from '../../types';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+
+import { Card } from '../common/Card';
+import { Tag } from '../common/Tag';
+import { useTheme } from '../../contexts/ThemeContext';
+
+import { DanceClass } from '../../types';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 interface ClassesSectionProps {
     classes: DanceClass[];
@@ -62,9 +65,12 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
                                         <Text style={[styles.genreText, { color: theme.colors.primary }]}>
                                             {clase.genre.toUpperCase()} • {clase.level}
                                         </Text>
-                                        <View style={[styles.badge, { backgroundColor: theme.mode === 'light' ? '#FEE2E2' : '#452323' }]}>
-                                            <Text style={[styles.badgeText, { color: theme.colors.error }]}>Baja ocupación</Text>
-                                        </View>
+                                        <Tag
+                                            label="Baja ocupación"
+                                            type="danger"
+                                            variant="filled"
+                                            size='sm'
+                                        />
                                     </View>
 
                                     <Text style={[styles.className, { color: theme.colors.textPrimary }]}>
@@ -160,8 +166,16 @@ const styles = StyleSheet.create({
         marginBottom: 4
     },
     genreText: { fontSize: 10, fontWeight: '500', letterSpacing: 0.4 },
-    badge: { paddingHorizontal: 6, paddingVertical: 1.5, borderRadius: 4 },
-    badgeText: { fontSize: 9, fontWeight: '400' },
+    badgeContainer: {
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 6,
+    },
+    badgeText: {
+        fontSize: 10,
+        fontWeight: '400',
+        color: "#EF4444"
+    },
     className: {
         fontSize: 15,
         fontWeight: '500',

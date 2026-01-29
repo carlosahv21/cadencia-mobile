@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { Button } from '../common/Button';
 
 export const DashboardHeader = () => {
     const { theme } = useTheme();
@@ -46,14 +47,22 @@ export const DashboardHeader = () => {
             </View>
 
             <View style={styles.actionsContainer}>
-                <TouchableOpacity style={[styles.iconButton, { backgroundColor: theme.colors.surface }]}>
-                    <FontAwesome name="search" size={20} color={theme.colors.textPrimary} />
-                </TouchableOpacity>
+                <Button
+                    onPress={() => { }}
+                    type="default"
+                    variant="filled"
+                    size="sm"
+                    icon="search"
+                />
 
-                <TouchableOpacity style={[styles.iconButton, { backgroundColor: theme.colors.surface }]}>
-                    <FontAwesome name="bell" size={20} color={theme.colors.textPrimary} />
-                    <View style={[styles.badge, { backgroundColor: theme.colors.error }]} />
-                </TouchableOpacity>
+                <Button
+                    onPress={() => { }}
+                    type="default"
+                    variant="filled"
+                    size="sm"
+                    icon="bell"
+                    badge={true}
+                />
             </View>
         </Animated.View>
     );

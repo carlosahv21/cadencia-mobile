@@ -1,37 +1,41 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '../../contexts/ThemeContext';
+
 import { ProfileHeader } from '../../components/profile/ProfileHeader';
 import { BadgeShowcase } from '../../components/profile/BadgeShowcase';
 import { SkillsCloud } from '../../components/profile/SkillsCloud';
 import { ConfigList } from '../../components/profile/ConfigList';
 import { Badge, Skill } from '../../types/profile';
+
+import { Button } from '../../components/common/Button';
+
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const MOCK_BADGES: Badge[] = [
     {
         id: '1',
-        icon: 'verified',
+        icon: 'certificate',
         label: 'Instructor Certificado',
         gradient: ['#60a5fa', '#6366f1'],
     },
     {
         id: '2',
-        icon: 'workspace-premium',
+        icon: 'trophy',
         label: 'Fundador',
         gradient: ['#fbbf24', '#f97316'],
     },
     {
         id: '3',
-        icon: 'military-tech',
+        icon: 'trophy',
         label: 'Nivel 2 Bachata',
         gradient: ['#c084fc', '#ec4899'],
     },
     {
         id: '4',
-        icon: 'stars',
+        icon: 'trophy',
         label: 'Top Mentor',
         gradient: ['#34d399', '#14b8a6'],
     },
@@ -74,13 +78,14 @@ export const ProfileScreen = () => {
             <ConfigList />
 
             <View style={styles.footer}>
-                <TouchableOpacity
-                    style={[styles.logoutButton, { backgroundColor: theme.mode === 'light' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.2)' }]}
+                <Button
+                    title="Cerrar Sesión"
                     onPress={handleLogout}
-                >
-                    <MaterialIcons name="logout" size={20} color="#ef4444" style={styles.logoutIcon} />
-                    <Text style={styles.logoutText}>Cerrar Sesión</Text>
-                </TouchableOpacity>
+                    type="danger"
+                    variant='filled'
+                    icon="sign-out"
+                    size="lg"
+                />
 
                 <View style={styles.versionContainer}>
                     <Text style={[styles.versionText, { color: theme.colors.textSecondary }]}>
@@ -99,22 +104,6 @@ const styles = StyleSheet.create({
     footer: {
         paddingHorizontal: 20,
         marginTop: 8,
-    },
-    logoutButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 16,
-        borderRadius: 20,
-        borderWidth: 1,
-    },
-    logoutIcon: {
-        marginRight: 8,
-    },
-    logoutText: {
-        color: '#ef4444',
-        fontSize: 16,
-        fontWeight: '700',
     },
     versionContainer: {
         marginTop: 20,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import { Badge as BadgeType } from '../../types/profile';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -20,7 +20,7 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({ badge }) => {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
-                <MaterialIcons name={badge.icon as any} size={30} color="#fff" />
+                <FontAwesome name={badge.icon as any} size={30} color="#fff" />
             </LinearGradient>
             <Text style={[styles.label, { color: theme.colors.textPrimary }]}>
                 {badge.label}

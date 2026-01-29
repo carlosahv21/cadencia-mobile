@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { Tag } from '../common/Tag';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -32,9 +33,13 @@ export const NextClassBanner = ({
             >
                 <View style={styles.content}>
                     <View style={styles.leftInfo}>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>NEXT CLASS</Text>
-                        </View>
+                        <Tag
+                            label="Next Class"
+                            type="transparent"
+                            textToUpperCase={true}
+                            size="sm"
+                            style={{ marginBottom: 12}}
+                        />
 
                         <Text style={styles.className} numberOfLines={2}>
                             {className}
@@ -93,19 +98,6 @@ const styles = StyleSheet.create({
     },
     leftInfo: {
         flex: 1,
-    },
-    tag: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 8,
-        alignSelf: 'flex-start',
-        marginBottom: 12,
-    },
-    tagText: {
-        color: 'white',
-        fontSize: 11,
-        fontWeight: '400',
     },
     className: {
         color: 'white',

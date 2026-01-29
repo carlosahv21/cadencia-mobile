@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Button } from '../common/Button';
+
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from '@ant-design/react-native';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface ProfileHeaderProps {
@@ -30,9 +31,15 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, avatar
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.role}>{role}</Text>
 
-            <TouchableOpacity style={styles.editButton}>
-                <Text style={styles.editButtonText}>Editar Perfil</Text>
-            </TouchableOpacity>
+            <Button
+                title="Editar Perfil"
+                onPress={() => { }}
+                type="transparent"
+                variant="filled"
+                textToUppercase={true}
+                size="sm"
+                style={{ height: 24 }}
+            />
         </LinearGradient>
     );
 };
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'rgba(255, 255, 255, 0.9)',
         fontWeight: '400',
-        marginBottom: 16,
+        marginBottom: 10,
     },
     editButton: {
         paddingHorizontal: 20,

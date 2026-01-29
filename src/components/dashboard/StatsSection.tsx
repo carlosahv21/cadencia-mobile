@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     statCard: {
-        height: 140, // Ligeramente reducido
+        height: 140,
         borderRadius: 16,
         alignItems: 'center',
         justifyContent: 'center',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     iconCircle: {
         width: 44,
         height: 44,
-        borderRadius: 22,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 12,

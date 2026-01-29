@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Card } from '../common/Card';
 import { useTheme } from '../../contexts/ThemeContext';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Tag } from '../common/Tag';
 
 interface AtRiskUser {
     id: string;
@@ -29,12 +30,21 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
             <View style={styles.header}>
                 <View style={styles.titleRow}>
                     {/* Icono corregido para FontAwesome */}
-                    <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Atención</Text>
-                    <FontAwesome name="exclamation-triangle" size={20} color="#EF4444" />
+                    <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
+                        Alumnos en riesgo
+                        {users.length > 0 && (
+                            <FontAwesome name="exclamation-triangle" size={20} color="#EF4444" />
+                        )}
+                    </Text>
                 </View>
-                <View style={styles.badgeContainer}>
-                    <Text style={styles.badgeText}>{users.length} en riesgo</Text>
-                </View>
+                <Tag
+                    label={`${users.length} en riesgo`}
+                    type="danger"
+                    variant="filled"
+                    size='sm'
+                    style={{ marginBottom: 12, borderRadius: 8 }}
+                />
+
             </View>
 
             {users.length > 0 ? (
@@ -73,7 +83,9 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
                 ))
             ) : (
                 <View style={styles.emptyState}>
-                    <Text style={{ color: theme.colors.textSecondary }}>No hay alumnos en riesgo</Text>
+                    <Text style={{ color: theme.colors.textSecondary }}>
+                        No hay alumnos en riesgo
+                    </Text>
                 </View>
             )}
         </Animated.View>
@@ -90,13 +102,6 @@ const styles = StyleSheet.create({
     },
     titleRow: { flexDirection: 'row', alignItems: 'center' },
     title: { fontSize: 18, fontWeight: '500', marginRight: 10 },
-    badgeContainer: {
-        backgroundColor: '#FFF1F2',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 6,
-    },
-    badgeText: { color: '#EF4444', fontSize: 11, fontWeight: '500' },
     userCard: { marginBottom: 1, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F1F5F9' },
     cardContent: { flexDirection: 'row', alignItems: 'center' },
     avatarContainer: { marginRight: 12 },
