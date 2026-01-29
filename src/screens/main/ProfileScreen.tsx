@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInRight, FadeInLeft } from 'react-native-reanimated';
 
 import { ProfileHeader } from '../../components/profile/ProfileHeader';
 import { BadgeShowcase } from '../../components/profile/BadgeShowcase';
@@ -65,19 +65,30 @@ export const ProfileScreen = () => {
             contentContainerStyle={{ paddingBottom: insets.bottom }}
             showsVerticalScrollIndicator={false}
         >
-            <ProfileHeader
-                name={user?.name || 'Admin Prueba'}
-                role={user?.role || 'Director de Academia'}
-                avatar={user?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
-            />
+            <Animated.View entering={FadeInDown.delay(100).duration(600).springify()}>
+                <ProfileHeader
+                    name={user?.name || 'Admin Prueba'}
+                    role={user?.role || 'Director de Academia'}
+                    avatar={user?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
+                />
+            </Animated.View>
 
-            <BadgeShowcase badges={MOCK_BADGES} />
+            <Animated.View entering={FadeInRight.delay(200).duration(600).springify()}>
+                <BadgeShowcase badges={MOCK_BADGES} />
+            </Animated.View>
 
-            <SkillsCloud skills={MOCK_SKILLS} />
+            <Animated.View entering={FadeInLeft.delay(300).duration(600).springify()}>
+                <SkillsCloud skills={MOCK_SKILLS} />
+            </Animated.View>
 
-            <ConfigList />
+            <Animated.View entering={FadeInDown.delay(400).duration(600).springify()}>
+                <ConfigList />
+            </Animated.View>
 
-            <View style={styles.footer}>
+            <Animated.View
+                style={styles.footer}
+                entering={FadeInDown.delay(500).duration(600).springify()}
+            >
                 <Button
                     title="Cerrar Sesión"
                     onPress={handleLogout}
@@ -92,7 +103,7 @@ export const ProfileScreen = () => {
                         VERSION 1.0.0
                     </Text>
                 </View>
-            </View>
+            </Animated.View>
         </ScrollView>
     );
 };
