@@ -1,47 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, View, ActivityIndicator, RefreshControl, Text } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, ScrollView, View, RefreshControl, Text, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../contexts/ThemeContext';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+// Componentes del Dashboard
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
 import { SearchInput } from '../../components/common/SearchInput';
 import { NextClassBanner } from '../../components/dashboard/NextClassBanner';
 import { AttentionSection } from '../../components/dashboard/AttentionSection';
 import { StatsSection } from '../../components/dashboard/StatsSection';
-import { ClassesSection } from '../../components/dashboard/ClassesSection';
 
+// Pantalla de Búsqueda
+import { GlobalSearchScreen } from '../../screens/search/GlobalSearchScreen';
+
+// Services & Contexts
 import { classService } from '../../services/clases.service';
-import { DanceClass, DashboardStat, UserPlan } from '../../types';
 import { kpiService } from '../../services/kpi.service';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../contexts/AuthContext';
+import { DanceClass, DashboardStat, UserPlan } from '../../types';
+
+// UI de Ant Design
 import { Card, Tag, Progress, WhiteSpace } from '@ant-design/react-native';
 
 export const DashboardScreen = () => {
     const { theme } = useTheme();
     const { user } = useAuth();
     const { t } = useTranslation();
+    
+    // Estados de Datos
     const [classes, setClasses] = useState<DanceClass[]>([]);
     const [kpis, setKpis] = useState<DashboardStat[]>([]);
     const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    
+    // Estado de la Capa de Búsqueda
+    const [isSearching, setIsSearching] = useState(false);
 
     const isStudent = user?.role_id === 3;
 
     const getEnglishDayName = () => {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const today = new Date();
-        return days[today.getDay()];
+        return days[new Date().getDay()];
     };
+
     const loadDashboardData = async () => {
         try {
             const day = getEnglishDayName();
 
             if (isStudent) {
                 const [classesRes, planRes] = await Promise.all([
-                    classService.getTodayClasses(day), // Assuming this is general for now, or use a student agenda endpoint
+                    classService.getTodayClasses(day),
                     userService.getUserPlan()
                 ]);
                 setClasses(classesRes.data || []);
@@ -53,7 +65,7 @@ export const DashboardScreen = () => {
                 ]);
 
                 setClasses(classesRes.data || []);
-
+                
                 const formattedStats = [
                     {
                         id: 1,
@@ -61,8 +73,6 @@ export const DashboardScreen = () => {
                         value: kpiRes.data.activeStudents,
                         icon: 'users',
                         color: theme.colors.primary,
-                        trend: "+12%",
-                        isPositive: true
                     },
                     {
                         id: 2,
@@ -70,8 +80,6 @@ export const DashboardScreen = () => {
                         value: `$${kpiRes.data.monthlyRevenue}`,
                         icon: 'money',
                         color: theme.colors.success,
-                        trend: "+12%",
-                        isPositive: true
                     },
                     {
                         id: 3,
@@ -79,13 +87,10 @@ export const DashboardScreen = () => {
                         value: `${kpiRes.data.todayClasses}`,
                         icon: 'calendar',
                         color: theme.colors.warning,
-                        trend: "+12%",
-                        isPositive: true
                     },
                 ];
                 setKpis(formattedStats);
             }
-
         } catch (error) {
             console.error("Error en Dashboard:", error);
         } finally {
@@ -98,27 +103,53 @@ export const DashboardScreen = () => {
         loadDashboardData();
     }, []);
 
-    const onRefresh = React.useCallback(() => {
+    const onRefresh = useCallback(() => {
         setRefreshing(true);
         loadDashboardData();
     }, []);
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
+            
+            {/* CAPA DE BÚSQUEDA GLOBAL */}
+            {isSearching && (
+                <Animated.View 
+                    entering={FadeIn.duration(250)} 
+                    exiting={FadeOut.duration(200)}
+                    style={[StyleSheet.absoluteFill, { zIndex: 99, backgroundColor: theme.colors.background }]}
+                >
+                    <GlobalSearchScreen onBack={() => setIsSearching(false)} />
+                </Animated.View>
+            )}
+
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
+                scrollEnabled={!isSearching}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
-                        colors={[theme.colors.primary]} // Android
-                        tintColor={theme.colors.primary} // iOS
+                        colors={[theme.colors.primary]}
+                        tintColor={theme.colors.primary}
                     />
                 }
             >
+                {/* Header estático del Dashboard */}
                 <DashboardHeader />
-                <SearchInput />
+
+                {/* Disparador de Búsqueda */}
+                <TouchableOpacity 
+                    activeOpacity={0.9} 
+                    onPress={() => setIsSearching(true)}
+                    style={styles.searchTrigger}
+                >
+                    <View pointerEvents="none">
+                        <SearchInput />
+                    </View>
+                </TouchableOpacity>
+
+                {/* Contenido Principal */}
                 <NextClassBanner
                     className={"Advanced Contemporary"}
                     instructorName={"Judy Doe"}
@@ -134,7 +165,7 @@ export const DashboardScreen = () => {
                         <Card full>
                             <Card.Header
                                 title={t('dashboard.student_plan.title')}
-                                extra={<Tag selected={userPlan.status === 'active'}>{userPlan.status.toUpperCase()}</Tag>}
+                                extra={<Tag selected>{userPlan.status.toUpperCase()}</Tag>}
                             />
                             <Card.Body>
                                 <View style={styles.planBody}>
@@ -169,84 +200,10 @@ export const DashboardScreen = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    scrollContent: { paddingBottom: 0 },
-    sectionContainer: {
-        marginTop: 10,
-    },
-    sectionHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 15,
-        paddingHorizontal: 20,
-    },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: '700',
-    },
-    viewMore: {
-        fontSize: 14,
-        fontWeight: '600',
-    },
-    // Estilos del Scroll Horizontal
-    horizontalScroll: {
-        paddingLeft: 20,
-        paddingRight: 20,
-    },
-    statCard: {
-        width: 100,
-        marginRight: 12,
-        height: 105,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    statContent: {
-        alignItems: 'center',
-        padding: 10,
-    },
-    statIconContainer: {
-        width: 36,
-        height: 36,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-    statValue: {
-        fontSize: 15,
-        fontWeight: '700',
-    },
-    statLabel: {
-        fontSize: 11,
-        marginTop: 2,
-    },
-    // Estilos de Clases
-    classRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    hourBadge: {
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        borderRadius: 8,
-        minWidth: 65,
-        alignItems: 'center',
-    },
-    hourText: {
-        fontWeight: '700',
-        fontSize: 14,
-    },
-    classInfo: {
-        flex: 1,
-        marginLeft: 15,
-    },
-    className: {
-        fontSize: 16,
-        fontWeight: '600',
-    },
-    classSub: {
-        fontSize: 13,
-        marginTop: 2,
+    scrollContent: { paddingBottom: 30 },
+    searchTrigger: {
+        marginTop: -10, // Ajuste para que se solape ligeramente si es necesario
+        marginBottom: 10,
     },
     planSection: {
         paddingHorizontal: 20,

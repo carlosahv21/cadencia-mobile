@@ -1,7 +1,8 @@
 {
     "common": {
-        "search_placeholder": "Search classes, teachers or events...",
+        "search_placeholder": "Search classes, teachers or students...",
         "search": "Search {{name}}...",
+        "seeker": "Seeker",
         "logout": "Log Out",
         "no_classes": "No classes to show",
         "no_students_to_save": "No students to save",
@@ -125,5 +126,15 @@
                 "description": "Communicate with your students and keep track of their progress."
             }
         }
+    },
+    "search": {
+        "recent": "Recent History",
+        "start_typing": "Start typing to search",
+        "clear": "Clear",
+        "results": "Results",
+        "suggested": "Suggested",
+        "no_results": "No results found",
+        "try_again": "Try searching again",
+        "find_hint": "Type the name of a student or class"
     }
 }

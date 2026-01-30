@@ -1,12 +1,12 @@
 {
     "common": {
-        "search_placeholder": "Buscar clases, profesores o eventos...",
+        "search_placeholder": "Buscar clases, profesores o estudiantes...",
         "search": "Buscar {{name}}...",
+        "seeker": "Buscador",
+        "no_results": "No se encontraron resultados",
+        "try_again": "Intenta buscar de nuevo",
         "logout": "Cerrar Sesión",
-        "no_classes": "No hay clases para mostrar",
-        "no_students_to_save": "No hay alumnos para guardar",
         "error_loading": "Error al cargar los datos",
-        "error_loading_students": "Error al cargar la lista de alumnos",
         "class": "Clase",
         "teacher": "Profesor",
         "student": "Alumno",
@@ -126,5 +126,23 @@
                 "description": "Comunícate con tus alumnos y mantén un registro de sus progresos."
             }
         }
+    },
+    "classes": {
+        "no_classes": "No hay clases para mostrar",
+        "loading": "Cargando clases..."
+    },
+    "students": {
+        "no_students": "No hay alumnos para mostrar",
+        "no_students_to_save": "No hay alumnos para guardar",
+        "error_loading_students": "Error al cargar la lista de alumnos",
+        "loading": "Cargando alumnos..."
+    },
+    "search": {
+        "recent": "Historial Reciente",
+        "start_typing": "Empieza a escribir para buscar",
+        "clear": "Limpiar",
+        "results": "Resultados",
+        "suggested": "Sugeridos",
+        "find_hint": "Escribe el nombre de un alumno o clase"
     }
 }

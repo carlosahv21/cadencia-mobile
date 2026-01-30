@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { FadeInDown, FadeInRight, FadeInLeft } from 'react-native-reanimated';
+import Animated, {FadeIn, FadeInDown, FadeInRight } from 'react-native-reanimated';
 
 import { ProfileHeader } from '../../components/profile/ProfileHeader';
 import { BadgeShowcase } from '../../components/profile/BadgeShowcase';
@@ -67,7 +67,8 @@ export const ProfileScreen = () => {
             contentContainerStyle={{ paddingBottom: insets.bottom }}
             showsVerticalScrollIndicator={false}
         >
-            <Animated.View entering={FadeInDown.delay(100).duration(600).springify()}>
+            <Animated.View 
+                entering={FadeIn.duration(600).delay(200)}>
                 <ProfileHeader
                     name={user?.name || 'Admin Prueba'}
                     role={user?.role || t('profile.roles.director')}
@@ -75,21 +76,23 @@ export const ProfileScreen = () => {
                 />
             </Animated.View>  
 
-            <Animated.View entering={FadeInRight.delay(200).duration(600).springify()}>
+            <Animated.View
+                entering={FadeInRight.delay(200).duration(600)}>
                 <BadgeShowcase badges={MOCK_BADGES} />
             </Animated.View>
 
-            <Animated.View entering={FadeInLeft.delay(300).duration(600).springify()}>
+            <Animated.View
+                entering={FadeInRight.delay(300).duration(600)}>
                 <SkillsCloud skills={MOCK_SKILLS} />
             </Animated.View>
 
-            <Animated.View entering={FadeInDown.delay(400).duration(600).springify()}>
+            <Animated.View entering={FadeInDown.delay(400).duration(600)}>
                 <ConfigList />
             </Animated.View>
 
             <Animated.View
                 style={styles.footer}
-                entering={FadeInDown.delay(500).duration(600).springify()}
+                entering={FadeInRight.delay(500).duration(600)}
             >
                 <Button
                     title={t('common.logout')}
