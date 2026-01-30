@@ -73,7 +73,7 @@ export const ProfileScreen = () => {
                     role={user?.role || t('profile.roles.director')}
                     avatar={user?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
                 />
-            </Animated.View>
+            </Animated.View>  
 
             <Animated.View entering={FadeInRight.delay(200).duration(600).springify()}>
                 <BadgeShowcase badges={MOCK_BADGES} />
@@ -102,7 +102,7 @@ export const ProfileScreen = () => {
 
                 <View style={styles.versionContainer}>
                     <Text style={[styles.versionText, { color: theme.colors.textSecondary }]}>
-                        VERSION 1.0.0
+                        {t('profile.version', { version: '1.0.0' })}
                     </Text>
                 </View>
             </Animated.View>

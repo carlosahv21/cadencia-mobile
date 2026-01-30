@@ -5,9 +5,29 @@ export interface User {
     email: string;
     name: string;
     role: string;
+    role_id: number; // 1: Admin, 2: Profesor, 3: Alumno
     plan?: string | null;
     permissions?: string[];
     avatar?: string;
+}
+
+export interface Attendance {
+    id: number;
+    class_id: number;
+    student_id: number;
+    status: 'present' | 'absent' | 'late' | 'excused';
+    date: string;
+}
+
+export interface UserPlan {
+    id: number;
+    user_id: number;
+    plan_name: string;
+    total_credits: number;
+    used_credits: number;
+    remaining_credits: number;
+    expiration_date: string;
+    status: 'active' | 'expired' | 'paused';
 }
 
 export interface Academy {

@@ -1,7 +1,16 @@
 {
     "common": {
         "search_placeholder": "Buscar clases, profesores o eventos...",
-        "logout": "Cerrar Sesión"
+        "search": "Buscar {{name}}...",
+        "logout": "Cerrar Sesión",
+        "no_classes": "No hay clases para mostrar",
+        "no_students_to_save": "No hay alumnos para guardar",
+        "error_loading": "Error al cargar los datos",
+        "error_loading_students": "Error al cargar la lista de alumnos",
+        "class": "Clase",
+        "teacher": "Profesor",
+        "student": "Alumno",
+        "event": "Evento"
     },
     "login": {
         "welcome": "Bienvenido a DanceFlow",
@@ -32,7 +41,8 @@
             "view_all": "Ver todas",
             "low_occupancy": "Baja ocupación",
             "teacher": "Prof. {{name}}",
-            "duration": "{{minutes}} min"
+            "duration": "{{minutes}} min",
+            "today_classes": "Tus clases del día"
         },
         "next_class": {
             "label": "Próxima clase"
@@ -41,6 +51,39 @@
             "students": "Estudiantes",
             "revenue": "Ingresos",
             "today_classes": "Clases de hoy"
+        },
+        "tabs": {
+            "home": "Inicio",
+            "attendance": "Asistencia",
+            "profile": "Perfil"
+        },
+        "attendance": {
+            "title": "Control de Asistencia",
+            "sessions": "Sesiones del día",
+            "mark_attendance": "Pasar Lista",
+            "enrolled_students": "Alumnos Inscritos",
+            "mark_all": "Marcar Todos",
+            "save_button": "Guardar Asistencia",
+            "success_save": "Asistencia guardada correctamente",
+            "error_save": "Error al guardar la asistencia",
+            "stats": {
+                "total": "TOTAL",
+                "present_short": "PRES",
+                "absent_short": "ABS",
+                "late_short": "TARDE"
+            },
+            "status": {
+                "present": "Presente",
+                "absent": "Ausente",
+                "late": "Tarde",
+                "excused": "Justificado"
+            }
+        },
+        "student_plan": {
+            "title": "Mi Plan",
+            "credits_remaining": "Clases restantes",
+            "expiration": "Vencimiento",
+            "status": "Estado"
         }
     },
     "profile": {
@@ -62,7 +105,8 @@
         },
         "roles": {
             "director": "Director de Academia"
-        }
+        },
+        "version": "VERSIÓN {{version}}"
     },
     "onboarding": {
         "skip": "SALTAR",

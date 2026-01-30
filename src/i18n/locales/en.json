@@ -1,7 +1,16 @@
 {
     "common": {
         "search_placeholder": "Search classes, teachers or events...",
-        "logout": "Log Out"
+        "search": "Search {{name}}...",
+        "logout": "Log Out",
+        "no_classes": "No classes to show",
+        "no_students_to_save": "No students to save",
+        "error_loading": "Error loading data",
+        "error_loading_students": "Error loading student list",
+        "class": "Class",
+        "teacher": "Teacher",
+        "student": "Student",
+        "event": "Event"
     },
     "login": {
         "welcome": "Welcome to DanceFlow",
@@ -41,6 +50,39 @@
             "students": "Students",
             "revenue": "Revenue",
             "today_classes": "Today's classes"
+        },
+        "tabs": {
+            "home": "Home",
+            "attendance": "Attendance",
+            "profile": "Profile"
+        },
+        "attendance": {
+            "title": "Attendance Control",
+            "sessions": "Today's Sessions",
+            "mark_attendance": "Take Attendance",
+            "enrolled_students": "Enrolled Students",
+            "mark_all": "Mark All",
+            "save_button": "Save Attendance",
+            "success_save": "Attendance saved successfully",
+            "error_save": "Error saving attendance",
+            "stats": {
+                "total": "TOTAL",
+                "present_short": "PRES",
+                "absent_short": "ABS",
+                "late_short": "LATE"
+            },
+            "status": {
+                "present": "Present",
+                "absent": "Absent",
+                "late": "Late",
+                "excused": "Excused"
+            }
+        },
+        "student_plan": {
+            "title": "My Plan",
+            "credits_remaining": "Credits remaining",
+            "expiration": "Expiration",
+            "status": "Status"
         }
     },
     "profile": {
@@ -62,7 +104,8 @@
         },
         "roles": {
             "director": "Academy Director"
-        }
+        },
+        "version": "VERSION {{version}}"
     },
     "onboarding": {
         "skip": "SKIP",

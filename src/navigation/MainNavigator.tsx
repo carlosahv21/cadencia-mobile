@@ -2,28 +2,46 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../contexts/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 // Pantallas
 import { DashboardScreen } from '../screens/main/DashboardScreen';
 import { ClassesScreen } from '../screens/main/ClassesScreen';
 import { ProfileScreen } from '../screens/main/ProfileScreen';
+import { AttendanceScreen } from '../screens/main/AttendanceScreen';
+import { DanceClass } from '../types';
 
 export const MainNavigator = () => {
   const { theme } = useTheme();
+  const { user } = useAuth();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedClass, setSelectedClass] = useState<DanceClass | null>(null);
+
+  // Role IDs: 1: Admin, 2: Teacher, 3: Student
+  const isStaff = user?.role === 'admin' || user?.role === 'teacher';
 
   const tabs = [
-    { key: 'home', title: 'Inicio', icon: 'home' }, // Icono de cuadrícula
-    { key: 'classes', title: 'Clases', icon: 'calendar-o' }, // Icono calendario lineal
-    { key: 'profile', title: 'Perfil', icon: 'user' }, // Icono de usuario
+    { key: 'home', title: t('dashboard.tabs.home'), icon: 'home' },
+    ...(isStaff ? [{ key: 'classes', title: t('dashboard.tabs.attendance'), icon: 'calendar-check-o' }] : []),
+    { key: 'profile', title: t('dashboard.tabs.profile'), icon: 'user' },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
       case 'home': return <DashboardScreen />;
-      case 'classes': return <ClassesScreen />;
+      case 'classes':
+        return selectedClass ? (
+          <AttendanceScreen
+            classData={selectedClass}
+            onBack={() => setSelectedClass(null)}
+          />
+        ) : (
+          <ClassesScreen onSelectClass={(clase) => setSelectedClass(clase)} />
+        );
       case 'profile': return <ProfileScreen />;
       default: return <DashboardScreen />;
     }
