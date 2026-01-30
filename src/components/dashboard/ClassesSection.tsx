@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { Card } from '../common/Card';
@@ -17,15 +18,16 @@ interface ClassesSectionProps {
 
 export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: ClassesSectionProps) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <View style={styles.sectionContainer}>
             <View style={styles.sectionHeader}>
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
-                    Clases de hoy
+                    {t('dashboard.classes.title')}
                 </Text>
                 <TouchableOpacity onPress={onViewAll} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                    <Text style={[styles.viewAllText, { color: theme.colors.textSecondary }]}>Ver todas</Text>
+                    <Text style={[styles.viewAllText, { color: theme.colors.textSecondary }]}>{t('dashboard.classes.view_all')}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -66,7 +68,7 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
                                             {clase.genre.toUpperCase()} • {clase.level}
                                         </Text>
                                         <Tag
-                                            label="Baja ocupación"
+                                            label={t('dashboard.classes.low_occupancy')}
                                             type="danger"
                                             variant="filled"
                                             size='sm'
@@ -82,13 +84,13 @@ export const ClassesSection = ({ classes, loading, onViewAll, onClassPress }: Cl
                                             <View style={styles.metaItem}>
                                                 <Ionicons name="person-outline" size={13} color={theme.colors.textSecondary} />
                                                 <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>
-                                                    Prof. {clase.teacher_id}
+                                                    {t('dashboard.classes.teacher', { name: clase.teacher_id })}
                                                 </Text>
                                             </View>
                                             <View style={styles.metaItem}>
                                                 <Ionicons name="time-outline" size={13} color={theme.colors.textSecondary} />
                                                 <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>
-                                                    {clase.duration} min
+                                                    {t('dashboard.classes.duration', { minutes: clase.duration })}
                                                 </Text>
                                             </View>
                                         </View>

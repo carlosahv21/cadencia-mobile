@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Tag } from '../common/Tag';
 import { Button } from '../common/Button';
 
@@ -12,13 +13,14 @@ interface SkillsCloudProps {
 
 export const SkillsCloud: React.FC<SkillsCloudProps> = ({ skills }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.titleContainer}>
                     <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
-                        Especialidades
+                        {t('profile.specialties')}
                     </Text>
                     <Button
                         onPress={() => { }}

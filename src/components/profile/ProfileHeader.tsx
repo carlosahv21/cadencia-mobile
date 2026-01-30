@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../common/Button';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,6 +14,7 @@ interface ProfileHeaderProps {
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, avatar }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <LinearGradient
@@ -32,7 +34,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, avatar
             <Text style={styles.role}>{role}</Text>
 
             <Button
-                title="Editar Perfil"
+                title={t('profile.edit_profile')}
                 onPress={() => { }}
                 type="transparent"
                 variant="filled"

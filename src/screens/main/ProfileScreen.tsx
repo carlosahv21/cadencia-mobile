@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInRight, FadeInLeft } from 'react-native-reanimated';
 
@@ -53,6 +54,7 @@ const MOCK_SKILLS: Skill[] = [
 export const ProfileScreen = () => {
     const { theme } = useTheme();
     const { logout, user } = useAuth();
+    const { t } = useTranslation();
     const insets = useSafeAreaInsets();
 
     const handleLogout = () => {
@@ -68,7 +70,7 @@ export const ProfileScreen = () => {
             <Animated.View entering={FadeInDown.delay(100).duration(600).springify()}>
                 <ProfileHeader
                     name={user?.name || 'Admin Prueba'}
-                    role={user?.role || 'Director de Academia'}
+                    role={user?.role || t('profile.roles.director')}
                     avatar={user?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
                 />
             </Animated.View>
@@ -90,7 +92,7 @@ export const ProfileScreen = () => {
                 entering={FadeInDown.delay(500).duration(600).springify()}
             >
                 <Button
-                    title="Cerrar Sesión"
+                    title={t('common.logout')}
                     onPress={handleLogout}
                     type="danger"
                     variant='filled'

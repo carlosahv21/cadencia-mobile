@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 export const SearchInput = () => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <Animated.View
@@ -26,7 +28,7 @@ export const SearchInput = () => {
                 style={styles.icon}
             />
             <TextInput
-                placeholder="Buscar clases, profesores o eventos..."
+                placeholder={t('common.search_placeholder')}
                 placeholderTextColor={theme.colors.textSecondary}
                 style={[styles.input, { color: theme.colors.textPrimary }]}
             />

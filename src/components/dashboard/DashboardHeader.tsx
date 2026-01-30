@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -12,7 +12,8 @@ import { Button } from '../common/Button';
 
 export const DashboardHeader = () => {
     const { theme } = useTheme();
-    const { user } = useAuth();
+    const { user, academy } = useAuth();
+    const { t } = useTranslation();
 
     const opacity = useSharedValue(0);
     const translateY = useSharedValue(-20);
@@ -38,10 +39,10 @@ export const DashboardHeader = () => {
                 </TouchableOpacity>
                 <View style={styles.userInfo}>
                     <Text style={[styles.roleText, { color: theme.colors.textSecondary }]}>
-                        Hola,
+                        {academy?.academy_name || 'DanceFlow Academy'}
                     </Text>
                     <Text style={[styles.greetingText, { color: theme.colors.textPrimary }]}>
-                        {user?.name || 'Admin Prueba'}
+                        {t('dashboard.hello')} {user?.name || 'User'}
                     </Text>
                 </View>
             </View>

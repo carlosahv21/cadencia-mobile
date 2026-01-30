@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { FontAwesome } from '@expo/vector-icons';
 import { Card } from '../common/Card';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -16,9 +17,10 @@ interface AtRiskUser {
 
 export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     const handleWhatsApp = (name: string, phone: string) => {
-        const message = `Hola ${name}, te extrañamos en DanceFlow. ¡Esperamos verte pronto en clase!`;
+        const message = t('dashboard.attention.whatsapp_message', { name });
         Linking.openURL(`whatsapp://send?phone=${phone}&text=${encodeURIComponent(message)}`);
     };
 
@@ -31,14 +33,14 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
                 <View style={styles.titleRow}>
                     {/* Icono corregido para FontAwesome */}
                     <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
-                        Alumnos en riesgo
+                        {t('dashboard.attention.title')}
                         {users.length > 0 && (
                             <FontAwesome name="exclamation-triangle" size={20} color="#EF4444" />
                         )}
                     </Text>
                 </View>
                 <Tag
-                    label={`${users.length} en riesgo`}
+                    label={t('dashboard.attention.count_at_risk', { count: users.length })}
                     type="danger"
                     variant="filled"
                     size='sm'
@@ -68,7 +70,7 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
                                     {user.name}
                                 </Text>
                                 <Text style={styles.statusText}>
-                                    Inactive: {user.daysInactive} days
+                                    {t('dashboard.attention.inactive_days', { days: user.daysInactive })}
                                 </Text>
                             </View>
 
@@ -84,7 +86,7 @@ export const AttentionSection = ({ users = [] }: { users: AtRiskUser[] }) => {
             ) : (
                 <View style={styles.emptyState}>
                     <Text style={{ color: theme.colors.textSecondary }}>
-                        No hay alumnos en riesgo
+                        {t('dashboard.attention.empty_state')}
                     </Text>
                 </View>
             )}

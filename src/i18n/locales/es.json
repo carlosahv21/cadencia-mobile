@@ -1,0 +1,86 @@
+{
+    "common": {
+        "search_placeholder": "Buscar clases, profesores o eventos...",
+        "logout": "Cerrar Sesión"
+    },
+    "login": {
+        "welcome": "Bienvenido a DanceFlow",
+        "subtitle": "Inicia sesión para continuar",
+        "email": "Email",
+        "email_placeholder": "tu@email.com",
+        "password": "Contraseña",
+        "password_placeholder": "Tu contraseña",
+        "remember_me": "Recordar por 30 días",
+        "forgot_password": "Olvidé mi contraseña",
+        "button": "Iniciar Sesión",
+        "error_title": "Error de Autenticación",
+        "auth_error_message": "Email o contraseña incorrectos",
+        "recover_title": "Recuperar Contraseña",
+        "coming_soon": "Esta funcionalidad estará disponible próximamente."
+    },
+    "dashboard": {
+        "hello": "Hola,",
+        "attention": {
+            "title": "Alumnos en riesgo",
+            "count_at_risk": "{{count}} en riesgo",
+            "inactive_days": "Inactivo: {{days}} días",
+            "empty_state": "No hay alumnos en riesgo",
+            "whatsapp_message": "Hola {{name}}, te extrañamos en DanceFlow. ¡Esperamos verte pronto en clase!"
+        },
+        "classes": {
+            "title": "Clases de hoy",
+            "view_all": "Ver todas",
+            "low_occupancy": "Baja ocupación",
+            "teacher": "Prof. {{name}}",
+            "duration": "{{minutes}} min"
+        },
+        "next_class": {
+            "label": "Próxima clase"
+        },
+        "stats": {
+            "students": "Estudiantes",
+            "revenue": "Ingresos",
+            "today_classes": "Clases de hoy"
+        }
+    },
+    "profile": {
+        "edit_profile": "Editar Perfil",
+        "specialties": "Especialidades",
+        "sections": {
+            "account": "Cuenta y Seguridad",
+            "appearance": "Apariencia",
+            "support": "Soporte y Legal"
+        },
+        "options": {
+            "edit_profile": "Editar Perfil",
+            "change_password": "Cambiar Contraseña",
+            "notifications": "Notificaciones",
+            "theme_mode_dark": "Modo Oscuro",
+            "theme_mode_light": "Modo Claro",
+            "help_center": "Centro de Ayuda",
+            "terms": "Términos y Condiciones"
+        },
+        "roles": {
+            "director": "Director de Academia"
+        }
+    },
+    "onboarding": {
+        "skip": "SALTAR",
+        "next": "SIGUIENTE",
+        "start": "EMPEZAR",
+        "slides": {
+            "1": {
+                "title": "Domina el Ritmo",
+                "description": "Gestiona tus clases de danza y alumnos en un solo lugar."
+            },
+            "2": {
+                "title": "Control Total",
+                "description": "Revisa pagos, asistencias y reportes en tiempo real."
+            },
+            "3": {
+                "title": "Conecta con tus Alumnos",
+                "description": "Comunícate con tus alumnos y mantén un registro de sus progresos."
+            }
+        }
+    }
+}

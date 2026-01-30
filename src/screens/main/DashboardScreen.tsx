@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, ActivityIndicator, RefreshControl } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -16,6 +17,7 @@ import { kpiService } from '../../services/kpi.service';
 
 export const DashboardScreen = () => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [classes, setClasses] = useState<DanceClass[]>([]);
     const [kpis, setKpis] = useState<DashboardStat[]>([]);
     const [loading, setLoading] = useState(true);
@@ -40,7 +42,7 @@ export const DashboardScreen = () => {
             const formattedStats = [
                 {
                     id: 1,
-                    label: 'Estudiantes',
+                    label: t('dashboard.stats.students'),
                     value: kpiRes.data.activeStudents,
                     icon: 'users',
                     color: '#0A84FF',
@@ -49,7 +51,7 @@ export const DashboardScreen = () => {
                 },
                 {
                     id: 2,
-                    label: 'Ingresos',
+                    label: t('dashboard.stats.revenue'),
                     value: `$${kpiRes.data.monthlyRevenue}`,
                     icon: 'money',
                     color: '#22C55E',
@@ -58,7 +60,7 @@ export const DashboardScreen = () => {
                 },
                 {
                     id: 3,
-                    label: 'Clases de hoy',
+                    label: t('dashboard.stats.today_classes'),
                     value: `${kpiRes.data.todayClasses}`,
                     icon: 'calendar',
                     color: '#FBBF24',

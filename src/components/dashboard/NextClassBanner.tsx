@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Tag } from '../common/Tag';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,6 +21,8 @@ export const NextClassBanner = ({
     location = "Studio A",
     instructorImage = "https://mockmind-api.uifaces.co/content/human/221.jpg"
 }: NextClassProps) => {
+    const { t } = useTranslation();
+
     return (
         <Animated.View
             entering={FadeInDown.duration(600).delay(400)}
@@ -34,11 +37,11 @@ export const NextClassBanner = ({
                 <View style={styles.content}>
                     <View style={styles.leftInfo}>
                         <Tag
-                            label="Next Class"
+                            label={t('dashboard.next_class.label')}
                             type="transparent"
                             textToUpperCase={true}
                             size="sm"
-                            style={{ marginBottom: 12}}
+                            style={{ marginBottom: 12 }}
                         />
 
                         <Text style={styles.className} numberOfLines={2}>

@@ -1,0 +1,86 @@
+{
+    "common": {
+        "search_placeholder": "Search classes, teachers or events...",
+        "logout": "Log Out"
+    },
+    "login": {
+        "welcome": "Welcome to DanceFlow",
+        "subtitle": "Sign in to continue",
+        "email": "Email",
+        "email_placeholder": "your@email.com",
+        "password": "Password",
+        "password_placeholder": "Your password",
+        "remember_me": "Remember me for 30 days",
+        "forgot_password": "Forgot my password",
+        "button": "Sign In",
+        "error_title": "Authentication Error",
+        "auth_error_message": "Invalid email or password",
+        "recover_title": "Recover Password",
+        "coming_soon": "This feature will be available soon."
+    },
+    "dashboard": {
+        "hello": "Hello,",
+        "attention": {
+            "title": "At-risk students",
+            "count_at_risk": "{{count}} at risk",
+            "inactive_days": "Inactive: {{days}} days",
+            "empty_state": "No at-risk students",
+            "whatsapp_message": "Hi {{name}}, we miss you at DanceFlow. Hope to see you soon in class!"
+        },
+        "classes": {
+            "title": "Today's classes",
+            "view_all": "View all",
+            "low_occupancy": "Low occupancy",
+            "teacher": "Prof. {{name}}",
+            "duration": "{{minutes}} min"
+        },
+        "next_class": {
+            "label": "Next Class"
+        },
+        "stats": {
+            "students": "Students",
+            "revenue": "Revenue",
+            "today_classes": "Today's classes"
+        }
+    },
+    "profile": {
+        "edit_profile": "Edit Profile",
+        "specialties": "Specialties",
+        "sections": {
+            "account": "Account & Security",
+            "appearance": "Appearance",
+            "support": "Support & Legal"
+        },
+        "options": {
+            "edit_profile": "Edit Profile",
+            "change_password": "Change Password",
+            "notifications": "Notifications",
+            "theme_mode_dark": "Dark Mode",
+            "theme_mode_light": "Light Mode",
+            "help_center": "Help Center",
+            "terms": "Terms & Conditions"
+        },
+        "roles": {
+            "director": "Academy Director"
+        }
+    },
+    "onboarding": {
+        "skip": "SKIP",
+        "next": "NEXT",
+        "start": "START",
+        "slides": {
+            "1": {
+                "title": "Master the Rhythm",
+                "description": "Manage your dance classes and students in one place."
+            },
+            "2": {
+                "title": "Total Control",
+                "description": "Check payments, attendance and reports in real time."
+            },
+            "3": {
+                "title": "Connect with Students",
+                "description": "Communicate with your students and keep track of their progress."
+            }
+        }
+    }
+}

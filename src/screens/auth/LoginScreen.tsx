@@ -18,6 +18,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { ImageSlider } from '../../components/auth/ImageSlider';
 import { validation } from '../../utils/validation';
+import { useTranslation } from 'react-i18next';
 
 // Import dancer images
 const dancerImages = [
@@ -29,6 +30,7 @@ const dancerImages = [
 export const LoginScreen: React.FC = () => {
   const { theme, themeMode } = useTheme();
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,8 +60,8 @@ export const LoginScreen: React.FC = () => {
       // Navigation will be handled by AuthContext/AppNavigator
     } catch (error: any) {
       Alert.alert(
-        'Error de Autenticación',
-        error.message || 'Email o contraseña incorrectos',
+        t('login.error_title'),
+        error.message || t('login.auth_error_message'),
         [{ text: 'OK' }]
       );
     } finally {
@@ -70,8 +72,8 @@ export const LoginScreen: React.FC = () => {
   const handleForgotPassword = () => {
     // Navigate to forgot password screen
     Alert.alert(
-      'Recuperar Contraseña',
-      'Esta funcionalidad estará disponible próximamente.',
+      t('login.recover_title'),
+      t('login.coming_soon'),
       [{ text: 'OK' }]
     );
   };
@@ -118,7 +120,7 @@ export const LoginScreen: React.FC = () => {
                   },
                 ]}
               >
-                Bienvenido a DanceFlow
+                {t('login.welcome')}
               </Text>
               <Text
                 style={[
@@ -126,7 +128,7 @@ export const LoginScreen: React.FC = () => {
                   { color: theme.colors.textSecondary },
                 ]}
               >
-                Inicia sesión para continuar
+                {t('login.subtitle')}
               </Text>
             </View>
 
@@ -138,7 +140,7 @@ export const LoginScreen: React.FC = () => {
                   { color: theme.colors.textPrimary },
                 ]}
               >
-                Email
+                {t('login.email')}
               </Text>
               <View
                 style={[
@@ -163,7 +165,7 @@ export const LoginScreen: React.FC = () => {
                     styles.input,
                     { color: theme.colors.textPrimary },
                   ]}
-                  placeholder="tu@email.com"
+                  placeholder={t('login.email_placeholder')}
                   placeholderTextColor={theme.colors.textSecondary}
                   value={email}
                   onChangeText={(text) => {
@@ -190,7 +192,7 @@ export const LoginScreen: React.FC = () => {
                   { color: theme.colors.textPrimary },
                 ]}
               >
-                Contraseña
+                {t('login.password')}
               </Text>
               <View
                 style={[
@@ -215,7 +217,7 @@ export const LoginScreen: React.FC = () => {
                     styles.input,
                     { color: theme.colors.textPrimary },
                   ]}
-                  placeholder="Tu contraseña"
+                  placeholder={t('login.password_placeholder')}
                   placeholderTextColor={theme.colors.textSecondary}
                   value={password}
                   onChangeText={(text) => {
@@ -271,13 +273,13 @@ export const LoginScreen: React.FC = () => {
                     { color: theme.colors.textSecondary },
                   ]}
                 >
-                  Recordar por 30 días
+                  {t('login.remember_me')}
                 </Text>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={[styles.forgotText, { color: theme.colors.primary }]}>
-                  Olvidé mi contraseña
+                  {t('login.forgot_password')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -298,7 +300,7 @@ export const LoginScreen: React.FC = () => {
               {isLoading ? (
                 <ActivityIndicator color="#ffffff" />
               ) : (
-                <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
+                <Text style={styles.loginButtonText}>{t('login.button')}</Text>
               )}
             </TouchableOpacity>
           </View>

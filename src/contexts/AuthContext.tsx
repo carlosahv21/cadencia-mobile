@@ -3,6 +3,9 @@ import { authService } from '../services/auth.service';
 import { storage } from '../utils/storage';
 import { User, Academy, LoginCredentials } from '../types';
 import axios from 'axios';
+import '../i18n';
+import i18n from '../i18n';
+import * as Localization from 'expo-localization';
 
 interface AuthContextData {
     user: User | null;
@@ -23,6 +26,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         loadStoredAuth();
     }, []);
+
+    // Effect to sync language with academy settings
+    useEffect(() => {
+        if (academy?.language) {
+            i18n.changeLanguage(academy.language);
+        } else {
+            // If no academy (logout or not logged in), revert to device language
+            const deviceLang = Localization.getLocales()[0]?.languageCode ?? 'es';
+            i18n.changeLanguage(deviceLang);
+        }
+    }, [academy]);
 
     const loadStoredAuth = async () => {
         try {

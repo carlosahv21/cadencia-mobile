@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { List } from '@ant-design/react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,6 +8,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 
 export const ConfigList: React.FC = () => {
     const { theme, themeMode, toggleTheme } = useTheme();
+    const { t } = useTranslation();
 
     const IconWrapper = ({ name, color, bgColor }: { name: string; color: string; bgColor: string }) => (
         <View style={[styles.iconWrapper, { backgroundColor: bgColor }]}>
@@ -19,7 +21,7 @@ export const ConfigList: React.FC = () => {
             {/* Account & Security */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
-                    Cuenta y Seguridad
+                    {t('profile.sections.account')}
                 </Text>
                 <List
                     style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
@@ -35,7 +37,7 @@ export const ConfigList: React.FC = () => {
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Editar Perfil</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t('profile.options.edit_profile')}</Text>
                     </List.Item>
                     <List.Item
                         extra={
@@ -47,7 +49,7 @@ export const ConfigList: React.FC = () => {
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Cambiar Contraseña</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t('profile.options.change_password')}</Text>
                     </List.Item>
                     <List.Item
                         extra={
@@ -59,7 +61,7 @@ export const ConfigList: React.FC = () => {
                         style={styles.listItem}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Notificaciones</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t('profile.options.notifications')}</Text>
                     </List.Item>
                 </List>
             </View>
@@ -67,7 +69,7 @@ export const ConfigList: React.FC = () => {
             {/* Appearance */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
-                    Apariencia
+                    {t('profile.sections.appearance')}
                 </Text>
                 <List
                     style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
@@ -87,7 +89,7 @@ export const ConfigList: React.FC = () => {
                         style={styles.listItem}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Modo {themeMode === 'dark' ? 'Oscuro' : 'Claro'}</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t(themeMode === 'dark' ? 'profile.options.theme_mode_dark' : 'profile.options.theme_mode_light')}</Text>
                     </List.Item>
                 </List>
             </View>
@@ -95,7 +97,7 @@ export const ConfigList: React.FC = () => {
             {/* Support & Legal */}
             <View style={styles.section}>
                 <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>
-                    Soporte y Legal
+                    {t('profile.sections.support')}
                 </Text>
                 <List
                     style={[styles.list, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
@@ -111,7 +113,7 @@ export const ConfigList: React.FC = () => {
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Centro de Ayuda</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t('profile.options.help_center')}</Text>
                     </List.Item>
                     <List.Item
                         extra={
@@ -123,7 +125,7 @@ export const ConfigList: React.FC = () => {
                         style={styles.listItem}
                         styles={{ Line: { borderBottomWidth: 0 } }}
                     >
-                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>Términos y Condiciones</Text>
+                        <Text style={[styles.itemText, { color: theme.colors.textSecondary }]}>{t('profile.options.terms')}</Text>
                     </List.Item>
                 </List>
             </View>
