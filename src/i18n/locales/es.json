@@ -9,8 +9,11 @@
         "error_loading": "Error al cargar los datos",
         "class": "Clase",
         "teacher": "Profesor",
-        "student": "Alumno",
-        "event": "Evento"
+        "student": "Estudiante",
+        "classes": "Clases",
+        "teachers": "Profesores",
+        "students": "Estudiantes",
+        "clear": "Limpiar"
     },
     "login": {
         "welcome": "Bienvenido a DanceFlow",
@@ -143,6 +146,7 @@
         "clear": "Limpiar",
         "results": "Resultados",
         "suggested": "Sugeridos",
-        "find_hint": "Escribe el nombre de un alumno o clase"
+        "find_hint": "Escribe el nombre de un estudiante, profesor o clase",
+        "view_all_results": "Ver todos los resultados ({{total}})"
     }
 }

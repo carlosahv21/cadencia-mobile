@@ -11,7 +11,10 @@
         "class": "Class",
         "teacher": "Teacher",
         "student": "Student",
-        "event": "Event"
+        "classes": "Classes",
+        "teachers": "Teachers",
+        "students": "Students",
+        "clear": "Clear"
     },
     "login": {
         "welcome": "Welcome to DanceFlow",
@@ -135,6 +138,7 @@
         "suggested": "Suggested",
         "no_results": "No results found",
         "try_again": "Try searching again",
-        "find_hint": "Type the name of a student or class"
+        "find_hint": "Type the name of a student, teacher or class",
+        "view_all_results": "View all results ({{total}})"
     }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
+import { Button } from '../../components/common/Button';
 import { useTranslation } from 'react-i18next';
 import Animated, { FadeInRight, FadeInUp } from 'react-native-reanimated';
 
@@ -9,6 +10,8 @@ import { ManagementHeader } from '../../components/common/ManagementHeader';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { EmptyState } from '../../components/common/EmptyState';
 import { useSearchHistory } from '../../hooks/useSearchHistory';
+
+import { searchService } from '../../services/search.service';
 
 interface GlobalSearchProps {
     onBack: () => void;
@@ -20,22 +23,46 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
     const { history, clearHistory, addToHistory } = useSearchHistory();
     const [query, setQuery] = useState('');
 
-    // Simulación de resultados (Aquí conectarías con tu API)
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<{
+        estudiantes: { data: any[], total: number },
+        profesores: { data: any[], total: number },
+        clases: { data: any[], total: number }
+    }>({
+        estudiantes: { data: [], total: 0 },
+        profesores: { data: [], total: 0 },
+        clases: { data: [], total: 0 },
+    });
 
-    // Efecto para limpiar resultados si se borra el texto
     useEffect(() => {
-        if (query.trim() === '') {
-            setResults([]);
-        } else {
-            // Aquí llamarías a un servicio de búsqueda real
-            // setResults(await searchService.global(query));
-        }
+        const delayDebounceFn = setTimeout(() => {
+            const fetchResults = async () => {
+                if (query.trim() === '') {
+                    setResults({
+                        estudiantes: { data: [], total: 0 },
+                        profesores: { data: [], total: 0 },
+                        clases: { data: [], total: 0 }
+                    });
+                    return;
+                }
+
+                if (query.length > 2) {
+                    try {
+                        const response = await searchService.global(query);
+                        if (response.success) setResults(response.data);
+                    } catch (error) {
+                        console.error("Error al buscar global:", error);
+                    }
+                }
+            };
+
+            fetchResults();
+        }, 400);
+
+        return () => clearTimeout(delayDebounceFn);
     }, [query]);
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            {/* Header con búsqueda activa */}
             <ManagementHeader
                 title={t('common.seeker')}
                 onBack={onBack}
@@ -43,14 +70,13 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
                 searchText={query}
                 onSearchChange={setQuery}
                 placeholder={t('common.search_placeholder')}
-                autoFocus={true} 
+                autoFocus={true}
             />
 
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 keyboardShouldPersistTaps="handled"
             >
-                {/* 1. SECCIÓN: HISTORIAL RECIENTE */}
                 {!query && history.length > 0 && (
                     <Animated.View entering={FadeInUp.duration(400)} style={styles.section}>
                         <SectionHeader
@@ -67,13 +93,24 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
                                 <Animated.View entering={FadeInRight.delay(index * 100)}>
                                     <TouchableOpacity
                                         style={styles.historyItem}
-                                        onPress={() => setQuery(item.name)}
+                                        onPress={() => setQuery(item.first_name ? `${item.first_name} ${item.last_name || ''}` : item.name)}
                                     >
                                         <View style={[styles.avatarRing, { borderColor: theme.colors.primary }]}>
-                                            <Image source={{ uri: item.avatar }} style={styles.historyAvatar} />
+                                            {(!item.first_name && item.name) ? (
+                                                <View style={[styles.historyAvatar, styles.letterAvatar, { backgroundColor: theme.colors.primary + '20' }]}>
+                                                    <Text style={[styles.letterAvatarText, { color: theme.colors.primary, fontSize: 18 }]}>
+                                                        {item.name.charAt(0).toUpperCase()}
+                                                    </Text>
+                                                </View>
+                                            ) : (
+                                                <Image
+                                                    source={{ uri: item.avatar || 'https://mockmind-api.uifaces.co/content/human/221.jpg' }}
+                                                    style={styles.historyAvatar}
+                                                />
+                                            )}
                                         </View>
                                         <Text numberOfLines={1} style={[styles.historyName, { color: theme.colors.textPrimary }]}>
-                                            {item.name}
+                                            {item.first_name ? `${item.first_name} ${item.last_name || ''}` : item.name}
                                         </Text>
                                     </TouchableOpacity>
                                 </Animated.View>
@@ -84,26 +121,34 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
 
                 {/* 2. SECCIÓN: RESULTADOS / SUGERENCIAS */}
                 <View style={styles.section}>
-                    <SectionHeader title={query ? t('search.results') : t('search.suggested')} />
+                    <SectionHeader title={query ? t('search.results') : ""} />
 
-                    {results.length > 0 ? (
-                        results.map((item, index) => (
-                            <Animated.View
-                                key={item.id}
-                                entering={FadeInUp.delay(index * 50)}
-                            >
-                                <TouchableOpacity
-                                    style={[styles.resultCard, { backgroundColor: theme.colors.surface }]}
-                                    onPress={() => addToHistory(item)}
-                                >
-                                    <Image source={{ uri: item.avatar }} style={styles.resultAvatar} />
-                                    <View style={styles.resultInfo}>
-                                        <Text style={[styles.resultName, { color: theme.colors.textPrimary }]}>{item.name}</Text>
-                                        <Text style={[styles.resultSub, { color: theme.colors.textSecondary }]}>{item.type}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </Animated.View>
-                        ))
+                    {query && (results.estudiantes.data.length > 0 || results.profesores.data.length > 0 || results.clases.data.length > 0) ? (
+                        <>
+                            {/* Estudiantes */}
+                            {renderSearchCategory(
+                                t('common.students'),
+                                results.estudiantes.data,
+                                results.estudiantes.total,
+                                'student'
+                            )}
+
+                            {/* Profesores */}
+                            {renderSearchCategory(
+                                t('common.teachers'),
+                                results.profesores.data,
+                                results.profesores.total,
+                                'teacher'
+                            )}
+
+                            {/* Clases */}
+                            {renderSearchCategory(
+                                t('common.classes'),
+                                results.clases.data,
+                                results.clases.total,
+                                'class'
+                            )}
+                        </>
                     ) : (
                         <EmptyState
                             icon="search"
@@ -115,6 +160,62 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
             </ScrollView>
         </View>
     );
+
+    function renderSearchCategory(title: string, items: any[], total: number, type: string) {
+        if (items.length === 0) return null;
+
+        return (
+            <View style={{ marginBottom: 20 }}>
+                <Text style={[styles.categoryTitle, { color: theme.colors.textSecondary }]}>{title}</Text>
+                {items.slice(0, 3).map((item, index) => (
+                    <Animated.View
+                        key={`${type}-${item.id}`}
+                        entering={FadeInUp.delay(index * 50)}
+                    >
+                        <TouchableOpacity
+                            style={[styles.resultCard, { backgroundColor: theme.colors.surface }]}
+                            onPress={() => addToHistory({
+                                ...item,
+                                name: item.name || `${item.first_name} ${item.last_name || ''}`,
+                                type: title
+                            })}
+                        >
+                            {type === 'student' || type === 'teacher' ? (
+                                <Image
+                                    source={{ uri: item.avatar || 'https://mockmind-api.uifaces.co/content/human/221.jpg' }}
+                                    style={styles.resultAvatar}
+                                />
+                            ) : (
+                                <View style={[styles.resultAvatar, styles.letterAvatar, { backgroundColor: theme.colors.primary + '20' }]}>
+                                    <Text style={[styles.letterAvatarText, { color: theme.colors.primary }]}>
+                                        {(item.name || title).charAt(0).toUpperCase()}
+                                    </Text>
+                                </View>
+                            )}
+                            <View style={styles.resultInfo}>
+                                <Text style={[styles.resultName, { color: theme.colors.textPrimary }]}>
+                                    {item.first_name ? `${item.first_name} ${item.last_name || ''}` : item.name}
+                                </Text>
+                                <Text style={[styles.resultSub, { color: theme.colors.textSecondary }]}>
+                                    {item.email || item.description || item.genre || title}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </Animated.View>
+                ))}
+
+                {total > 3 && (
+                    <Button
+                        title={t('search.view_all_results', { total })}
+                        onPress={() => console.log('View more', type)}
+                        type="primary"
+                        size="sm"
+                        variant="outline"
+                    />
+                )}
+            </View>
+        );
+    }
 };
 
 const styles = StyleSheet.create({
@@ -148,5 +249,33 @@ const styles = StyleSheet.create({
     resultAvatar: { width: 50, height: 50, borderRadius: 25 },
     resultInfo: { marginLeft: 12, flex: 1 },
     resultName: { fontSize: 15, fontWeight: '700' },
-    resultSub: { fontSize: 12, marginTop: 2 }
+    resultSub: { fontSize: 12, marginTop: 2 },
+    categoryTitle: {
+        fontSize: 13,
+        marginBottom: 10,
+        marginTop: 5,
+        letterSpacing: 1
+    },
+    viewMoreButton: {
+        paddingVertical: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+        borderWidth: 1,
+        borderStyle: 'dashed',
+        marginTop: 5
+    },
+    viewMoreText: {
+        fontSize: 13,
+        fontWeight: '600'
+    },
+    letterAvatar: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25
+    },
+    letterAvatarText: {
+        fontWeight: 'bold',
+        fontSize: 16
+    }
 });
