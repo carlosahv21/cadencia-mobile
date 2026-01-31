@@ -3,7 +3,7 @@ import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '../../components/common/Button';
 
 import { ClassHeader } from '../../components/class/ClassHeader';
@@ -20,6 +20,7 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
     const { theme } = useTheme();
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const route = useRoute();
 
     const handleBack = onBack || (() => {
         if (navigation.canGoBack()) {
@@ -28,7 +29,7 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
     });
 
     // Mock data for display
-    const classData = propClassData || {
+    const classData = propClassData || (route.params as any)?.classData || {
         name: 'Salsa Avanzado',
         level: 'Nivel Avanzado',
         date: '30 Ene 2026',

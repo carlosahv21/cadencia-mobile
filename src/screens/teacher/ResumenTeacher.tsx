@@ -10,7 +10,7 @@ import { TeacherContactInfoCard } from '../../components/teacher/TeacherContactI
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 interface ResumenTeacherProps {
     teacher?: any;
@@ -22,6 +22,7 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
     const { user } = useAuth();
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const route = useRoute();
 
     const handleBack = onBack || (() => {
         if (navigation.canGoBack()) {
@@ -30,7 +31,7 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
     });
 
     // Mock data for display (could come from navigation params or API)
-    const teacherData = teacher || {
+    const teacherData = teacher || (route.params as any)?.teacher || {
         name: 'Adolfo Stanton',
         role: 'Instructor Senior',
         specialty: 'Salsa & Bachata Specialist',

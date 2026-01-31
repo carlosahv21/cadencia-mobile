@@ -13,12 +13,15 @@ import { useSearchHistory } from '../../hooks/useSearchHistory';
 
 import { searchService } from '../../services/search.service';
 
+import { useNavigation } from '@react-navigation/native';
+
 interface GlobalSearchProps {
-    onBack: () => void;
+    onBack?: () => void;
     onSelectItem?: (item: any, type: 'student' | 'teacher' | 'class') => void;
 }
 
 export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSelectItem }) => {
+    const navigation = useNavigation<any>();
     const { theme } = useTheme();
     const { t } = useTranslation();
     const { history, clearHistory, addToHistory } = useSearchHistory();
@@ -66,7 +69,7 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <ManagementHeader
                 title={t('common.seeker')}
-                onBack={onBack}
+                onBack={onBack || (() => navigation.goBack())}
                 showSearch
                 searchText={query}
                 onSearchChange={setQuery}
@@ -182,6 +185,13 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
                                     type: title
                                 });
                                 onSelectItem?.(item, type as any);
+
+                                const screenName = type === 'student' ? 'ResumeStudent' :
+                                    type === 'teacher' ? 'ResumenTeacher' : 'ResumeClass';
+
+                                navigation.navigate(screenName, {
+                                    [type === 'class' ? 'classData' : type]: item
+                                });
                             }}
                         >
                             {type === 'student' || type === 'teacher' ? (

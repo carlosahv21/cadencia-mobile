@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { PlanInfoCard } from '../../components/student/PlanInfoCard';
 import { ActivityLogCard } from '../../components/student/ActivityLogCard';
 
@@ -20,9 +20,10 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
     const { user } = useAuth();
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const route = useRoute();
 
     // In a real scenario, these could come from navigation params or an API call
-    const studentData = student || user;
+    const studentData = student || (route.params as any)?.student || user;
 
     // Fallback for navigation if available
     const handleBack = onBack || (() => {
@@ -42,13 +43,14 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
             <Animated.View
                 entering={FadeIn.duration(600).delay(200)}>
                 <ProfileHeader
+                    name={studentData?.name || 'Adolfo Stanton'}
+                    role={studentData?.role || 'Estudiante'}
+                    avatar={studentData?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
+                    email={studentData?.email || 'zora18@hotmail.com'}
                     title="Perfil del Estudiante"
                     onBack={handleBack}
                     onEdit={() => { }}
                     showEditButton={false}
-                    avatar={studentData.avatar}
-                    name={studentData.name}
-                    role={studentData.role}
                 />
             </Animated.View>
 

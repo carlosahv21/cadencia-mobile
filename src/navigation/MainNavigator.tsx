@@ -5,15 +5,35 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationProp } from '@react-navigation/native';
 
 // Pantallas
 import { DashboardScreen } from '../screens/main/DashboardScreen';
 import { ClassesScreen } from '../screens/main/ClassesScreen';
 import { ProfileScreen } from '../screens/main/ProfileScreen';
 import { AttendanceScreen } from '../screens/main/AttendanceScreen';
+import { GlobalSearchScreen } from '../screens/search/GlobalSearchScreen';
+import { ResumeStudent } from '../screens/student/ResumeStudent';
+import { ResumenTeacher } from '../screens/teacher/ResumenTeacher';
+import { ResumeClass } from '../screens/class/ResumeClass';
 import { DanceClass } from '../types';
 
+const Stack = createNativeStackNavigator();
+
 export const MainNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainTabs" component={TabNavigator} />
+      <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
+      <Stack.Screen name="ResumeStudent" component={ResumeStudent} />
+      <Stack.Screen name="ResumenTeacher" component={ResumenTeacher} />
+      <Stack.Screen name="ResumeClass" component={ResumeClass} />
+    </Stack.Navigator>
+  );
+};
+
+const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const { theme } = useTheme();
   const { user } = useAuth();
   const { t } = useTranslation();

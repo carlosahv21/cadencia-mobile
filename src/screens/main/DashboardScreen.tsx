@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, ScrollView, View, RefreshControl, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../contexts/ThemeContext';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 // Componentes del Dashboard
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
@@ -11,157 +11,32 @@ import { NextClassBanner } from '../../components/dashboard/NextClassBanner';
 import { AttentionSection } from '../../components/dashboard/AttentionSection';
 import { StatsSection } from '../../components/dashboard/StatsSection';
 
-// Pantalla de Búsqueda y Resúmenes
-import { GlobalSearchScreen } from '../../screens/search/GlobalSearchScreen';
-import { ResumeStudent } from '../../screens/student/ResumeStudent';
-import { ResumenTeacher } from '../../screens/teacher/ResumenTeacher';
-import { ResumeClass } from '../../screens/class/ResumeClass';
-
-// Services & Contexts
-import { classService } from '../../services/clases.service';
-import { kpiService } from '../../services/kpi.service';
-import { userService } from '../../services/user.service';
-import { useAuth } from '../../contexts/AuthContext';
-import { DanceClass, DashboardStat, UserPlan } from '../../types';
-
 // UI de Ant Design
 import { Card, Tag, Progress, WhiteSpace } from '@ant-design/react-native';
 
+// Hooks
+import { useDashboardData } from '../../hooks/useDashboardData';
+
 export const DashboardScreen = () => {
     const { theme } = useTheme();
-    const { user } = useAuth();
     const { t } = useTranslation();
+    const navigation = useNavigation<any>();
 
-    // Estados de Datos
-    const [classes, setClasses] = useState<DanceClass[]>([]);
-    const [kpis, setKpis] = useState<DashboardStat[]>([]);
-    const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
-
-    // Estado de la Capa de Búsqueda y Selección
-    const [isSearching, setIsSearching] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<{ item: any, type: 'student' | 'teacher' | 'class' } | null>(null);
-
-    const isStudent = user?.role_id === 3;
-
-    const getEnglishDayName = () => {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        return days[new Date().getDay()];
-    };
-
-    const loadDashboardData = async () => {
-        try {
-            const day = getEnglishDayName();
-
-            if (isStudent) {
-                const [classesRes, planRes] = await Promise.all([
-                    classService.getTodayClasses(day),
-                    userService.getUserPlan()
-                ]);
-                setClasses(classesRes.data || []);
-                setUserPlan(planRes.data);
-            } else {
-                const [classesRes, kpiRes] = await Promise.all([
-                    classService.getTodayClasses(day),
-                    kpiService.getKpis()
-                ]);
-
-                setClasses(classesRes.data || []);
-
-                const formattedStats = [
-                    {
-                        id: 1,
-                        label: t('dashboard.stats.students'),
-                        value: kpiRes.data.activeStudents,
-                        icon: 'users',
-                        color: theme.colors.primary,
-                    },
-                    {
-                        id: 2,
-                        label: t('dashboard.stats.revenue'),
-                        value: `$${kpiRes.data.monthlyRevenue}`,
-                        icon: 'money',
-                        color: theme.colors.success,
-                    },
-                    {
-                        id: 3,
-                        label: t('dashboard.stats.today_classes'),
-                        value: `${kpiRes.data.todayClasses}`,
-                        icon: 'calendar',
-                        color: theme.colors.warning,
-                    },
-                ];
-                setKpis(formattedStats);
-            }
-        } catch (error) {
-            console.error("Error en Dashboard:", error);
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
-        }
-    };
-
-    useEffect(() => {
-        loadDashboardData();
-    }, []);
-
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        loadDashboardData();
-    }, []);
+    const {
+        classes,
+        kpis,
+        userPlan,
+        loading,
+        refreshing,
+        onRefresh,
+        isStudent
+    } = useDashboardData();
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
-
-            {/* CAPA DE BÚSQUEDA GLOBAL */}
-            {isSearching && (
-                <Animated.View
-                    entering={FadeIn.duration(250)}
-                    exiting={FadeOut.duration(200)}
-                    style={[StyleSheet.absoluteFill, { zIndex: 99, backgroundColor: theme.colors.background }]}
-                >
-                    <GlobalSearchScreen
-                        onBack={() => setIsSearching(false)}
-                        onSelectItem={(item, type) => {
-                            setSelectedItem({ item, type });
-                        }}
-                    />
-                </Animated.View>
-            )}
-
-            {/* CAPAS DE RESUMEN (OVERLAYS) */}
-            {selectedItem && (
-                <Animated.View
-                    entering={FadeIn.duration(300)}
-                    exiting={FadeOut.duration(200)}
-                    style={[StyleSheet.absoluteFill, { zIndex: 100, backgroundColor: theme.colors.background }]}
-                >
-                    {selectedItem.type === 'student' && (
-                        <ResumeStudent
-                            student={selectedItem.item}
-                            onBack={() => setSelectedItem(null)}
-                        />
-                    )}
-                    {selectedItem.type === 'teacher' && (
-                        <ResumenTeacher
-                            teacher={selectedItem.item}
-                            onBack={() => setSelectedItem(null)}
-                        />
-                    )}
-                    {selectedItem.type === 'class' && (
-                        <ResumeClass
-                            classData={selectedItem.item}
-                            onBack={() => setSelectedItem(null)}
-                        />
-                    )}
-                </Animated.View>
-            )}
-
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
-                scrollEnabled={!isSearching}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -172,7 +47,7 @@ export const DashboardScreen = () => {
                 }
             >
                 {/* Header estático del Dashboard */}
-                <DashboardHeader onSearchPress={() => setIsSearching(true)} />
+                <DashboardHeader onSearchPress={() => navigation.navigate('GlobalSearch')} />
 
                 {/* Contenido Principal */}
                 <NextClassBanner
@@ -222,7 +97,6 @@ export const DashboardScreen = () => {
         </SafeAreaView>
     );
 };
-
 const styles = StyleSheet.create({
     container: { flex: 1 },
     scrollContent: { paddingBottom: 30 },
