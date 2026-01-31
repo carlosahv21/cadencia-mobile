@@ -10,7 +10,15 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../common/Button';
 
-export const DashboardHeader = () => {
+interface DashboardHeaderProps {
+    onSearchPress?: () => void;
+    onNotificationsPress?: () => void;
+}
+
+export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
+    onSearchPress,
+    onNotificationsPress
+}) => {
     const { theme } = useTheme();
     const { user, academy } = useAuth();
     const { t } = useTranslation();
@@ -49,7 +57,7 @@ export const DashboardHeader = () => {
 
             <View style={styles.actionsContainer}>
                 <Button
-                    onPress={() => { }}
+                    onPress={() => onSearchPress?.()}
                     type="default"
                     variant="filled"
                     size="sm"
@@ -57,7 +65,7 @@ export const DashboardHeader = () => {
                 />
 
                 <Button
-                    onPress={() => { }}
+                    onPress={() => onNotificationsPress?.()}
                     type="default"
                     variant="filled"
                     size="sm"

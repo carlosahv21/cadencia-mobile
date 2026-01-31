@@ -7,13 +7,15 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 // Componentes del Dashboard
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
-import { SearchInput } from '../../components/common/SearchInput';
 import { NextClassBanner } from '../../components/dashboard/NextClassBanner';
 import { AttentionSection } from '../../components/dashboard/AttentionSection';
 import { StatsSection } from '../../components/dashboard/StatsSection';
 
-// Pantalla de Búsqueda
+// Pantalla de Búsqueda y Resúmenes
 import { GlobalSearchScreen } from '../../screens/search/GlobalSearchScreen';
+import { ResumeStudent } from '../../screens/student/ResumeStudent';
+import { ResumenTeacher } from '../../screens/teacher/ResumenTeacher';
+import { ResumeClass } from '../../screens/class/ResumeClass';
 
 // Services & Contexts
 import { classService } from '../../services/clases.service';
@@ -29,16 +31,17 @@ export const DashboardScreen = () => {
     const { theme } = useTheme();
     const { user } = useAuth();
     const { t } = useTranslation();
-    
+
     // Estados de Datos
     const [classes, setClasses] = useState<DanceClass[]>([]);
     const [kpis, setKpis] = useState<DashboardStat[]>([]);
     const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-    
-    // Estado de la Capa de Búsqueda
+
+    // Estado de la Capa de Búsqueda y Selección
     const [isSearching, setIsSearching] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<{ item: any, type: 'student' | 'teacher' | 'class' } | null>(null);
 
     const isStudent = user?.role_id === 3;
 
@@ -65,7 +68,7 @@ export const DashboardScreen = () => {
                 ]);
 
                 setClasses(classesRes.data || []);
-                
+
                 const formattedStats = [
                     {
                         id: 1,
@@ -110,15 +113,48 @@ export const DashboardScreen = () => {
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
-            
+
             {/* CAPA DE BÚSQUEDA GLOBAL */}
             {isSearching && (
-                <Animated.View 
-                    entering={FadeIn.duration(250)} 
+                <Animated.View
+                    entering={FadeIn.duration(250)}
                     exiting={FadeOut.duration(200)}
                     style={[StyleSheet.absoluteFill, { zIndex: 99, backgroundColor: theme.colors.background }]}
                 >
-                    <GlobalSearchScreen onBack={() => setIsSearching(false)} />
+                    <GlobalSearchScreen
+                        onBack={() => setIsSearching(false)}
+                        onSelectItem={(item, type) => {
+                            setSelectedItem({ item, type });
+                        }}
+                    />
+                </Animated.View>
+            )}
+
+            {/* CAPAS DE RESUMEN (OVERLAYS) */}
+            {selectedItem && (
+                <Animated.View
+                    entering={FadeIn.duration(300)}
+                    exiting={FadeOut.duration(200)}
+                    style={[StyleSheet.absoluteFill, { zIndex: 100, backgroundColor: theme.colors.background }]}
+                >
+                    {selectedItem.type === 'student' && (
+                        <ResumeStudent
+                            student={selectedItem.item}
+                            onBack={() => setSelectedItem(null)}
+                        />
+                    )}
+                    {selectedItem.type === 'teacher' && (
+                        <ResumenTeacher
+                            teacher={selectedItem.item}
+                            onBack={() => setSelectedItem(null)}
+                        />
+                    )}
+                    {selectedItem.type === 'class' && (
+                        <ResumeClass
+                            classData={selectedItem.item}
+                            onBack={() => setSelectedItem(null)}
+                        />
+                    )}
                 </Animated.View>
             )}
 
@@ -136,18 +172,7 @@ export const DashboardScreen = () => {
                 }
             >
                 {/* Header estático del Dashboard */}
-                <DashboardHeader />
-
-                {/* Disparador de Búsqueda */}
-                <TouchableOpacity 
-                    activeOpacity={0.9} 
-                    onPress={() => setIsSearching(true)}
-                    style={styles.searchTrigger}
-                >
-                    <View pointerEvents="none">
-                        <SearchInput />
-                    </View>
-                </TouchableOpacity>
+                <DashboardHeader onSearchPress={() => setIsSearching(true)} />
 
                 {/* Contenido Principal */}
                 <NextClassBanner
@@ -201,10 +226,6 @@ export const DashboardScreen = () => {
 const styles = StyleSheet.create({
     container: { flex: 1 },
     scrollContent: { paddingBottom: 30 },
-    searchTrigger: {
-        marginTop: -10, // Ajuste para que se solape ligeramente si es necesario
-        marginBottom: 10,
-    },
     planSection: {
         paddingHorizontal: 20,
         marginTop: 15,

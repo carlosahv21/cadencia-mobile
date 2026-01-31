@@ -15,9 +15,10 @@ import { searchService } from '../../services/search.service';
 
 interface GlobalSearchProps {
     onBack: () => void;
+    onSelectItem?: (item: any, type: 'student' | 'teacher' | 'class') => void;
 }
 
-export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
+export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSelectItem }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
     const { history, clearHistory, addToHistory } = useSearchHistory();
@@ -174,11 +175,14 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack }) => {
                     >
                         <TouchableOpacity
                             style={[styles.resultCard, { backgroundColor: theme.colors.surface }]}
-                            onPress={() => addToHistory({
-                                ...item,
-                                name: item.name || `${item.first_name} ${item.last_name || ''}`,
-                                type: title
-                            })}
+                            onPress={() => {
+                                addToHistory({
+                                    ...item,
+                                    name: item.name || `${item.first_name} ${item.last_name || ''}`,
+                                    type: title
+                                });
+                                onSelectItem?.(item, type as any);
+                            }}
                         >
                             {type === 'student' || type === 'teacher' ? (
                                 <Image
