@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import { ProfileHeader } from '../../components/profile/ProfileHeader';
+import { ProfileResumeHeader } from '../../components/common/ProfileResumeHeader';
 import { TeacherStatsRow } from '../../components/teacher/TeacherStatsRow';
 import { PaymentSummaryCard } from '../../components/teacher/PaymentSummaryCard';
 import { WeeklyClassesList } from '../../components/teacher/WeeklyClassesList';
@@ -79,7 +79,7 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
-                <ProfileHeader
+                <ProfileResumeHeader
                     name={teacherData.name}
                     role={teacherData.role}
                     avatar={teacherData.avatar}

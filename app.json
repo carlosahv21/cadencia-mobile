@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.danceflow.mobile"
+      "bundleIdentifier": "com.danceflow.mobile",
+      "pushLabels": {
+        "description": "Permitir notificaciones para tus clases de baile"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +33,19 @@
     },
     "plugins": [
       "expo-secure-store",
-      "expo-font"
-    ]
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/icon.png",
+          "color": "#0ea5e9"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "TU-PROJECT-ID-AQUI"
+      }
+    }
   }
 }

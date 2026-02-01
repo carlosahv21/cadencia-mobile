@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { Title } from '../common/Title';
 
 interface ActivityLogItemProps {
     icon: keyof typeof FontAwesome.glyphMap;
@@ -17,7 +18,7 @@ const ActivityLogItem: React.FC<ActivityLogItemProps> = ({ icon, label, value, i
     return (
         <View style={styles.itemWrapper}>
             <View style={styles.timelineLeft}>
-                <View style={[styles.iconCircle, { backgroundColor: theme.mode === 'light' ? '#F1F5F9' : '#1E293B' }]}>
+                <View style={[styles.iconCircle, { backgroundColor: theme.colors.background }]}>
                     <FontAwesome name={icon} size={14} color={theme.colors.primary} />
                 </View>
                 {!isLast && <View style={[styles.timelineLine, { backgroundColor: theme.colors.border }]} />}
@@ -46,8 +47,7 @@ export const ActivityLogCard: React.FC<ActivityLogCardProps> = ({
     return (
         <Card style={styles.card}>
             <View style={styles.header}>
-                <FontAwesome name="history" size={18} color={theme.colors.primary} style={styles.headerIcon} />
-                <Text style={[styles.headerTitle, { color: theme.colors.textPrimary }]}>Registro de Actividad</Text>
+                <Title title="Registro de Actividad" />
             </View>
 
             <View style={styles.list}>
@@ -103,15 +103,15 @@ const styles = StyleSheet.create({
     iconCircle: {
         width: 36,
         height: 36,
-        borderRadius: 18,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1,
+        marginBottom: 12,
     },
     timelineLine: {
         width: 2,
         flex: 1,
-        marginVertical: -2,
+        marginVertical: -12,
     },
     itemContent: {
         paddingTop: 4,

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { ProfileHeader } from '../../components/profile/ProfileHeader';
+import { ProfileResumeHeader } from '../../components/common/ProfileResumeHeader';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
@@ -42,12 +42,11 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View
                 entering={FadeIn.duration(600).delay(200)}>
-                <ProfileHeader
+                <ProfileResumeHeader
                     name={studentData?.name || 'Adolfo Stanton'}
                     role={studentData?.role || 'Estudiante'}
                     avatar={studentData?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
                     email={studentData?.email || 'zora18@hotmail.com'}
-                    title="Perfil del Estudiante"
                     onBack={handleBack}
                     onEdit={() => { }}
                     showEditButton={false}
