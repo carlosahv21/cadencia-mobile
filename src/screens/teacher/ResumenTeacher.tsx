@@ -31,7 +31,7 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
     });
 
     // Mock data for display (could come from navigation params or API)
-    const teacherData = teacher || (route.params as any)?.teacher || {
+    const teacherData = {
         name: 'Adolfo Stanton',
         role: 'Instructor Senior',
         specialty: 'Salsa & Bachata Specialist',
@@ -84,7 +84,6 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
                     role={teacherData.role}
                     avatar={teacherData.avatar}
                     specialty={teacherData.specialty}
-                    title="Perfil del Instructor"
                     onBack={handleBack}
                     onEdit={() => { }}
                     showEditButton={false}
@@ -105,23 +104,23 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
             >
                 <Animated.View entering={FadeInDown.duration(600).delay(300)}>
                     <TeacherStatsRow
-                        classesCount={teacherData.stats.classesCount}
-                        rating={teacherData.stats.rating}
-                        studentsCount={teacherData.stats.studentsCount}
+                        classesCount={teacherData?.stats?.classesCount || 0}
+                        rating={teacherData?.stats?.rating || 0}
+                        studentsCount={teacherData?.stats?.studentsCount || 0}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(450)}>
                     <PaymentSummaryCard
-                        pendingAmount={teacherData.payments.pending}
-                        paidAmount={teacherData.payments.paid}
-                        nextCutDate={teacherData.payments.nextCut}
+                        pendingAmount={teacherData?.payments?.pending || '0'}
+                        paidAmount={teacherData?.payments?.paid || '0'}
+                        nextCutDate={teacherData?.payments?.nextCut || ''}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(600)}>
                     <WeeklyClassesList
-                        classes={teacherData.weeklyClasses}
+                        classes={teacherData?.weeklyClasses || []}
                     />
                 </Animated.View>
 

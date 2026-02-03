@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { SectionHeader } from '../common/SectionHeader';
+import { Subtitle } from '../common/Subtitle';
+import { Divider } from '../common/Divider';
 
 interface PaymentSummaryCardProps {
     pendingAmount: string;
@@ -20,27 +23,37 @@ export const PaymentSummaryCard: React.FC<PaymentSummaryCardProps> = ({
     const { theme } = useTheme();
 
     return (
-        <View style={styles.outerContainer}>
-            <View style={styles.sectionHeader}>
-                <Text style={[styles.sectionTitle, { color: theme.colors.textPrimary }]}>Resumen de Pagos</Text>
-                <TouchableOpacity onPress={onViewHistory}>
-                    <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>Ver Historial</Text>
-                </TouchableOpacity>
+        <View>
+            <View>
+                <SectionHeader
+                    title="Resumen de pagos"
+                    actionText='Ver historial'
+                    onActionPress={() => { }}
+                />
             </View>
 
             <Card style={styles.card}>
-                <View style={styles.amountsRow}>
-                    <View style={styles.amountCol}>
-                        <Text style={[styles.amountLabel, { color: theme.colors.textSecondary }]}>Por Pagar</Text>
-                        <Text style={[styles.amountValue, { color: theme.colors.textPrimary }]}>{pendingAmount}</Text>
-                    </View>
-                    <View style={styles.amountCol}>
-                        <Text style={[styles.amountLabel, { color: theme.colors.textSecondary, textAlign: 'right' }]}>Pagado este mes</Text>
-                        <Text style={[styles.amountValue, { color: theme.colors.success, textAlign: 'right' }]}>{paidAmount}</Text>
+                <View>
+                    <Subtitle
+                        leftText="Por Pagar"
+                        leftType="secondary"
+                        rightText='Pagado este mes'
+                        rightType='secondary'
+                        containerStyle={{ marginBottom: 10 }}
+                    />
+                    <View style={styles.row} >
+                        <Text style={[styles.amountValue, { color: theme.colors.textPrimary }]}>
+                            {pendingAmount}
+                        </Text>
+                        <Text style={[styles.amountValue, { color: theme.colors.success }]}>
+                            {paidAmount}
+                        </Text>
                     </View>
                 </View>
 
-                <View style={[styles.divider, { backgroundColor: theme.colors.border }]} />
+                <Divider
+                    marginVertical={10}
+                />
 
                 <View style={styles.infoRow}>
                     <FontAwesome name="info-circle" size={14} color={theme.colors.textSecondary} style={styles.infoIcon} />
@@ -54,49 +67,12 @@ export const PaymentSummaryCard: React.FC<PaymentSummaryCardProps> = ({
 };
 
 const styles = StyleSheet.create({
-    outerContainer: {
-        marginTop: 24,
-    },
-    sectionHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 4,
-        marginBottom: 12,
-    },
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: '700',
-    },
-    viewAllText: {
-        fontSize: 14,
-        fontWeight: '500',
-    },
     card: {
         marginTop: 0,
     },
-    amountsRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-    },
-    amountCol: {
-        flex: 1,
-    },
-    amountLabel: {
-        fontSize: 12,
-        fontWeight: '500',
-        marginBottom: 6,
-    },
     amountValue: {
-        fontSize: 22,
-        fontWeight: '800',
-    },
-    divider: {
-        height: 1,
-        width: '100%',
-        marginBottom: 16,
-        opacity: 0.5,
+        fontSize: 18,
+        fontWeight: '600',
     },
     infoRow: {
         flexDirection: 'row',
@@ -108,5 +84,10 @@ const styles = StyleSheet.create({
     infoText: {
         fontSize: 13,
         fontWeight: '500',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 });

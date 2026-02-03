@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     statCard: {
         flex: 1,
         marginHorizontal: 4,
-        paddingVertical: 16,
+        paddingVertical: 20,
         alignItems: 'center',
     },
     statContent: {

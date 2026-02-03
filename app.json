@@ -16,10 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.danceflow.mobile",
-      "pushLabels": {
-        "description": "Permitir notificaciones para tus clases de baile"
-      }
+      "bundleIdentifier": "com.danceflow.mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -44,8 +41,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "TU-PROJECT-ID-AQUI"
+        "projectId": "69dde482-381a-4c3f-99d9-ef6f6ec6b704"
       }
-    }
+    },
+    "owner": "solrac22"
   }
 }

@@ -50,6 +50,10 @@ export const ProfileResumeHeader: React.FC<ProfileHeaderProps> = ({
                         <Ionicons name="arrow-back" size={24} color="#fff" />
                     </TouchableOpacity>
                 ) : <View style={styles.navButtonPlaceholder} />}
+                {title && (
+                    <Text style={styles.headerTitle}>{title}</Text>
+                )}
+                <View style={[styles.navButtonPlaceholder, { width: onBack ? 40 : 0 }]} />
             </View>
 
             <View style={styles.avatarContainer}>
@@ -61,6 +65,15 @@ export const ProfileResumeHeader: React.FC<ProfileHeaderProps> = ({
 
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.role}>{role}</Text>
+            {specialty && (
+                <Tag
+                    label={specialty}
+                    variant="outline"
+                    type="transparent"
+                    size="sm"
+                    style={{ alignSelf: 'center' }}
+                />
+            )}
 
             {email && (
                 <Button
@@ -149,5 +162,19 @@ const styles = StyleSheet.create({
         color: 'rgba(255, 255, 255, 0.9)',
         fontWeight: '400',
         marginBottom: 10,
+    },
+    headerTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#fff',
+        flex: 1,
+        textAlign: 'center',
+    },
+    specialty: {
+        fontSize: 14,
+        color: 'rgba(255, 255, 255, 0.9)',
+        fontWeight: '500',
+        marginBottom: 10,
+        marginTop: -5,
     },
 });

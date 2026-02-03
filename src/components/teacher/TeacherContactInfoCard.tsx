@@ -1,20 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { SectionHeader } from '../common/SectionHeader';
 
 interface ContactItemProps {
     icon: keyof typeof FontAwesome.glyphMap;
     label: string;
     value: string;
+    onPress: () => void;
 }
 
-const ContactItem: React.FC<ContactItemProps> = ({ icon, label, value }) => {
+const ContactItem: React.FC<ContactItemProps> = ({ icon, label, value, onPress }) => {
     const { theme } = useTheme();
 
     return (
-        <View style={styles.itemRow}>
+        <TouchableOpacity style={styles.itemRow} onPress={onPress}>
             <View style={[styles.iconBox, { backgroundColor: theme.mode === 'light' ? '#F1F5F9' : '#1E293B' }]}>
                 <FontAwesome name={icon} size={14} color={theme.colors.textSecondary} />
             </View>
@@ -22,7 +24,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ icon, label, value }) => {
                 <Text style={[styles.label, { color: theme.colors.textSecondary }]}>{label.toUpperCase()}</Text>
                 <Text style={[styles.value, { color: theme.colors.textPrimary }]}>{value}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -39,11 +41,13 @@ export const TeacherContactInfoCard: React.FC<TeacherContactInfoCardProps> = ({
 
     return (
         <View style={styles.container}>
-            <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Información de Contacto</Text>
+            <SectionHeader
+                title="Información de Contacto"
+            />
             <Card style={styles.card}>
-                <ContactItem icon="envelope" label="Email" value={email} />
+                <ContactItem icon="envelope" label="Email" value={email} onPress={() => { }} />
                 <View style={styles.spacer} />
-                <ContactItem icon="phone" label="Teléfono" value={phone} />
+                <ContactItem icon="phone" label="Teléfono" value={phone} onPress={() => { }} />
             </Card>
         </View>
     );
@@ -51,14 +55,8 @@ export const TeacherContactInfoCard: React.FC<TeacherContactInfoCardProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 24,
-        marginBottom: 30,
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: '700',
-        paddingHorizontal: 4,
-        marginBottom: 12,
+        marginTop: 14,
+        marginBottom: 10,
     },
     card: {
         marginTop: 0,

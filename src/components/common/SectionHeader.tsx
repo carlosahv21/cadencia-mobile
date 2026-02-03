@@ -16,7 +16,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     containerStyle
 }) => {
     const { theme } = useTheme();
-
     return (
         <View style={[styles.container, containerStyle]}>
             <Text style={[styles.title, { color: theme.colors.textPrimary }]}>

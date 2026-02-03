@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '../../components/common/Button';
 
-import { ClassHeader } from '../../components/class/ClassHeader';
 import { ClassStatsRow } from '../../components/class/ClassStatsRow';
 import { SessionDetailsCard } from '../../components/class/SessionDetailsCard';
 import { EnrolledStudentsSection } from '../../components/class/EnrolledStudentsSection';
+import { ManagementHeader } from '../../components/common/ManagementHeader';
 
 interface ResumeClassProps {
     classData?: any;
@@ -29,7 +29,7 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
     });
 
     // Mock data for display
-    const classData = propClassData || (route.params as any)?.classData || {
+    const classData = {
         name: 'Salsa Avanzado',
         level: 'Nivel Avanzado',
         date: '30 Ene 2026',
@@ -86,11 +86,10 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
-                <ClassHeader
-                    title={classData.name}
-                    subtitle={`${classData.level} • ${classData.date}`}
+                <ManagementHeader
+                    title={classData?.name || 'Clase'}
+                    subtitle={`${classData?.level || ''} • ${classData?.date || ''}`}
                     onBack={handleBack}
-                    onEdit={() => { }}
                 />
             </Animated.View>
 
@@ -108,25 +107,25 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
             >
                 <Animated.View entering={FadeInDown.duration(600).delay(300)}>
                     <ClassStatsRow
-                        occupancy={classData.stats.occupancy}
-                        enrolled={classData.stats.enrolled}
-                        avgAttendance={classData.stats.avgAttendance}
+                        occupancy={classData?.stats?.occupancy || '0%'}
+                        enrolled={classData?.stats?.enrolled || 0}
+                        avgAttendance={classData?.stats?.avgAttendance || 0}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(450)}>
                     <SessionDetailsCard
-                        timeRange={classData.session.timeRange}
-                        duration={classData.session.duration}
-                        location={classData.session.location}
-                        floor={classData.session.floor}
-                        capacity={classData.session.capacity}
+                        timeRange={classData?.session?.timeRange || ''}
+                        duration={classData?.session?.duration || ''}
+                        location={classData?.session?.location || ''}
+                        floor={classData?.session?.floor || ''}
+                        capacity={classData?.session?.capacity || 0}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(600)}>
                     <EnrolledStudentsSection
-                        students={classData.students}
+                        students={classData?.students || []}
                         onViewAll={() => { }}
                     />
                 </Animated.View>

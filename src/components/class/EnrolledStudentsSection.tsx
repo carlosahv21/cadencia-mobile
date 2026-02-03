@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { SectionHeader } from '../common/SectionHeader';
 
 interface StudentItemProps {
     name: string;
@@ -43,9 +44,6 @@ const StudentItem: React.FC<StudentItemProps> = ({ name, avatar, plan, credits, 
                 <View style={[styles.statusBadge, { backgroundColor: getStatusBg() }]}>
                     {getStatusIcon()}
                 </View>
-                <TouchableOpacity style={styles.menuButton}>
-                    <FontAwesome name="ellipsis-v" size={16} color={theme.colors.border} />
-                </TouchableOpacity>
             </View>
         </Card>
     );
@@ -71,12 +69,11 @@ export const EnrolledStudentsSection: React.FC<EnrolledStudentsSectionProps> = (
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Alumnos Inscritos</Text>
-                <TouchableOpacity onPress={onViewAll}>
-                    <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>Ver Todos</Text>
-                </TouchableOpacity>
-            </View>
+            <SectionHeader
+                title="Alumnos Inscritos"
+                actionText="Ver Todos"
+                onActionPress={() => onViewAll?.()}
+            />
             <View style={styles.list}>
                 {students.map(student => (
                     <StudentItem key={student.id} {...student} />

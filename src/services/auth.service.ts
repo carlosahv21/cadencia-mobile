@@ -56,10 +56,24 @@ export const authService = {
      */
     async validateToken(): Promise<boolean> {
         try {
-            await api.get('/auth/validate');
+            await api.get('/auth/me');
             return true;
         } catch (error) {
             return false;
+        }
+    },
+
+    /**
+     * Update push token
+     */
+    updatePushToken: async (userId: number, token: string): Promise<void> => {
+        try {
+            await api.patch(`/users/${userId}/push-token`, {
+                pushToken: token
+            });
+        } catch (error) {
+            console.error('Error al actualizar push token en el servidor:', error);
+            throw error;
         }
     },
 };

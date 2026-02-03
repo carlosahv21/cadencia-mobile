@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { Subtitle } from '../common/Subtitle';
 
 interface SessionDetailsCardProps {
     timeRange: string;
@@ -23,7 +24,10 @@ export const SessionDetailsCard: React.FC<SessionDetailsCardProps> = ({
 
     return (
         <Card style={styles.card}>
-            <Text style={[styles.sectionLabel, { color: theme.colors.textSecondary }]}>DETALLES DE SESIÓN</Text>
+            <Subtitle
+                leftText="Detalles de Sesión"
+                leftType="secondary"
+            />
 
             <View style={styles.itemRow}>
                 <View style={[styles.iconBox, { backgroundColor: theme.mode === 'light' ? '#F1F5F9' : '#1E293B' }]}>

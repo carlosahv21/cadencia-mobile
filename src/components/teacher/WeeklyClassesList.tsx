@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
+import { SectionHeader } from '../common/SectionHeader';
 
 interface ClassItemProps {
     day: string;
@@ -45,7 +46,7 @@ const ClassItem: React.FC<ClassItemProps> = ({ day, time, className, duration, r
     };
 
     return (
-        <Card onPress={onPress} style={styles.itemCard}>
+        <Card onPress={onPress}>
             <View style={styles.itemContent}>
                 <View style={[styles.iconBox, { backgroundColor: getIconBg() }]}>
                     <FontAwesome name={getIcon()} size={14} color={getIconColor()} />
@@ -93,12 +94,12 @@ export const WeeklyClassesList: React.FC<WeeklyClassesListProps> = ({
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Clases de la Semana</Text>
-                <TouchableOpacity onPress={onViewAll}>
-                    <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>Ver todas</Text>
-                </TouchableOpacity>
-            </View>
+            <SectionHeader
+                title="Clases de la Semana"
+                actionText="Ver todas"
+                onActionPress={() => { }}
+            />
+
             <View style={styles.list}>
                 {classes.map(cls => (
                     <ClassItem
@@ -118,14 +119,13 @@ export const WeeklyClassesList: React.FC<WeeklyClassesListProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 24,
+        marginTop: 14,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 4,
-        marginBottom: 12,
     },
     title: {
         fontSize: 16,
@@ -137,9 +137,6 @@ const styles = StyleSheet.create({
     },
     list: {
         gap: 0,
-    },
-    itemCard: {
-        marginBottom: 12,
     },
     itemContent: {
         flexDirection: 'row',

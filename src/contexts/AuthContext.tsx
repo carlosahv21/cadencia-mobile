@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { Platform } from 'react-native';
 import { authService } from '../services/auth.service';
+import { notificationService } from '../services/notification.service';
 import { storage } from '../utils/storage';
 import { User, Academy, LoginCredentials } from '../types';
 import axios from 'axios';
@@ -60,6 +62,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const registerPushNotifications = async (userId: number) => {
+        // Solo registrar en dispositivos físicos (no en web ni emuladores)
+        if (Platform.OS === 'web') {
+            console.log('⚠️ Notificaciones push no disponibles en web');
+            return;
+        }
+
+        try {
+            const pushToken = await notificationService.registerForPushNotificationsAsync();
+
+            if (pushToken) {
+                // Guardar token localmente
+                await storage.savePushToken(pushToken);
+
+                // Enviar token al backend
+                await authService.updatePushToken(userId, pushToken);
+            }
+        } catch (error) {
+            console.error('❌ Error al registrar push token:', error);
+        }
+    };
+
     const login = async (credentials: LoginCredentials) => {
         try {
             const response = await authService.login(credentials); // Esto devuelve AuthResponse
@@ -75,9 +99,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
                 setUser(user);
                 setAcademy(settings);
+
+                // Registrar notificaciones push después de login exitoso
+                await registerPushNotifications(user.id);
             }
         } catch (error) {
             console.error('Error:', error);
+            throw error; // Re-lanzar para que el componente de login pueda manejarlo
         }
     };
 

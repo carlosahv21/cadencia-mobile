@@ -8,6 +8,7 @@ const ACADEMY_KEY = 'academy_data';
 const REMEMBER_ME_KEY = 'remember_me';
 const THEME_KEY = 'theme_mode';
 const ONBOARDING_KEY = 'has_seen_onboarding';
+const PUSH_TOKEN_KEY = 'push_token';
 
 // Helper para detectar si estamos en Web
 const isWeb = Platform.OS === 'web';
@@ -96,12 +97,24 @@ export const storage = {
         return (await AsyncStorage.getItem(THEME_KEY)) as 'light' | 'dark' | null;
     },
 
+    // Push Token
+    async savePushToken(token: string): Promise<void> {
+        await AsyncStorage.setItem(PUSH_TOKEN_KEY, token);
+    },
+    async getPushToken(): Promise<string | null> {
+        return await AsyncStorage.getItem(PUSH_TOKEN_KEY);
+    },
+    async removePushToken(): Promise<void> {
+        await AsyncStorage.removeItem(PUSH_TOKEN_KEY);
+    },
+
     // Limpieza total
     async clearAuth(): Promise<void> {
         await Promise.all([
             this.removeToken(),
             this.removeUser(),
-            this.removeAcademy()
+            this.removeAcademy(),
+            this.removePushToken()
         ]);
     },
 };
