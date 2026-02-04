@@ -2,48 +2,39 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
-import { classService } from '../services/clases.service';
-import { kpiService } from '../services/kpi.service';
+import { dashboardService } from '../services/dashboard.service';
 import { userService } from '../services/user.service';
-import { DanceClass, DashboardStat, UserPlan } from '../types';
+import { DashboardStat, UserPlan } from '../types';
 
 export const useDashboardData = () => {
     const { theme } = useTheme();
     const { user } = useAuth();
     const { t } = useTranslation();
 
-    const [classes, setClasses] = useState<DanceClass[]>([]);
     const [rawKpis, setRawKpis] = useState<any>(null);
+    const [usersRisk, setUsersRisk] = useState<any>(null);
     const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
     const isStudent = user?.role_id === 3;
 
-    const getEnglishDayName = () => {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        return days[new Date().getDay()];
-    };
 
     const loadDashboardData = useCallback(async () => {
         try {
-            const day = getEnglishDayName();
-
             if (isStudent) {
-                const [classesRes, planRes] = await Promise.all([
-                    classService.getTodayClasses(day),
+                const [planRes] = await Promise.all([
                     userService.getUserPlan()
                 ]);
-                setClasses(classesRes.data || []);
                 setUserPlan(planRes.data);
             } else {
-                const [classesRes, kpiRes] = await Promise.all([
-                    classService.getTodayClasses(day),
-                    kpiService.getKpis()
+                const [kpiRes, usersRiskRes] = await Promise.all([
+                    dashboardService.getKpis(),
+                    dashboardService.getUsersRisk()
                 ]);
 
-                setClasses(classesRes.data || []);
                 setRawKpis(kpiRes.data);
+                setUsersRisk(usersRiskRes.data);
             }
         } catch (error) {
             console.error("Error en Dashboard Data Hook:", error);
@@ -90,10 +81,15 @@ export const useDashboardData = () => {
         ];
     }, [rawKpis, t, theme.colors]);
 
+    const usersAtRisk = useMemo(() => {
+        if (!usersRisk) return [];
+        return usersRisk;
+    }, [usersRisk]);
+
     return {
-        classes,
         kpis,
         userPlan,
+        usersAtRisk,
         loading,
         refreshing,
         onRefresh,

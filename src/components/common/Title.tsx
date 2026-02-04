@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TextStyle } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface TitleProps {
     title: string;
     toUpperCase?: boolean;
     type?: 'primary' | 'success' | 'warning' | 'danger' | 'default' | 'secondary';
+    titleStyle?: TextStyle;
 }
 
 export const Title: React.FC<TitleProps> = ({
     title,
     toUpperCase,
-    type
+    type,
+    titleStyle
 }) => {
     const { theme } = useTheme();
 
@@ -28,7 +30,7 @@ export const Title: React.FC<TitleProps> = ({
 
     return (
         <View style={styles.container}>
-            <Text style={[styles.title, { color: getColor(type || 'default') }]}>
+            <Text style={[styles.title, { color: getColor(type || 'default') }, titleStyle]}>
                 {toUpperCase ? title.toUpperCase() : title}
             </Text>
         </View>

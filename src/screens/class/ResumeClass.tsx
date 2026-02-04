@@ -6,15 +6,33 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button } from '../../components/common/Button';
 
-import { ClassStatsRow } from '../../components/class/ClassStatsRow';
 import { SessionDetailsCard } from '../../components/class/SessionDetailsCard';
 import { EnrolledStudentsSection } from '../../components/class/EnrolledStudentsSection';
 import { ManagementHeader } from '../../components/common/ManagementHeader';
+import { StatsSection } from '../../components/common/StatsSection';
 
 interface ResumeClassProps {
     classData?: any;
     onBack?: () => void;
 }
+
+const kpis = [
+    {
+        id: 1,
+        label: 'Ocupación',
+        value: '85%',
+    },
+    {
+        id: 2,
+        label: 'Inscritos',
+        value: '24',
+    },
+    {
+        id: 3,
+        label: 'Asis. Promedio',
+        value: '21'
+    }
+];
 
 export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassData, onBack }) => {
     const { theme } = useTheme();
@@ -33,11 +51,6 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
         name: 'Salsa Avanzado',
         level: 'Nivel Avanzado',
         date: '30 Ene 2026',
-        stats: {
-            occupancy: '85%',
-            enrolled: 24,
-            avgAttendance: 21
-        },
         session: {
             timeRange: '19:00 - 20:00',
             duration: '60 minutos',
@@ -106,11 +119,7 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
                 }
             >
                 <Animated.View entering={FadeInDown.duration(600).delay(300)}>
-                    <ClassStatsRow
-                        occupancy={classData?.stats?.occupancy || '0%'}
-                        enrolled={classData?.stats?.enrolled || 0}
-                        avgAttendance={classData?.stats?.avgAttendance || 0}
-                    />
+                    <StatsSection stats={kpis} />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(450)}>

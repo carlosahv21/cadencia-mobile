@@ -83,7 +83,6 @@ export const NextClassBanner = ({
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 20,
         marginTop: 10,
         marginBottom: 10,
     },

@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { ProfileResumeHeader } from '../../components/common/ProfileResumeHeader';
-import { TeacherStatsRow } from '../../components/teacher/TeacherStatsRow';
 import { PaymentSummaryCard } from '../../components/teacher/PaymentSummaryCard';
 import { WeeklyClassesList } from '../../components/teacher/WeeklyClassesList';
 import { TeacherContactInfoCard } from '../../components/teacher/TeacherContactInfoCard';
@@ -11,6 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { StatsSection } from '../../components/common/StatsSection';
 
 interface ResumenTeacherProps {
     teacher?: any;
@@ -30,6 +30,24 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
         }
     });
 
+    const kpis = [
+        {
+            id: 1,
+            label: 'Clases',
+            value: '142',
+        },
+        {
+            id: 2,
+            label: 'Rating',
+            value: '4.9',
+        },
+        {
+            id: 3,
+            label: 'Alumnos',
+            value: '850',
+        }
+    ]
+
     // Mock data for display (could come from navigation params or API)
     const teacherData = {
         name: 'Adolfo Stanton',
@@ -38,11 +56,6 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
         avatar: 'https://mockmind-api.uifaces.co/content/human/222.jpg',
         email: 'adolfo.s@studiodance.com',
         phone: '+34 612 345 678',
-        stats: {
-            classesCount: 142,
-            rating: 4.9,
-            studentsCount: 850
-        },
         payments: {
             pending: '$420.00',
             paid: '$1,250.00',
@@ -103,10 +116,8 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
                 }
             >
                 <Animated.View entering={FadeInDown.duration(600).delay(300)}>
-                    <TeacherStatsRow
-                        classesCount={teacherData?.stats?.classesCount || 0}
-                        rating={teacherData?.stats?.rating || 0}
-                        studentsCount={teacherData?.stats?.studentsCount || 0}
+                    <StatsSection
+                        stats={kpis}
                     />
                 </Animated.View>
 

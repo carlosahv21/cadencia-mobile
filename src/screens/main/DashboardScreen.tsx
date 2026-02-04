@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, ScrollView, RefreshControl, View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
 import { NextClassBanner } from '../../components/dashboard/NextClassBanner';
 import { AttentionSection } from '../../components/dashboard/AttentionSection';
-import { StatsSection } from '../../components/dashboard/StatsSection';
+import { StatsSection } from '../../components/common/StatsSection';
 
 // UI de Ant Design
 import { Card, Tag, Progress, WhiteSpace } from '@ant-design/react-native';
@@ -23,18 +23,28 @@ export const DashboardScreen = () => {
     const navigation = useNavigation<any>();
 
     const {
-        classes,
         kpis,
         userPlan,
+        usersAtRisk,
         loading,
         refreshing,
         onRefresh,
         isStudent
     } = useDashboardData();
 
+    const scrollViewRef = useRef<ScrollView>(null);
+    const [attentionSectionY, setAttentionSectionY] = useState(0);
+
+    const handleScrollToAttention = () => {
+        if (scrollViewRef.current && attentionSectionY > 0) {
+            scrollViewRef.current.scrollTo({ y: attentionSectionY, animated: true });
+        }
+    };
+
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
             <ScrollView
+                ref={scrollViewRef}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
                 refreshControl={
@@ -57,8 +67,6 @@ export const DashboardScreen = () => {
                     location={"Studio A"}
                     instructorImage={"https://mockmind-api.uifaces.co/content/human/221.jpg"}
                 />
-
-                <AttentionSection users={[]} />
 
                 {isStudent && userPlan ? (
                     <View style={styles.planSection}>
@@ -93,15 +101,22 @@ export const DashboardScreen = () => {
                 ) : (
                     <StatsSection stats={kpis} />
                 )}
+
+                <View onLayout={(event) => setAttentionSectionY(event.nativeEvent.layout.y)}>
+                    <AttentionSection
+                        users={usersAtRisk}
+                        onCollapse={handleScrollToAttention}
+                    />
+                </View>
+
             </ScrollView>
         </SafeAreaView>
     );
 };
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: { flex: 1, paddingHorizontal: 20, },
     scrollContent: { paddingBottom: 30 },
     planSection: {
-        paddingHorizontal: 20,
         marginTop: 15,
     },
     planBody: {
