@@ -11,6 +11,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StatsSection } from '../../components/common/StatsSection';
+import { teacherService } from '../../services/teacher.service';
 
 interface ResumenTeacherProps {
     teacher?: any;
@@ -30,73 +31,86 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
         }
     });
 
+    // Initial data source
+    const initialTeacherData = teacher || (route.params as any)?.teacher || (route.params as any)?.user || user;
+
+    // State
+    const [teacherDetails, setTeacherDetails] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchTeacherDetails = useCallback(async () => {
+        if (initialTeacherData?.id) {
+            try {
+                if (!refreshing) setLoading(true);
+                const response = await teacherService.getById(initialTeacherData.id);
+                if (response.success) {
+                    setTeacherDetails(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching teacher details:', error);
+            } finally {
+                setLoading(false);
+                setRefreshing(false);
+            }
+        }
+    }, [initialTeacherData?.id]);
+
+    React.useEffect(() => {
+        fetchTeacherDetails();
+    }, [fetchTeacherDetails]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchTeacherDetails();
+    }, [fetchTeacherDetails]);
+
+    // Helpers
+    const formatCurrency = (amount?: number) => {
+        if (amount === undefined) return '$0.00';
+        return `$${amount.toFixed(2)}`;
+    };
+
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return '';
+        return new Date(dateString).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'long'
+        });
+    };
+
+    // Derived Data
+    const header = teacherDetails?.header;
+    const stats = teacherDetails?.stats;
+    const payment = teacherDetails?.payment_summary;
+    const weeklyClasses = teacherDetails?.weekly_classes || [];
+
     const kpis = [
         {
             id: 1,
             label: 'Clases',
-            value: '142',
+            value: stats?.classes_count?.toString() || '0',
         },
         {
             id: 2,
             label: 'Rating',
-            value: '4.9',
+            value: stats?.rating?.toString() || '0.0',
         },
         {
             id: 3,
             label: 'Alumnos',
-            value: '850',
+            value: stats?.students_count?.toString() || '0',
         }
-    ]
-
-    // Mock data for display (could come from navigation params or API)
-    const teacherData = {
-        name: 'Adolfo Stanton',
-        role: 'Instructor Senior',
-        specialty: 'Salsa & Bachata Specialist',
-        avatar: 'https://mockmind-api.uifaces.co/content/human/222.jpg',
-        email: 'adolfo.s@studiodance.com',
-        phone: '+34 612 345 678',
-        payments: {
-            pending: '$420.00',
-            paid: '$1,250.00',
-            nextCut: '30 de Octubre'
-        },
-        weeklyClasses: [
-            {
-                id: '1',
-                day: 'Lanes',
-                time: '18:00',
-                name: 'Salsa Intermedio',
-                duration: '60 min',
-                room: 'Sala A',
-                type: 'salsa' as const
-            },
-            {
-                id: '2',
-                day: 'Miércoles',
-                time: '19:30',
-                name: 'Bachata Avanzado',
-                duration: '90 min',
-                room: 'Sala Principal',
-                type: 'bachata' as const
-            }
-        ]
-    };
-
-    const [refreshing, setRefreshing] = useState(false);
-    const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        setTimeout(() => setRefreshing(false), 1500);
-    }, []);
+    ];
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
                 <ProfileResumeHeader
-                    name={teacherData.name}
-                    role={teacherData.role}
-                    avatar={teacherData.avatar}
-                    specialty={teacherData.specialty}
+                    name={header?.full_name || initialTeacherData?.name || 'Profesor'}
+                    role={header?.role_label || 'Profesor'}
+                    avatar={header?.avatar || initialTeacherData?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
+                    email={header?.email || initialTeacherData?.email || ''}
                     onBack={handleBack}
                     onEdit={() => { }}
                     showEditButton={false}
@@ -121,24 +135,34 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
                     />
                 </Animated.View>
 
-                <Animated.View entering={FadeInDown.duration(600).delay(450)}>
-                    <PaymentSummaryCard
-                        pendingAmount={teacherData?.payments?.pending || '0'}
-                        paidAmount={teacherData?.payments?.paid || '0'}
-                        nextCutDate={teacherData?.payments?.nextCut || ''}
-                    />
-                </Animated.View>
+                {payment && (
+                    <Animated.View entering={FadeInDown.duration(600).delay(450)}>
+                        <PaymentSummaryCard
+                            pendingAmount={formatCurrency(payment.pending_amount)}
+                            paidAmount={formatCurrency(payment.paid_amount)}
+                            nextCutDate={formatDate(payment.next_cutoff_date)}
+                        />
+                    </Animated.View>
+                )}
 
                 <Animated.View entering={FadeInDown.duration(600).delay(600)}>
                     <WeeklyClassesList
-                        classes={teacherData?.weeklyClasses || []}
+                        classes={weeklyClasses.map((c: any) => ({
+                            id: c.id.toString(),
+                            name: c.name,
+                            time: c.schedule.split('•')[1]?.trim() || '',
+                            day: c.schedule.split('•')[0]?.trim() || '',
+                            duration: c.duration,
+                            room: c.location,
+                            type: c.genre.toLowerCase(),
+                        }))}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(750)}>
                     <TeacherContactInfoCard
-                        email={teacherData.email}
-                        phone={teacherData.phone}
+                        email={header?.email || initialTeacherData?.email || ''}
+                        phone={header?.phone || '+584120248199'}
                     />
                 </Animated.View>
             </ScrollView>

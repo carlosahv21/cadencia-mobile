@@ -26,6 +26,7 @@ export const DashboardScreen = () => {
         kpis,
         userPlan,
         usersAtRisk,
+        nextClass,
         loading,
         refreshing,
         onRefresh,
@@ -60,13 +61,7 @@ export const DashboardScreen = () => {
                 <DashboardHeader onSearchPress={() => navigation.navigate('GlobalSearch')} />
 
                 {/* Contenido Principal */}
-                <NextClassBanner
-                    className={"Advanced Contemporary"}
-                    instructorName={"Judy Doe"}
-                    time={"15 mins"}
-                    location={"Studio A"}
-                    instructorImage={"https://mockmind-api.uifaces.co/content/human/221.jpg"}
-                />
+                <NextClassBanner nextClass={nextClass} />
 
                 {isStudent && userPlan ? (
                     <View style={styles.planSection}>

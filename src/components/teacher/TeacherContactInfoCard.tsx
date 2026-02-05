@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { Card } from '../common/Card';
@@ -39,15 +39,23 @@ export const TeacherContactInfoCard: React.FC<TeacherContactInfoCardProps> = ({
 }) => {
     const { theme } = useTheme();
 
+    const handleCall = () => {
+        Linking.openURL(`tel:${phone}`);
+    };
+
+    const handleEmail = () => {
+        Linking.openURL(`mailto:${email}`);
+    };
+
     return (
         <View style={styles.container}>
             <SectionHeader
                 title="Información de Contacto"
             />
             <Card style={styles.card}>
-                <ContactItem icon="envelope" label="Email" value={email} onPress={() => { }} />
+                <ContactItem icon="envelope" label="Email" value={email} onPress={handleEmail} />
                 <View style={styles.spacer} />
-                <ContactItem icon="phone" label="Teléfono" value={phone} onPress={() => { }} />
+                <ContactItem icon="phone" label="Teléfono" value={phone} onPress={handleCall} />
             </Card>
         </View>
     );

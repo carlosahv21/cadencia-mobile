@@ -7,21 +7,38 @@ import { FontAwesome } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface NextClassProps {
-    className: string;
-    instructorName: string;
-    time: string;
-    location: string;
-    instructorImage: string;
+    nextClass?: {
+        title: string;
+        teacher: { name: string };
+        location: string;
+        startTime: string;
+        dayName: string;
+        rawHour: string;
+    } | null;
 }
 
-export const NextClassBanner = ({
-    className = "Advanced Contemporary",
-    instructorName = "Marco",
-    time = "15 mins",
-    location = "Studio A",
-    instructorImage = "https://mockmind-api.uifaces.co/content/human/221.jpg"
-}: NextClassProps) => {
+export const NextClassBanner = ({ nextClass }: NextClassProps) => {
     const { t } = useTranslation();
+
+    if (!nextClass) {
+        return (
+            <Animated.View entering={FadeInDown.duration(600).delay(400)} style={styles.container}>
+                <LinearGradient
+                    colors={['#2563EB', '#3B82F6']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.gradient}
+                >
+                    <View style={[styles.content, { justifyContent: 'center' }]}>
+                        <Text style={{ color: 'white', fontSize: 20, fontWeight: '500' }}>
+                            ¡Has terminado por hoy! ✨
+                            No hay más clases programadas.
+                        </Text>
+                    </View>
+                </LinearGradient>
+            </Animated.View>
+        );
+    }
 
     return (
         <Animated.View
@@ -45,19 +62,19 @@ export const NextClassBanner = ({
                         />
 
                         <Text style={styles.className} numberOfLines={2}>
-                            {className}
+                            {nextClass.title}
                         </Text>
 
                         <View style={styles.detailsRow}>
                             <View style={styles.detailItem}>
                                 {/* Icono clock-o de FontAwesome */}
                                 <FontAwesome name='clock-o' size={16} color="white" />
-                                <Text style={styles.detailText}>{time}</Text>
+                                <Text style={styles.detailText}>{nextClass.rawHour}</Text>
                             </View>
                             <View style={[styles.detailItem, { marginLeft: 15 }]}>
                                 {/* Icono map-marker de FontAwesome */}
                                 <FontAwesome name="map-marker" size={18} color="white" />
-                                <Text style={styles.detailText}>{location}</Text>
+                                <Text style={styles.detailText}>{nextClass.location}</Text>
                             </View>
                         </View>
                     </View>
@@ -66,12 +83,12 @@ export const NextClassBanner = ({
                         <View style={styles.instructorContainer}>
                             <View style={styles.avatarWrapper}>
                                 <Image
-                                    source={{ uri: instructorImage }}
+                                    source={{ uri: 'https://mockmind-api.uifaces.co/content/human/221.jpg' }}
                                     style={styles.instructorPhoto}
                                 />
                             </View>
                             <View style={styles.instructorTag}>
-                                <Text style={styles.instructorNameText}>{instructorName}</Text>
+                                <Text style={styles.instructorNameText}>{nextClass.teacher.name.split(' ')[0]}</Text>
                             </View>
                         </View>
                     </View>

@@ -4,6 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { dashboardService } from '../services/dashboard.service';
 import { userService } from '../services/user.service';
+import { classService, NextClassData } from '../services/clases.service';
 import { DashboardStat, UserPlan } from '../types';
 
 export const useDashboardData = () => {
@@ -14,6 +15,7 @@ export const useDashboardData = () => {
     const [rawKpis, setRawKpis] = useState<any>(null);
     const [usersRisk, setUsersRisk] = useState<any>(null);
     const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
+    const [nextClass, setNextClass] = useState<NextClassData | null>(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -23,18 +25,22 @@ export const useDashboardData = () => {
     const loadDashboardData = useCallback(async () => {
         try {
             if (isStudent) {
-                const [planRes] = await Promise.all([
-                    userService.getUserPlan()
+                const [planRes, nextClassRes] = await Promise.all([
+                    userService.getUserPlan(),
+                    classService.getNextClass()
                 ]);
                 setUserPlan(planRes.data);
+                setNextClass(nextClassRes.data);
             } else {
-                const [kpiRes, usersRiskRes] = await Promise.all([
+                const [kpiRes, usersRiskRes, nextClassRes] = await Promise.all([
                     dashboardService.getKpis(),
-                    dashboardService.getUsersRisk()
+                    dashboardService.getUsersRisk(),
+                    classService.getNextClass()
                 ]);
 
                 setRawKpis(kpiRes.data);
                 setUsersRisk(usersRiskRes.data);
+                setNextClass(nextClassRes.data);
             }
         } catch (error) {
             console.error("Error en Dashboard Data Hook:", error);
@@ -90,6 +96,7 @@ export const useDashboardData = () => {
         kpis,
         userPlan,
         usersAtRisk,
+        nextClass,
         loading,
         refreshing,
         onRefresh,

@@ -12,7 +12,7 @@ interface PlanInfoCardProps {
     planName: string;
     description: string;
     price: string;
-    status: 'ACTIVE' | 'PENDING' | 'EXPIRED';
+    status: 'ACTIVE' | 'PENDING' | 'EXPIRED' | 'INACTIVE';
     usedClasses: number;
     totalClasses: number;
     startDate: string;
@@ -38,6 +38,7 @@ export const PlanInfoCard: React.FC<PlanInfoCardProps> = ({
             case 'ACTIVE': return 'success';
             case 'PENDING': return 'warning';
             case 'EXPIRED': return 'danger';
+            case 'INACTIVE': return 'default';
             default: return 'primary';
         }
     };
@@ -47,6 +48,7 @@ export const PlanInfoCard: React.FC<PlanInfoCardProps> = ({
             case 'ACTIVE': return 'ACTIVO';
             case 'PENDING': return 'PENDIENTE';
             case 'EXPIRED': return 'EXPIRADO';
+            case 'INACTIVE': return 'INACTIVO';
             default: return status;
         }
     };

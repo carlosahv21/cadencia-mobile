@@ -96,8 +96,8 @@ export const WeeklyClassesList: React.FC<WeeklyClassesListProps> = ({
         <View style={styles.container}>
             <SectionHeader
                 title="Clases de la Semana"
-                actionText="Ver todas"
-                onActionPress={() => { }}
+                // actionText="Ver todas"
+                // onActionPress={() => { }}
             />
 
             <View style={styles.list}>

@@ -39,7 +39,9 @@ const StudentItem: React.FC<StudentItemProps> = ({ name, avatar, plan, credits, 
                 <Image source={{ uri: avatar }} style={styles.avatar} />
                 <View style={styles.infoContainer}>
                     <Text style={[styles.studentName, { color: theme.colors.textPrimary }]}>{name}</Text>
-                    <Text style={[styles.planInfo, { color: theme.colors.textSecondary }]}>{plan} • {credits}</Text>
+                    <Text style={[styles.planInfo, { color: theme.colors.textSecondary }]}>
+                        {plan} {credits ? `• ${credits}` : ''}
+                    </Text>
                 </View>
                 <View style={[styles.statusBadge, { backgroundColor: getStatusBg() }]}>
                     {getStatusIcon()}
@@ -71,8 +73,8 @@ export const EnrolledStudentsSection: React.FC<EnrolledStudentsSectionProps> = (
         <View style={styles.container}>
             <SectionHeader
                 title="Alumnos Inscritos"
-                actionText="Ver Todos"
-                onActionPress={() => onViewAll?.()}
+            // actionText="Ver Todos"
+            // onActionPress={() => onViewAll?.()}
             />
             <View style={styles.list}>
                 {students.map(student => (

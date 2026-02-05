@@ -27,8 +27,8 @@ export const PaymentSummaryCard: React.FC<PaymentSummaryCardProps> = ({
             <View>
                 <SectionHeader
                     title="Resumen de pagos"
-                    actionText='Ver historial'
-                    onActionPress={() => { }}
+                    // actionText='Ver historial'
+                    // onActionPress={() => { }}
                 />
             </View>
 

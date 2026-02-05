@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { PlanInfoCard } from '../../components/student/PlanInfoCard';
 import { ActivityLogCard } from '../../components/student/ActivityLogCard';
+import { studentService } from '../../services/student.service';
 
 interface ResumeStudentProps {
     student?: any;
@@ -22,8 +23,12 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
     const navigation = useNavigation();
     const route = useRoute();
 
-    // In a real scenario, these could come from navigation params or an API call
-    const studentData = student || (route.params as any)?.student || user;
+    // Initial data from navigation or props
+    const initialStudentData = student || (route.params as any)?.student || user;
+
+    // State for full details
+    const [studentDetails, setStudentDetails] = useState<any>(initialStudentData);
+    const [loading, setLoading] = useState(false);
 
     // Fallback for navigation if available
     const handleBack = onBack || (() => {
@@ -33,20 +38,77 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
     });
 
     const [refreshing, setRefreshing] = useState(false);
+
+    const fetchStudentDetails = useCallback(async () => {
+        if (initialStudentData?.id) {
+            try {
+                // If triggered by pull-to-refresh, don't show full loading screen
+                if (!refreshing) setLoading(true);
+
+                const response = await studentService.getById(initialStudentData.id);
+                if (response.success && response.data) {
+                    setStudentDetails(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching student details:', error);
+            } finally {
+                setLoading(false);
+                setRefreshing(false);
+            }
+        }
+    }, [initialStudentData?.id]);
+
+    // Initial fetch
+    React.useEffect(() => {
+        fetchStudentDetails();
+    }, [fetchStudentDetails]);
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        setTimeout(() => setRefreshing(false), 1500);
-    }, []);
+        fetchStudentDetails();
+    }, [fetchStudentDetails]);
+
+    // Format dates and currency
+    const formatDate = (dateString?: string) => {
+        if (!dateString) return 'N/A';
+        return new Date(dateString).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    };
+
+    const formatDateTime = (dateString?: string) => {
+        if (!dateString) return 'N/A';
+        return new Date(dateString).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const formatCurrency = (amount?: number) => {
+        if (amount === undefined) return '$0.00';
+        return `$${amount.toFixed(2)}`;
+    };
+
+    // Derived data
+    const plan = studentDetails?.plan;
+    const fullName = studentDetails?.first_name
+        ? `${studentDetails.first_name} ${studentDetails.last_name || ''}`
+        : studentDetails?.name || 'Estudiante';
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View
                 entering={FadeIn.duration(600).delay(200)}>
                 <ProfileResumeHeader
-                    name={studentData?.name || 'Adolfo Stanton'}
-                    role={studentData?.role || 'Estudiante'}
-                    avatar={studentData?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
-                    email={studentData?.email || 'zora18@hotmail.com'}
+                    name={fullName}
+                    role={studentDetails?.role === 'student' ? 'Estudiante' : (studentDetails?.role || 'Estudiante')}
+                    avatar={studentDetails?.avatar || 'https://mockmind-api.uifaces.co/content/human/221.jpg'}
+                    email={studentDetails?.email || ''}
                     onBack={handleBack}
                     onEdit={() => { }}
                     showEditButton={false}
@@ -66,23 +128,37 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
                 }
             >
                 <Animated.View entering={FadeIn.duration(600).delay(400)}>
-                    <PlanInfoCard
-                        planName="Paquete de 8 Clases"
-                        description="Bono de 8 clases ideal para estudiantes frecuentes que buscan mejorar su técnica."
-                        price="$20.00"
-                        status="ACTIVE"
-                        usedClasses={2}
-                        totalClasses={8}
-                        startDate="11 Ene 2026"
-                        endDate="10 Feb 2026"
-                    />
+                    {plan ? (
+                        <PlanInfoCard
+                            planName={plan.name}
+                            description={plan.description}
+                            price={formatCurrency(plan.price)}
+                            status={plan.status.toUpperCase()}
+                            usedClasses={plan.classes_used}
+                            totalClasses={plan.classes_total}
+                            startDate={formatDate(plan.start_date)}
+                            endDate={formatDate(plan.end_date)}
+                        />
+                    ) : (
+                        // Placeholder or Empty state if no plan
+                        <PlanInfoCard
+                            planName={t('Sin Plan Activo')}
+                            description={t('El estudiante no tiene un plan activo actualmente.')}
+                            price={"-"}
+                            status="INACTIVE"
+                            usedClasses={0}
+                            totalClasses={0}
+                            startDate="-"
+                            endDate="-"
+                        />
+                    )}
                 </Animated.View>
 
                 <Animated.View entering={FadeIn.duration(600).delay(600)}>
                     <ActivityLogCard
-                        emailVerified={false}
-                        lastLogin="Nunca"
-                        createdAt="11 Dic 2025 • 09:14 AM"
+                        emailVerified={studentDetails?.email_verified ?? false}
+                        lastLogin={studentDetails?.last_login ? formatDateTime(studentDetails.last_login) : 'Nunca'}
+                        createdAt={studentDetails?.created_at ? formatDateTime(studentDetails.created_at) : 'N/A'}
                     />
                 </Animated.View>
             </ScrollView>

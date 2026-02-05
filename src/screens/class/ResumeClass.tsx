@@ -10,6 +10,7 @@ import { SessionDetailsCard } from '../../components/class/SessionDetailsCard';
 import { EnrolledStudentsSection } from '../../components/class/EnrolledStudentsSection';
 import { ManagementHeader } from '../../components/common/ManagementHeader';
 import { StatsSection } from '../../components/common/StatsSection';
+import { classService } from '../../services/clases.service';
 
 interface ResumeClassProps {
     classData?: any;
@@ -46,62 +47,87 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
         }
     });
 
-    // Mock data for display
-    const classData = {
-        name: 'Salsa Avanzado',
-        level: 'Nivel Avanzado',
-        date: '30 Ene 2026',
-        session: {
-            timeRange: '19:00 - 20:00',
-            duration: '60 minutos',
-            location: 'Salón Principal',
-            floor: 'Piso 2',
-            capacity: 30
-        },
-        students: [
-            {
-                id: '1',
-                name: 'Colten Gusikowski',
-                avatar: 'https://mockmind-api.uifaces.co/content/human/231.jpg',
-                plan: 'Plan Pro',
-                credits: '12 clases rest.',
-                status: 'present' as const
-            },
-            {
-                id: '2',
-                name: 'Esta Wuckert',
-                avatar: 'https://mockmind-api.uifaces.co/content/human/232.jpg',
-                plan: 'Bono 8',
-                credits: '2 clases rest.',
-                status: 'pending' as const
-            },
-            {
-                id: '3',
-                name: 'Royce Considine',
-                avatar: 'https://mockmind-api.uifaces.co/content/human/233.jpg',
-                plan: 'Plan Básico',
-                credits: '4 clases rest.',
-                status: 'present' as const
-            }
-        ]
-    };
+    // Initial data source
+    const initialClassData = propClassData || (route.params as any)?.classData;
 
+    // State
+    const [classDetails, setClassDetails] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+
+    const fetchClassDetails = useCallback(async () => {
+        if (initialClassData?.id) {
+            try {
+                if (!refreshing) setLoading(true);
+                const response = await classService.getDetails(initialClassData.id);
+                if (response.success) {
+                    setClassDetails(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching class details:', error);
+            } finally {
+                setLoading(false);
+                setRefreshing(false);
+            }
+        }
+    }, [initialClassData?.id]);
+
+    React.useEffect(() => {
+        fetchClassDetails();
+    }, [fetchClassDetails]);
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        setTimeout(() => setRefreshing(false), 1500);
-    }, []);
+        fetchClassDetails();
+    }, [fetchClassDetails]);
 
-    const handleTakeAttendance = () => {
-        // navigation.navigate('Attendance', { classId: classData.id });
+    // Derived Data
+    const header = classDetails?.header;
+    const stats = classDetails?.stats || [];
+    const session = classDetails?.session_details;
+    const students = classDetails?.students || [];
+
+    const kpis = stats.map((stat: any, index: number) => ({
+        id: index,
+        label: stat.label,
+        value: stat.value
+    }));
+
+    // Derived class data for components
+    const displayClassData = {
+        name: header?.title || initialClassData?.name || 'Clase',
+        level: header?.genre || initialClassData?.genre || 'General', // Using genre as subtitle part 1
+        date: header?.level_tag?.split('•')[1]?.trim() || initialClassData?.date || '', // Extracting day/date
+        subtitle: header ? `${header.genre} • ${header.level_tag}` : (initialClassData ? `${initialClassData.genre || ''} • ${initialClassData.date || ''}` : ''),
+
+        session: {
+            timeRange: session?.time_range || initialClassData?.session?.timeRange || '',
+            duration: session?.duration_label || initialClassData?.session?.duration || '',
+            location: session?.location || initialClassData?.session?.location || '',
+            floor: session?.location_detail?.split('•')[0]?.trim() || initialClassData?.session?.floor || '',
+            capacity: parseInt(session?.location_detail?.split('Capacidad:')[1]?.trim()) || initialClassData?.session?.capacity || 0
+        },
+
+        students: students.map((s: any) => ({
+            id: s.id.toString(),
+            name: s.full_name,
+            avatar: s.avatar || 'https://mockmind-api.uifaces.co/content/human/221.jpg',
+            plan: s.plan_info?.split('•')[0]?.trim() || 'Estudiante',
+            credits: s.last_attendance_date
+                ? `${s.plan_info?.split('•')[1]?.trim() || ''}\nÚltima asistencia: ${new Date(s.last_attendance_date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short' })}`
+                : s.plan_info?.split('•')[1]?.trim() || '',
+            status: s.has_attended ? 'present' : 'absent'
+        }))
     };
+
+
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
                 <ManagementHeader
-                    title={classData?.name || 'Clase'}
-                    subtitle={`${classData?.level || ''} • ${classData?.date || ''}`}
+                    title={displayClassData.name}
+                    subtitle={displayClassData.subtitle}
                     onBack={handleBack}
                 />
             </Animated.View>
@@ -124,31 +150,21 @@ export const ResumeClass: React.FC<ResumeClassProps> = ({ classData: propClassDa
 
                 <Animated.View entering={FadeInDown.duration(600).delay(450)}>
                     <SessionDetailsCard
-                        timeRange={classData?.session?.timeRange || ''}
-                        duration={classData?.session?.duration || ''}
-                        location={classData?.session?.location || ''}
-                        floor={classData?.session?.floor || ''}
-                        capacity={classData?.session?.capacity || 0}
+                        timeRange={displayClassData.session.timeRange}
+                        duration={displayClassData.session.duration}
+                        location={displayClassData.session.location}
+                        floor={displayClassData.session.floor}
+                        capacity={displayClassData.session.capacity}
                     />
                 </Animated.View>
 
                 <Animated.View entering={FadeInDown.duration(600).delay(600)}>
                     <EnrolledStudentsSection
-                        students={classData?.students || []}
+                        students={displayClassData.students}
                         onViewAll={() => { }}
                     />
                 </Animated.View>
             </ScrollView>
-
-            <View style={styles.footer}>
-                <Button
-                    title="Tomar Asistencia"
-                    onPress={handleTakeAttendance}
-                    icon="check-square-o"
-                    size="lg"
-                    fullWidth
-                />
-            </View>
         </View>
     );
 };
@@ -159,16 +175,6 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingHorizontal: 16,
-        paddingBottom: 100, // Space for floating footer
-    },
-    footer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(0, 0, 0, 0.05)',
+        paddingBottom: 20,
     },
 });

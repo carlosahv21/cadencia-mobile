@@ -4,16 +4,15 @@ import { FontAwesome } from '@expo/vector-icons';
 import { DFCard } from '../common/DFCard';
 import { useTheme } from '../../contexts/ThemeContext';
 import Animated, { FadeInRight } from 'react-native-reanimated';
-import { Title } from './Title';
+import { SectionHeader } from './SectionHeader';
 
 export const StatsSection = ({ stats }: any) => {
     const { theme } = useTheme();
 
     return (
         <View style={styles.container}>
-            <Title
+            <SectionHeader
                 title="Estadísticas"
-                titleStyle={{ fontWeight: 500, letterSpacing: 0 }}
             />
             <View style={styles.row}>
                 {stats.map((stat: any, index: number) => (
@@ -67,11 +66,11 @@ export const StatsSection = ({ stats }: any) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 10
+        marginTop: 14
     },
     row: {
         flexDirection: 'row',
-        gap: 8, // Reducido de 10 para ganar ancho en las cards
+        gap: 8,
         paddingBottom: 10
     },
     cardContainer: {
