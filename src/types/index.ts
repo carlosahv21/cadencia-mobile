@@ -127,3 +127,24 @@ export interface ThemeColors {
     success: string;
     warning: string;
 }
+
+export type NotificationRoleTarget = 'ADMIN' | 'STUDENT' | 'TEACHER' | 'RECEPTIONIST' | 'ALL';
+export type NotificationCategory = 'PAYMENT' | 'CLASS' | 'SYSTEM' | 'ATTENDANCE' | 'REGISTRATION';
+
+export interface DanceFlowNotification {
+    id: number;
+    user_id: number;
+    role_target: NotificationRoleTarget;
+    category: NotificationCategory;
+    title: string;
+    message: string;
+    is_read: boolean;
+    created_at: string;
+}
+
+export interface NotificationsResponse {
+    success: boolean;
+    message: string;
+    data: DanceFlowNotification[];
+    pagination?: Pagination;
+}

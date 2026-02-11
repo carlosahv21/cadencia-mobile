@@ -49,7 +49,10 @@ export const DashboardScreen = () => {
             refreshing={refreshing}
             onRefresh={onRefresh}
         >
-            <DashboardHeader onSearchPress={() => navigation.navigate('GlobalSearch')} />
+            <DashboardHeader
+                onSearchPress={() => navigation.navigate('GlobalSearch')}
+                onNotificationsPress={() => navigation.navigate('Notifications')}
+            />
 
             <NextClassBanner nextClass={nextClass} />
 

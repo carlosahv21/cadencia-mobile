@@ -17,6 +17,7 @@ import { GlobalSearchScreen } from '../screens/search/GlobalSearchScreen';
 import { ResumeStudent } from '../screens/student/ResumeStudent';
 import { ResumenTeacher } from '../screens/teacher/ResumenTeacher';
 import { ResumeClass } from '../screens/class/ResumeClass';
+import { NotificationsScreen } from '../screens/notifications/NotificationsScreen';
 import { DanceClass } from '../types';
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ export const MainNavigator = () => {
       <Stack.Screen name="ResumeStudent" component={ResumeStudent} />
       <Stack.Screen name="ResumenTeacher" component={ResumenTeacher} />
       <Stack.Screen name="ResumeClass" component={ResumeClass} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 };
