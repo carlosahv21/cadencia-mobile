@@ -14,22 +14,19 @@ export const useDashboardData = () => {
 
     const [rawKpis, setRawKpis] = useState<any>(null);
     const [usersRisk, setUsersRisk] = useState<any>(null);
-    const [userPlan, setUserPlan] = useState<UserPlan | null>(null);
     const [nextClass, setNextClass] = useState<NextClassData | null>(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
-    const isStudent = user?.role_id === 3;
+    const isStudent = user?.role === 'student';
 
 
     const loadDashboardData = useCallback(async () => {
         try {
             if (isStudent) {
-                const [planRes, nextClassRes] = await Promise.all([
-                    userService.getUserPlan(),
+                const [nextClassRes] = await Promise.all([
                     classService.getNextClass()
                 ]);
-                setUserPlan(planRes.data);
                 setNextClass(nextClassRes.data);
             } else {
                 const [kpiRes, usersRiskRes, nextClassRes] = await Promise.all([
@@ -94,7 +91,6 @@ export const useDashboardData = () => {
 
     return {
         kpis,
-        userPlan,
         usersAtRisk,
         nextClass,
         loading,

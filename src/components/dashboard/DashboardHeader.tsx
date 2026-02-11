@@ -56,13 +56,15 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             </View>
 
             <View style={styles.actionsContainer}>
-                <Button
-                    onPress={() => onSearchPress?.()}
-                    type="default"
-                    variant="filled"
-                    size="sm"
-                    icon="search"
-                />
+                {user?.role === 'admin' && (
+                    <Button
+                        onPress={() => onSearchPress?.()}
+                        type="default"
+                        variant="filled"
+                        size="sm"
+                        icon="search"
+                    />
+                )}
 
                 <Button
                     onPress={() => onNotificationsPress?.()}

@@ -105,7 +105,7 @@ npm run web
 
 ```
 src/
-├── components/       # Componentes reutilizables
+├── components/      # Componentes reutilizables
 ├── screens/         # Pantallas de la app
 ├── navigation/      # Configuración de navegación
 ├── services/        # Servicios de API

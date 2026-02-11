@@ -5,8 +5,17 @@ export interface User {
     email: string;
     name: string;
     role: string;
-    role_id: number; // 1: Admin, 2: Profesor, 3: Alumno
-    plan?: string | null;
+    plan?: {
+        name: string;
+        description: string;
+        price: string;
+        type: string;
+        status: string;
+        classes_used: number;
+        max_classes: number;
+        start_date: string;
+        end_date: string;
+    } | null;
     permissions?: string[];
     avatar?: string;
 }

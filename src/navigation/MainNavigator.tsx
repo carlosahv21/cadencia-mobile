@@ -9,10 +9,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationProp } from '@react-navigation/native';
 
 // Pantallas
-import { DashboardScreen } from '../screens/main/DashboardScreen';
-import { ClassesScreen } from '../screens/main/ClassesScreen';
-import { ProfileScreen } from '../screens/main/ProfileScreen';
-import { AttendanceScreen } from '../screens/main/AttendanceScreen';
+import { DashboardScreen } from '../screens/dashboard/DashboardScreen';
+import { ClassesScreen } from '../screens/class/ClassesScreen';
+import { ProfileScreen } from '../screens/profile/ProfileScreen';
+import { AttendanceScreen } from '../screens/attendance/AttendanceScreen';
 import { GlobalSearchScreen } from '../screens/search/GlobalSearchScreen';
 import { ResumeStudent } from '../screens/student/ResumeStudent';
 import { ResumenTeacher } from '../screens/teacher/ResumenTeacher';
