@@ -15,7 +15,7 @@ import { FontAwesome } from '@expo/vector-icons';
 export interface ButtonProps {
     title?: string;
     onPress: () => void;
-    variant?: 'solid' | 'outline' | 'filled';
+    variant?: 'solid' | 'outline' | 'filled' | 'link';
     type?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'transparent';
     size?: 'xs' | 'sm' | 'md' | 'lg';
     icon?: React.ReactNode | keyof typeof FontAwesome.glyphMap;
@@ -95,6 +95,7 @@ export const Button: React.FC<ButtonProps> = ({
                     default: return theme.colors.primary;
                 }
             case 'outline': return 'transparent';
+            case 'link': return 'transparent';
             default: return theme.colors.primary;
         }
     };
@@ -103,6 +104,7 @@ export const Button: React.FC<ButtonProps> = ({
         if (disabled) return theme.colors.textSecondary;
 
         if (activeVariant === 'solid') return '#FFFFFF';
+        if (activeVariant === 'link') return theme.colors.primary;
 
         // For Outline and Filled, we use the specific text color
         switch (type) {

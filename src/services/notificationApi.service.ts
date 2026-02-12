@@ -38,4 +38,16 @@ export const notificationApiService = {
             throw error;
         }
     },
+
+    /**
+     * Delete a notification
+     */
+    async delete(id: number): Promise<void> {
+        try {
+            await api.delete(`/notifications/${id}`);
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+            throw error;
+        }
+    },
 };

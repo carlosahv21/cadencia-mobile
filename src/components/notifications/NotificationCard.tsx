@@ -1,17 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useTheme } from '../../contexts/ThemeContext';
 import { DanceFlowNotification, NotificationCategory } from '../../types';
 
 interface NotificationCardProps {
     notification: DanceFlowNotification;
     onPress: (notification: DanceFlowNotification) => void;
+    onDelete?: (notification: DanceFlowNotification) => void;
 }
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
     notification,
     onPress,
+    onDelete,
 }) => {
     const { theme } = useTheme();
 
@@ -49,58 +52,102 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         return date.toLocaleDateString();
     };
 
+    const renderRightActions = (
+        progress: Animated.AnimatedInterpolation<number>,
+        dragX: Animated.AnimatedInterpolation<number>
+    ) => {
+        const translateX = dragX.interpolate({
+            inputRange: [-100, 0],
+            outputRange: [0, 100],
+            extrapolate: 'clamp',
+        });
+
+        const opacity = dragX.interpolate({
+            inputRange: [-100, -20, 0],
+            outputRange: [1, 0.5, 0],
+            extrapolate: 'clamp',
+        });
+
+        return (
+            <Animated.View
+                style={[
+                    styles.deleteAction,
+                    {
+                        transform: [{ translateX }],
+                        opacity,
+                    },
+                ]}
+            >
+                <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => onDelete?.(notification)}
+                    activeOpacity={0.7}
+                >
+                    <Ionicons name="trash-outline" size={24} color="#FFFFFF" />
+                    <Text style={styles.deleteText}>Eliminar</Text>
+                </TouchableOpacity>
+            </Animated.View>
+        );
+    };
+
     const categoryColor = getCategoryColor(notification.category);
     const backgroundColor = theme.mode === 'dark' ? '#1E1E1E' : '#FFFFFF';
 
     return (
-        <TouchableOpacity
-            style={[
-                styles.container,
-                {
-                    backgroundColor,
-                    borderColor: theme.colors.border,
-                }
-            ]}
-            onPress={() => onPress(notification)}
-            activeOpacity={0.7}
+        <Swipeable
+            renderRightActions={onDelete ? renderRightActions : undefined}
+            overshootRight={false}
+            rightThreshold={40}
         >
-            <View style={[styles.iconContainer, { backgroundColor: `${categoryColor}20` }]}>
-                <Ionicons
-                    name={getCategoryIcon(notification.category)}
-                    size={24}
-                    color={categoryColor}
-                />
-            </View>
-
-            <View style={styles.contentContainer}>
-                <View style={styles.headerRow}>
-                    <Text
-                        style={[
-                            styles.title,
-                            { color: theme.colors.textPrimary },
-                            !notification.is_read && styles.titleUnread
-                        ]}
-                        numberOfLines={1}
-                    >
-                        {notification.title}
-                    </Text>
-                    {!notification.is_read && (
-                        <View style={styles.unreadDot} />
-                    )}
+            <TouchableOpacity
+                style={[
+                    styles.container,
+                    {
+                        backgroundColor,
+                        borderColor: theme.colors.border,
+                    }
+                ]}
+                onPress={() => onPress(notification)}
+                activeOpacity={0.7}
+            >
+                <View style={[styles.iconContainer, { backgroundColor: `${categoryColor}20` }]}>
+                    <Ionicons
+                        name={getCategoryIcon(notification.category)}
+                        size={20}
+                        color={categoryColor}
+                    />
                 </View>
 
-                <Text
-                    style={[styles.message, { color: theme.colors.textSecondary }]}
-                    numberOfLines={2}
-                >
-                    {notification.message}
-                </Text>
+                <View style={styles.contentContainer}>
+                    <View style={styles.headerRow}>
+                        <Text
+                            style={[
+                                styles.title,
+                                { color: theme.colors.textPrimary },
+                                !notification.is_read && styles.titleUnread
+                            ]}
+                            numberOfLines={1}
+                        >
+                            {notification.title}
+                        </Text>
+                        {!notification.is_read && (
+                            <View style={styles.unreadDot} />
+                        )}
+                    </View>
 
-                <Text style={[styles.time, { color: theme.colors.textSecondary }]}>
-                    {getRelativeTime(notification.created_at).toUpperCase()}
-                </Text>
-            </View>
-        </TouchableOpacity>
+                    <Text
+                        style={[styles.message, { color: theme.colors.textSecondary }]}
+                        numberOfLines={2}
+                    >
+                        {notification.message}
+                    </Text>
+
+                    <Text style={[styles.time, { color: theme.colors.textSecondary }]}>
+                        {getRelativeTime(notification.created_at).toUpperCase()}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </Swipeable>
     );
 };
 
@@ -119,9 +166,9 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     iconContainer: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
+        width: 44,
+        height: 44,
+        borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,
@@ -160,4 +207,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#0ea5e9',
         marginLeft: 8,
     },
+    deleteAction: {
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        marginVertical: 6,
+        marginRight: 16,
+    },
+    deleteButton: {
+        backgroundColor: '#EF4444',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 100,
+        height: '100%',
+        borderRadius: 16,
+        paddingHorizontal: 16,
+    },
+    deleteText: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        fontWeight: '600',
+        marginTop: 4,
+    },
 });
+

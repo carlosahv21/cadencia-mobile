@@ -16,6 +16,7 @@ import { notificationApiService } from '../../services/notificationApi.service';
 import { ManagementHeader } from '../../components/common/ManagementHeader';
 import { NotificationCard } from '../../components/notifications/NotificationCard';
 import { NotificationFilters } from '../../components/notifications/NotificationFilters';
+import { EmptyState } from '../../components/common/EmptyState';
 
 interface NotificationsScreenProps {
     navigation: any;
@@ -31,6 +32,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
     const [activeFilter, setActiveFilter] = useState<'ALL' | NotificationCategory>('ALL');
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         fetchNotifications();
@@ -38,7 +40,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
 
     useEffect(() => {
         filterNotifications();
-    }, [activeFilter, notifications]);
+    }, [activeFilter, notifications, searchText]);
 
     const fetchNotifications = async () => {
         try {
@@ -65,13 +67,24 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
     };
 
     const filterNotifications = () => {
-        if (activeFilter === 'ALL') {
-            setFilteredNotifications(notifications);
-        } else {
-            setFilteredNotifications(
-                notifications.filter((n) => n.category === activeFilter)
+        let filtered = notifications;
+
+        // Filter by category
+        if (activeFilter !== 'ALL') {
+            filtered = filtered.filter((n) => n.category === activeFilter);
+        }
+
+        // Filter by search text
+        if (searchText) {
+            const lowerSearch = searchText.toLowerCase();
+            filtered = filtered.filter(
+                (n) =>
+                    n.title.toLowerCase().includes(lowerSearch) ||
+                    n.message.toLowerCase().includes(lowerSearch)
             );
         }
+
+        setFilteredNotifications(filtered);
     };
 
     const handleNotificationPress = async (notification: DanceFlowNotification) => {
@@ -91,6 +104,10 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         }
     };
 
+    const onSearchChange = (text: string) => {
+        setSearchText(text);
+    };
+
     const handleMarkAllAsRead = async () => {
         try {
             await notificationApiService.markAllAsRead();
@@ -104,6 +121,19 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         }
     };
 
+    const handleNotificationDelete = async (notification: DanceFlowNotification) => {
+        try {
+            await notificationApiService.delete(notification.id);
+
+            // Update local state
+            setNotifications((prev) =>
+                prev.filter((n) => n.id !== notification.id)
+            );
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+        }
+    };
+
     const unreadCount = notifications.filter((n) => !n.is_read).length;
 
     const renderHeader = () => (
@@ -112,36 +142,42 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
                 title="Notificaciones"
                 subtitle={`Tienes ${unreadCount} mensaje${unreadCount !== 1 ? 's' : ''} nuevo${unreadCount !== 1 ? 's' : ''} sin leer`}
                 onBack={() => navigation.goBack()}
+                showSearch={true}
+                searchText={searchText}
+                onSearchChange={onSearchChange}
+                placeholder="Buscar notificaciones"
             />
 
-            <View style={styles.headerActions}>
+            <View style={styles.filterRow}>
+                <NotificationFilters
+                    activeFilter={activeFilter}
+                    onFilterChange={setActiveFilter}
+                    style={styles.filters}
+                />
+
                 {unreadCount > 0 && (
                     <TouchableOpacity
                         style={[
                             styles.markAllButton,
-                            { backgroundColor: theme.colors.primary }
                         ]}
                         onPress={handleMarkAllAsRead}
                     >
-                        <Text style={styles.markAllButtonText}>
-                            Marcar todo como leído
+                        <Text style={[styles.markAllButtonText, { color: theme.colors.primary }]}>
+                            Marcar leídos
                         </Text>
                     </TouchableOpacity>
                 )}
             </View>
-
-            <NotificationFilters
-                activeFilter={activeFilter}
-                onFilterChange={setActiveFilter}
-            />
         </View>
     );
 
     const renderEmptyState = () => (
-        <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
-                No tienes notificaciones
-            </Text>
+        <View>
+            <EmptyState
+                icon="bell"
+                title="No tienes notificaciones"
+                description="Intente de nuevo más tarde"
+            />
         </View>
     );
 
@@ -166,9 +202,10 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
                     <NotificationCard
                         notification={item}
                         onPress={handleNotificationPress}
+                        onDelete={handleNotificationDelete}
                     />
                 )}
-                ListHeaderComponent={renderHeader}
+                ListHeaderComponent={renderHeader()}
                 ListEmptyComponent={renderEmptyState}
                 contentContainerStyle={[
                     styles.listContent,
@@ -202,20 +239,21 @@ const styles = StyleSheet.create({
     listContentEmpty: {
         flexGrow: 1,
     },
-    headerActions: {
-        paddingHorizontal: 16,
-        paddingTop: 16,
-        paddingBottom: 8,
+    filterRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingRight: 16,
+    },
+    filters: {
+        flex: 1,
     },
     markAllButton: {
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 25,
-        alignSelf: 'flex-end',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        marginLeft: 8,
     },
     markAllButtonText: {
-        color: '#FFF',
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: '600',
     },
     emptyContainer: {
