@@ -19,6 +19,7 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
         { key: 'PAYMENT', label: 'Pagos' },
         { key: 'CLASS', label: 'Clases' },
         { key: 'SYSTEM', label: 'Sistema' },
+        { key: 'REGISTRATION', label: 'Inscripciones' },
     ];
 
     return (
@@ -33,7 +34,7 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
                     <Button
                         title={filter.label}
                         onPress={() => onFilterChange(filter.key)}
-                        variant={activeFilter === filter.key ? 'solid' : 'link'}
+                        variant={activeFilter === filter.key ? 'solid' : 'outline'}
                         type="primary"
                         size="sm"
                         style={styles.button}

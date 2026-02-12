@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNotifications } from '../../contexts/NotificationContext';
 import { Button } from '../common/Button';
 
 interface DashboardHeaderProps {
@@ -21,6 +22,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 }) => {
     const { theme } = useTheme();
     const { user, academy } = useAuth();
+    const { unreadCount } = useNotifications();
     const { t } = useTranslation();
 
     const opacity = useSharedValue(0);
@@ -72,7 +74,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                     variant="filled"
                     size="sm"
                     icon="bell"
-                    badge={true}
+                    badge={unreadCount > 0}
                 />
             </View>
         </Animated.View>

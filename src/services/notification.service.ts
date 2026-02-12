@@ -1,3 +1,4 @@
+import { Asset } from 'expo-asset';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
@@ -93,12 +94,23 @@ export const notificationService = {
         data?: Record<string, any>,
         seconds: number = 2
     ): Promise<string> => {
+        // Cargar el asset del icono
+        const iconAsset = Asset.fromModule(require('../assets/icon.png'));
+        await iconAsset.downloadAsync();
+
         return await Notifications.scheduleNotificationAsync({
             content: {
                 title,
                 body,
                 data: data || {},
                 sound: true,
+                attachments: [
+                    {
+                        identifier: 'icon',
+                        url: iconAsset.localUri || iconAsset.uri,
+                        type: 'image',
+                    }
+                ],
             },
             trigger: { 
                 type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,

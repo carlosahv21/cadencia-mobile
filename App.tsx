@@ -3,6 +3,7 @@ import { Platform, LogBox, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from './src/contexts/ThemeContext';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import { NotificationProvider } from './src/contexts/NotificationContext';
 
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -41,7 +42,9 @@ export default function App() {
       <SafeAreaProvider>
         <AuthProvider>
           <ThemeProvider>
-            <RootContent />
+            <NotificationProvider>
+              <RootContent />
+            </NotificationProvider>
           </ThemeProvider>
         </AuthProvider>
       </SafeAreaProvider>

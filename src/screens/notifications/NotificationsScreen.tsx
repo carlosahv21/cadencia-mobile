@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
@@ -8,11 +8,9 @@ import {
     RefreshControl,
     ActivityIndicator,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { useNotifications } from '../../contexts/NotificationContext';
 import { DanceFlowNotification, NotificationCategory } from '../../types';
-import { notificationApiService } from '../../services/notificationApi.service';
 import { ManagementHeader } from '../../components/common/ManagementHeader';
 import { NotificationCard } from '../../components/notifications/NotificationCard';
 import { NotificationFilters } from '../../components/notifications/NotificationFilters';
@@ -24,41 +22,28 @@ interface NotificationsScreenProps {
 
 export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
-    const { user } = useAuth();
-    const insets = useSafeAreaInsets();
+    const {
+        notifications,
+        isLoading,
+        fetchNotifications,
+        markAsRead,
+        markAllAsRead,
+        deleteNotification
+    } = useNotifications();
 
-    const [notifications, setNotifications] = useState<DanceFlowNotification[]>([]);
     const [filteredNotifications, setFilteredNotifications] = useState<DanceFlowNotification[]>([]);
     const [activeFilter, setActiveFilter] = useState<'ALL' | NotificationCategory>('ALL');
-    const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
-        fetchNotifications();
-    }, []);
+        // Initial filter when notifications change
+        filterNotifications();
+    }, [notifications]);
 
     useEffect(() => {
         filterNotifications();
     }, [activeFilter, notifications, searchText]);
-
-    const fetchNotifications = async () => {
-        try {
-            setIsLoading(true);
-            const data = await notificationApiService.getAll();
-
-            // Filter by user role
-            const roleFiltered = data.filter(
-                (n) => n.role_target === user?.role?.toUpperCase() || n.role_target === 'ALL'
-            );
-
-            setNotifications(roleFiltered);
-        } catch (error) {
-            console.error('Error fetching notifications:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const onRefresh = async () => {
         setIsRefreshing(true);
@@ -89,18 +74,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
 
     const handleNotificationPress = async (notification: DanceFlowNotification) => {
         if (!notification.is_read) {
-            try {
-                await notificationApiService.markAsRead(notification.id);
-
-                // Update local state
-                setNotifications((prev) =>
-                    prev.map((n) =>
-                        n.id === notification.id ? { ...n, is_read: true } : n
-                    )
-                );
-            } catch (error) {
-                console.error('Error marking notification as read:', error);
-            }
+            await markAsRead(notification.id);
         }
     };
 
@@ -109,29 +83,11 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
     };
 
     const handleMarkAllAsRead = async () => {
-        try {
-            await notificationApiService.markAllAsRead();
-
-            // Update local state
-            setNotifications((prev) =>
-                prev.map((n) => ({ ...n, is_read: true }))
-            );
-        } catch (error) {
-            console.error('Error marking all as read:', error);
-        }
+        await markAllAsRead();
     };
 
     const handleNotificationDelete = async (notification: DanceFlowNotification) => {
-        try {
-            await notificationApiService.delete(notification.id);
-
-            // Update local state
-            setNotifications((prev) =>
-                prev.filter((n) => n.id !== notification.id)
-            );
-        } catch (error) {
-            console.error('Error deleting notification:', error);
-        }
+        await deleteNotification(notification.id);
     };
 
     const unreadCount = notifications.filter((n) => !n.is_read).length;
