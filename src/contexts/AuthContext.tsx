@@ -37,14 +37,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loadStoredAuth();
     }, []);
 
-    // Idioma: preferencia del usuario > idioma del dispositivo
+    // Idioma: elección manual en la app > preferencia del usuario > dispositivo
     useEffect(() => {
-        if (user?.language) {
-            i18n.changeLanguage(user.language);
-        } else {
-            const deviceLang = Localization.getLocales()[0]?.languageCode ?? 'es';
-            i18n.changeLanguage(deviceLang);
-        }
+        (async () => {
+            const stored = await storage.getLanguage();
+            if (stored) {
+                i18n.changeLanguage(stored);
+            } else if (user?.language) {
+                i18n.changeLanguage(user.language);
+            } else {
+                const deviceLang = Localization.getLocales()[0]?.languageCode ?? 'es';
+                i18n.changeLanguage(deviceLang);
+            }
+        })();
     }, [user?.language]);
 
     const loadStoredAuth = async () => {

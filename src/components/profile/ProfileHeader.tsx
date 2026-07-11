@@ -1,110 +1,98 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { Button } from '../common/Button';
-
-import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../contexts/ThemeContext';
 
 interface ProfileHeaderProps {
     name: string;
     role: string;
-    avatar: string;
+    email?: string;
+    avatar?: string | null;
 }
 
-export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, avatar }) => {
+export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, email, avatar }) => {
     const { theme } = useTheme();
-    const { t } = useTranslation();
+
+    const initials = name
+        .split(' ')
+        .slice(0, 2)
+        .map((p) => p[0] ?? '')
+        .join('')
+        .toUpperCase();
 
     return (
-        <LinearGradient
-            colors={theme.colors.gradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.container}
-        >
-            <View style={styles.avatarContainer}>
-                <View style={[styles.avatarWrapper, { borderColor: '#fff' }]}>
-                    <Image source={{ uri: avatar }} style={styles.avatar} />
+        <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
+            {avatar ? (
+                <Image source={{ uri: avatar }} style={styles.avatar} />
+            ) : (
+                <View style={[styles.avatar, styles.avatarFallback, { backgroundColor: theme.colors.primarySoft }]}>
+                    <Text style={[styles.initials, { color: theme.colors.primary }]}>{initials}</Text>
                 </View>
-                <View style={styles.onlineBadge} />
+            )}
+
+            <View style={styles.info}>
+                <Text style={[styles.name, { color: theme.colors.textPrimary }]} numberOfLines={1}>
+                    {name}
+                </Text>
+                {!!email && (
+                    <Text style={[styles.email, { color: theme.colors.textSecondary }]} numberOfLines={1}>
+                        {email}
+                    </Text>
+                )}
+                <View style={[styles.roleChip, { backgroundColor: theme.colors.primarySoft }]}>
+                    <Text style={[styles.roleText, { color: theme.colors.primary }]}>{role}</Text>
+                </View>
             </View>
-
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.role}>{role}</Text>
-
-            <Button
-                title={t('profile.edit_profile')}
-                onPress={() => { }}
-                type="transparent"
-                variant="filled"
-                textToUppercase={true}
-                size="sm"
-                style={{ height: 24 }}
-            />
-        </LinearGradient>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        paddingTop: 45,
-        paddingBottom: 40,
+    card: {
+        flexDirection: 'row',
         alignItems: 'center',
-        borderBottomLeftRadius: 40,
-        borderBottomRightRadius: 40,
-    },
-    avatarContainer: {
-        position: 'relative',
-        marginBottom: 10,
-    },
-    avatarWrapper: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        borderWidth: 3,
-        padding: 4,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        gap: 16,
+        borderRadius: 20,
+        padding: 18,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 2,
     },
     avatar: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 45,
+        width: 76,
+        height: 76,
+        borderRadius: 38,
     },
-    onlineBadge: {
-        position: 'absolute',
-        bottom: 5,
-        right: 5,
-        width: 18,
-        height: 18,
-        borderRadius: 9,
-        backgroundColor: '#22c55e',
-        borderWidth: 2,
-        borderColor: '#fff',
+    avatarFallback: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    initials: {
+        fontSize: 26,
+        fontWeight: '700',
+    },
+    info: {
+        flex: 1,
     },
     name: {
         fontSize: 22,
-        fontWeight: '600',
-        color: '#fff',
-        marginBottom: 4,
+        fontWeight: '700',
     },
-    role: {
-        fontSize: 14,
-        color: 'rgba(255, 255, 255, 0.9)',
-        fontWeight: '400',
-        marginBottom: 10,
+    email: {
+        fontSize: 13,
+        marginTop: 2,
     },
-    editButton: {
-        paddingHorizontal: 20,
-        paddingVertical: 8,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.4)',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    roleChip: {
+        alignSelf: 'flex-start',
+        paddingHorizontal: 12,
+        paddingVertical: 4,
+        borderRadius: 10,
+        marginTop: 8,
     },
-    editButtonText: {
-        color: '#fff',
+    roleText: {
         fontSize: 12,
-        fontWeight: '500',
+        fontWeight: '700',
+        textTransform: 'capitalize',
     },
 });

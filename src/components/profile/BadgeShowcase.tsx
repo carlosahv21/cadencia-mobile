@@ -1,30 +1,21 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { BadgeItem } from './BadgeItem';
 import { Badge } from '../../types/profile';
-import { useTheme } from '../../contexts/ThemeContext';
-import { Button } from '../common/Button';
+import { SectionHeader } from '../common/SectionHeader';
 
 interface BadgeShowcaseProps {
     badges: Badge[];
 }
 
 export const BadgeShowcase: React.FC<BadgeShowcaseProps> = ({ badges }) => {
+    const { t } = useTranslation();
 
     return (
         <View style={styles.container}>
-            <Button
-                onPress={() => { }}
-                type="default"
-                variant="filled"
-                size="xs"
-                icon="pencil"
-                iconSize={12}
-                floating="right"
-                style={{ top: -10 }}
-            />
-
+            <SectionHeader title={t('profile.achievements')} />
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -40,11 +31,9 @@ export const BadgeShowcase: React.FC<BadgeShowcaseProps> = ({ badges }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: -30,
-        zIndex: 10,
+        marginTop: 22,
     },
     scrollContent: {
-        paddingHorizontal: 20,
         paddingVertical: 10,
     }
 });

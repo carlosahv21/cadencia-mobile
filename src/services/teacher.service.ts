@@ -43,7 +43,7 @@ export interface TeacherDetailResponse {
 }
 
 export const teacherService = {
-    getById: async (id: number): Promise<TeacherDetailResponse> => {
+    getById: async (id: number | string): Promise<TeacherDetailResponse> => {
         const response = await api.get<TeacherDetailResponse>(`/teachers/details/${id}`);
         return response.data;
     }

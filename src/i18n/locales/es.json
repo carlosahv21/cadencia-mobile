@@ -13,7 +13,8 @@
         "classes": "Clases",
         "teachers": "Profesores",
         "students": "Estudiantes",
-        "clear": "Limpiar"
+        "clear": "Limpiar",
+        "coming_soon": "Próximamente"
     },
     "login": {
         "welcome": "Bienvenido a DanceFlow",
@@ -104,7 +105,8 @@
         "sections": {
             "account": "Cuenta y Seguridad",
             "appearance": "Apariencia",
-            "support": "Soporte y Legal"
+            "support": "Soporte y Legal",
+            "subscription": "Suscripción"
         },
         "options": {
             "edit_profile": "Editar Perfil",
@@ -113,12 +115,18 @@
             "theme_mode_dark": "Modo Oscuro",
             "theme_mode_light": "Modo Claro",
             "help_center": "Centro de Ayuda",
-            "terms": "Términos y Condiciones"
+            "terms": "Términos y Condiciones",
+            "language": "Idioma"
         },
         "roles": {
             "director": "Director de Academia"
         },
-        "version": "VERSIÓN {{version}}"
+        "version": "VERSIÓN {{version}}",
+        "title": "Perfil",
+        "subscription": {
+            "trial_until": "Vence {{date}}"
+        },
+        "achievements": "Logros"
     },
     "onboarding": {
         "skip": "SALTAR",

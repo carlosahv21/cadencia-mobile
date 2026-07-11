@@ -10,6 +10,7 @@ const THEME_KEY = 'theme_mode';
 const ONBOARDING_KEY = 'has_seen_onboarding';
 const PUSH_TOKEN_KEY = 'push_token';
 const SESSION_META_KEY = 'session_meta'; // permissions, modules, subscription
+const LANGUAGE_KEY = 'app_language';
 
 // Helper para detectar si estamos en Web
 const isWeb = Platform.OS === 'web';
@@ -89,6 +90,13 @@ export const storage = {
     async getRememberMe(): Promise<boolean> {
         const data = await AsyncStorage.getItem(REMEMBER_ME_KEY);
         return data ? JSON.parse(data) : false;
+    },
+
+    async saveLanguage(lang: string): Promise<void> {
+        await AsyncStorage.setItem(LANGUAGE_KEY, lang);
+    },
+    async getLanguage(): Promise<string | null> {
+        return await AsyncStorage.getItem(LANGUAGE_KEY);
     },
 
     async saveTheme(mode: 'light' | 'dark'): Promise<void> {

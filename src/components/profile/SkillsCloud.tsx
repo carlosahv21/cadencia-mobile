@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Tag } from '../common/Tag';
-import { Button } from '../common/Button';
 
 import { Skill } from '../../types/profile';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -22,15 +21,6 @@ export const SkillsCloud: React.FC<SkillsCloudProps> = ({ skills }) => {
                     <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
                         {t('profile.specialties')}
                     </Text>
-                    <Button
-                        onPress={() => { }}
-                        type="default"
-                        variant="filled"
-                        size="xs"
-                        icon="pencil"
-                        iconSize={12}
-                        style={{ top: -5 }}
-                    />
                 </View>
             </View>
 
