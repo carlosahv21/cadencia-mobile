@@ -62,7 +62,7 @@ export const Button: React.FC<ButtonProps> = ({
             case 'success': return theme.mode === 'dark' ? 'rgb(16, 185, 129, 0.2)' : '#10B981';
             case 'warning': return theme.mode === 'dark' ? 'rgba(245, 158, 11, 0.2)' : '#F59E0B';
             case 'danger': return theme.mode === 'dark' ? 'rgba(239, 68, 68, 0.2)' : theme.colors.error;
-            case 'primary': return theme.mode === 'dark' ? 'rgba(14, 165, 233, 0.2)' : theme.colors.primary;
+            case 'primary': return theme.mode === 'dark' ? theme.colors.primary + '33' : theme.colors.primary;
             case 'transparent': return theme.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.2)';
             default: return theme.colors.primary;
         }
@@ -90,7 +90,7 @@ export const Button: React.FC<ButtonProps> = ({
                     case 'success': return '#D1FAE5';
                     case 'warning': return '#FEF3C7';
                     case 'danger': return '#FEE2E2';
-                    case 'primary': return '#DBEAFE';
+                    case 'primary': return theme.colors.primarySoft;
                     case 'transparent': return 'rgba(255, 255, 255, 0.2)';
                     default: return theme.colors.primary;
                 }
@@ -112,7 +112,7 @@ export const Button: React.FC<ButtonProps> = ({
             case 'success': return '#22C55E';
             case 'warning': return '#FBBF24';
             case 'danger': return '#EF4444';
-            case 'primary': return '#0EA5E9';
+            case 'primary': return theme.colors.primary;
             case 'transparent': return '#FFFFFF';
             default: return theme.colors.primary;
         }

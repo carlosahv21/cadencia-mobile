@@ -18,6 +18,7 @@ interface AuthContextData {
     isLoading: boolean;
     login: (credentials: LoginCredentials) => Promise<void>;
     logout: () => Promise<void>;
+    refreshUser: () => Promise<void>;
     can: (module: string, action?: string) => boolean;
     hasModule: (module: string) => boolean;
     hasFeature: (feature: string) => boolean;
@@ -129,6 +130,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    // Sesión fresca desde el backend (tras editar el perfil, etc.)
+    const refreshUser = async () => {
+        try {
+            const response = await authService.getMe();
+            const data = response.data;
+            if (!data?.user) return;
+
+            const meta = { permissions: data.permissions, modules: data.modules, subscription: data.subscription };
+            await Promise.all([
+                storage.saveUser(data.user),
+                storage.saveAcademy(data.academy),
+                storage.saveSessionMeta(meta),
+            ]);
+            setUser(data.user);
+            setAcademy(data.academy);
+            setPermissions(data.permissions ?? null);
+            setModules(data.modules ?? []);
+            setSubscription(data.subscription ?? null);
+        } catch (error) {
+            console.error('Error refreshing user:', error);
+        }
+    };
+
     const logout = async () => {
         await storage.clearAuth();
         setUser(null);
@@ -158,6 +182,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 isLoading,
                 login,
                 logout,
+                refreshUser,
                 can,
                 hasModule,
                 hasFeature,

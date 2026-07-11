@@ -20,6 +20,32 @@ export const authService = {
     },
 
     /**
+     * Cambia la contraseña del usuario autenticado
+     */
+    async changePassword(current_password: string, new_password: string): Promise<{ success: boolean; message: string }> {
+        try {
+            const response = await api.post('/auth/change-password', { current_password, new_password });
+            return response.data;
+        } catch (error: any) {
+            if (error.response?.data) throw error.response.data;
+            throw { message: 'Error de conexión', statusCode: 0 };
+        }
+    },
+
+    /**
+     * Sesión fresca del usuario autenticado (user, academy, subscription, modules, permissions)
+     */
+    async getMe(): Promise<{ success: boolean; data: any }> {
+        try {
+            const response = await api.get('/auth/me');
+            return response.data;
+        } catch (error: any) {
+            if (error.response?.data) throw error.response.data;
+            throw { message: 'Error de conexión', statusCode: 0 };
+        }
+    },
+
+    /**
      * Logout user (if backend requires logout endpoint)
      */
     async logout(): Promise<void> {

@@ -166,5 +166,107 @@
     "class_resume": {
         "last_attendees": "Recent attendees",
         "last_session": "Last session"
+    },
+    "edit_profile": {
+        "first_name": "First name",
+        "last_name": "Last name",
+        "email": "Email",
+        "phone": "Phone",
+        "gender": "Gender",
+        "birthdate": "Birthdate",
+        "genders": {
+            "male": "Male",
+            "female": "Female",
+            "other": "Other"
+        },
+        "save": "Save changes",
+        "success": "Profile updated",
+        "errors": {
+            "required": "This field is required",
+            "invalid_date": "Invalid date (YYYY-MM-DD)"
+        },
+        "birthdate_placeholder": "Pick a date",
+        "placeholders": {
+            "first_name": "Your first name",
+            "last_name": "Your last name",
+            "phone": "+00 000 000 0000"
+        },
+        "sections": {
+            "personal": "Personal information",
+            "additional": "Additional details"
+        }
+    },
+    "change_password": {
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm new password",
+        "submit": "Change password",
+        "success": "Password updated",
+        "errors": {
+            "required": "This field is required",
+            "mismatch": "Passwords do not match"
+        },
+        "hint": "At least 6 characters",
+        "sections": {
+            "verify": "Verify your identity",
+            "new": "Your new password"
+        }
+    },
+    "help": {
+        "faq_title": "Frequently asked questions",
+        "faq": {
+            "q1": {
+                "q": "How do I see my next class?",
+                "a": "On the Home screen you'll see the \"Next class\" card with time and room. You can also check the whole week in the Schedule tab."
+            },
+            "q2": {
+                "q": "How is my attendance recorded?",
+                "a": "Your teacher or the front desk records attendance at the start of each class. You can see your history and attendance rate on your profile and home screen."
+            },
+            "q3": {
+                "q": "How do I change the app language or theme?",
+                "a": "Go to Profile → Appearance. There you can toggle light/dark mode and pick the language (ES/EN)."
+            },
+            "q4": {
+                "q": "What happens when my plan runs out?",
+                "a": "When your plan reaches its limit or expiry date, contact your academy's front desk to renew it. Your plan status is shown on the Home screen."
+            },
+            "q5": {
+                "q": "I'm not getting notifications, what should I do?",
+                "a": "Check that the app has notification permissions in your phone settings and that you are online. If the problem persists, contact us."
+            }
+        },
+        "contact_title": "Need more help?",
+        "contact_text": "Write to us and we'll get back to you as soon as possible.",
+        "contact_button": "Contact support"
+    },
+    "terms": {
+        "last_updated": "Last updated: July 2026",
+        "sections": {
+            "s1": {
+                "title": "1. Acceptance of terms",
+                "body": "By using DanceFlow you accept these terms and conditions. If you disagree with any part, you must not use the app. These terms may be updated; continued use implies acceptance of changes."
+            },
+            "s2": {
+                "title": "2. Account usage",
+                "body": "Your account is personal and non-transferable. You are responsible for keeping your credentials confidential and for all activity performed from your account. Notify your academy of any unauthorized use."
+            },
+            "s3": {
+                "title": "3. Personal data",
+                "body": "We process your data (name, contact, attendance) solely for your academy's management: classes, attendance, plans and notifications. We do not sell your data to third parties. You can request correction or deletion of your data by contacting your academy."
+            },
+            "s4": {
+                "title": "4. Plans and payments",
+                "body": "Plans, prices and payment policies are defined by each academy. DanceFlow displays this information but the commercial relationship is directly between you and your academy."
+            },
+            "s5": {
+                "title": "5. Service availability",
+                "body": "We work to keep the app continuously available, but we do not guarantee uninterrupted availability. Scheduled maintenance may occur."
+            },
+            "s6": {
+                "title": "6. Contact",
+                "body": "For any questions about these terms, write to soporte@danceflow.com."
+            }
+        }
     }
 }

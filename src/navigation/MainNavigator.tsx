@@ -19,6 +19,10 @@ import { ResumeStudent } from '../screens/student/ResumeStudent';
 import { ResumenTeacher } from '../screens/teacher/ResumenTeacher';
 import { ResumeClass } from '../screens/class/ResumeClass';
 import { NotificationsScreen } from '../screens/notifications/NotificationsScreen';
+import { EditProfileScreen } from '../screens/profile/EditProfileScreen';
+import { ChangePasswordScreen } from '../screens/profile/ChangePasswordScreen';
+import { HelpCenterScreen } from '../screens/profile/HelpCenterScreen';
+import { TermsScreen } from '../screens/profile/TermsScreen';
 import { DanceClass } from '../types';
 
 const Stack = createNativeStackNavigator();
@@ -32,6 +36,10 @@ export const MainNavigator = () => {
       <Stack.Screen name="ResumenTeacher" component={ResumenTeacher} />
       <Stack.Screen name="ResumeClass" component={ResumeClass} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+      <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+      <Stack.Screen name="Terms" component={TermsScreen} />
     </Stack.Navigator>
   );
 };

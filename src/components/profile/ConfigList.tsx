@@ -7,7 +7,6 @@ import i18n from '../../i18n';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import { storage } from '../../utils/storage';
-import { showSuccessToast } from '../../utils/feedback';
 
 const LANGUAGES = ['es', 'en'] as const;
 
@@ -54,8 +53,6 @@ export const ConfigList = () => {
     const { t } = useTranslation();
     const navigation = useNavigation<any>();
 
-    const comingSoon = () => showSuccessToast(t('common.coming_soon'));
-
     const changeLanguage = (lang: string) => {
         i18n.changeLanguage(lang);
         storage.saveLanguage(lang);
@@ -73,13 +70,13 @@ export const ConfigList = () => {
                     icon="user"
                     iconColor={theme.colors.primary}
                     label={t('profile.options.edit_profile')}
-                    onPress={comingSoon}
+                    onPress={() => navigation.navigate('EditProfile')}
                 />
                 <SettingsRow
                     icon="lock"
                     iconColor={theme.colors.warning}
                     label={t('profile.options.change_password')}
-                    onPress={comingSoon}
+                    onPress={() => navigation.navigate('ChangePassword')}
                 />
                 <SettingsRow
                     icon="bell"
@@ -166,13 +163,13 @@ export const ConfigList = () => {
                     icon="question-circle"
                     iconColor={theme.colors.success}
                     label={t('profile.options.help_center')}
-                    onPress={comingSoon}
+                    onPress={() => navigation.navigate('HelpCenter')}
                 />
                 <SettingsRow
                     icon="file-text"
                     iconColor={theme.colors.textSecondary}
                     label={t('profile.options.terms')}
-                    onPress={comingSoon}
+                    onPress={() => navigation.navigate('Terms')}
                     isLast
                 />
             </SettingsGroup>

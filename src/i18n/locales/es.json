@@ -174,5 +174,107 @@
     "class_resume": {
         "last_attendees": "Últimas asistencias",
         "last_session": "Última sesión"
+    },
+    "edit_profile": {
+        "first_name": "Nombre",
+        "last_name": "Apellido",
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "gender": "Género",
+        "birthdate": "Fecha de nacimiento",
+        "genders": {
+            "male": "Masculino",
+            "female": "Femenino",
+            "other": "Otro"
+        },
+        "save": "Guardar cambios",
+        "success": "Perfil actualizado",
+        "errors": {
+            "required": "Este campo es obligatorio",
+            "invalid_date": "Fecha inválida (AAAA-MM-DD)"
+        },
+        "birthdate_placeholder": "Selecciona una fecha",
+        "placeholders": {
+            "first_name": "Tu nombre",
+            "last_name": "Tu apellido",
+            "phone": "+00 000 000 0000"
+        },
+        "sections": {
+            "personal": "Información personal",
+            "additional": "Datos adicionales"
+        }
+    },
+    "change_password": {
+        "current": "Contraseña actual",
+        "new": "Nueva contraseña",
+        "confirm": "Confirmar nueva contraseña",
+        "submit": "Cambiar contraseña",
+        "success": "Contraseña actualizada",
+        "errors": {
+            "required": "Este campo es obligatorio",
+            "mismatch": "Las contraseñas no coinciden"
+        },
+        "hint": "Mínimo 6 caracteres",
+        "sections": {
+            "verify": "Verifica tu identidad",
+            "new": "Tu nueva contraseña"
+        }
+    },
+    "help": {
+        "faq_title": "Preguntas frecuentes",
+        "faq": {
+            "q1": {
+                "q": "¿Cómo veo mi próxima clase?",
+                "a": "En la pantalla de Inicio verás la tarjeta \"Próxima clase\" con el horario y la sala. También puedes revisar toda la semana en la pestaña Agenda."
+            },
+            "q2": {
+                "q": "¿Cómo se registra mi asistencia?",
+                "a": "El profesor o la recepción registran la asistencia al inicio de cada clase. Puedes ver tu historial y porcentaje de asistencia en tu perfil y en el inicio."
+            },
+            "q3": {
+                "q": "¿Cómo cambio el idioma o el tema de la app?",
+                "a": "Ve a Perfil → Apariencia. Ahí puedes alternar entre modo claro/oscuro y elegir el idioma (ES/EN)."
+            },
+            "q4": {
+                "q": "¿Qué pasa cuando se vencen las clases de mi plan?",
+                "a": "Cuando tu plan llega a su límite o fecha de vencimiento, contacta a la recepción de tu academia para renovarlo. Verás el estado de tu plan en la pantalla de Inicio."
+            },
+            "q5": {
+                "q": "No recibo notificaciones, ¿qué hago?",
+                "a": "Verifica que la app tenga permisos de notificación en los ajustes de tu teléfono y que estés conectado a internet. Si el problema sigue, contáctanos."
+            }
+        },
+        "contact_title": "¿Necesitas más ayuda?",
+        "contact_text": "Escríbenos y te responderemos lo antes posible.",
+        "contact_button": "Contactar soporte"
+    },
+    "terms": {
+        "last_updated": "Última actualización: julio 2026",
+        "sections": {
+            "s1": {
+                "title": "1. Aceptación de los términos",
+                "body": "Al usar DanceFlow aceptas estos términos y condiciones. Si no estás de acuerdo con alguna parte, no debes usar la aplicación. Estos términos pueden actualizarse; el uso continuado implica la aceptación de los cambios."
+            },
+            "s2": {
+                "title": "2. Uso de la cuenta",
+                "body": "Tu cuenta es personal e intransferible. Eres responsable de mantener la confidencialidad de tus credenciales y de toda actividad realizada desde tu cuenta. Notifica a tu academia cualquier uso no autorizado."
+            },
+            "s3": {
+                "title": "3. Datos personales",
+                "body": "Tratamos tus datos (nombre, contacto, asistencia) únicamente para la gestión de tu academia: clases, asistencias, planes y notificaciones. No vendemos tus datos a terceros. Puedes solicitar la corrección o eliminación de tus datos contactando a tu academia."
+            },
+            "s4": {
+                "title": "4. Planes y pagos",
+                "body": "Los planes, precios y políticas de pago son definidos por cada academia. DanceFlow muestra esta información pero la relación comercial es directamente entre tú y tu academia."
+            },
+            "s5": {
+                "title": "5. Disponibilidad del servicio",
+                "body": "Trabajamos para que la app esté disponible de forma continua, pero no garantizamos disponibilidad ininterrumpida. Podemos realizar mantenimientos programados."
+            },
+            "s6": {
+                "title": "6. Contacto",
+                "body": "Para cualquier consulta sobre estos términos, escríbenos a soporte@danceflow.com."
+            }
+        }
     }
 }
