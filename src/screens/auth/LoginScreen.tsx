@@ -150,7 +150,7 @@ export const LoginScreen: React.FC = () => {
                     borderColor: emailError
                       ? theme.colors.error
                       : theme.colors.border,
-                    borderRadius: theme.borderRadius.md,
+                    borderRadius: theme.borderRadius.lg,
                   },
                 ]}
               >
@@ -202,7 +202,7 @@ export const LoginScreen: React.FC = () => {
                     borderColor: passwordError
                       ? theme.colors.error
                       : theme.colors.border,
-                    borderRadius: theme.borderRadius.md,
+                    borderRadius: theme.borderRadius.lg,
                   },
                 ]}
               >
@@ -290,7 +290,7 @@ export const LoginScreen: React.FC = () => {
                 styles.loginButton,
                 {
                   backgroundColor: theme.colors.primary,
-                  borderRadius: theme.borderRadius.md,
+                  borderRadius: theme.borderRadius.lg,
                 },
                 isLoading && styles.loginButtonDisabled,
               ]}
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    paddingHorizontal: 12,
-    height: 50,
+    paddingHorizontal: 14,
+    height: 54,
   },
   inputIcon: {
     marginRight: 8,
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   loginButton: {
-    height: 50,
+    height: 54,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,

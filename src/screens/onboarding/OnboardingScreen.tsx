@@ -1,13 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { storage } from '../../utils/storage';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const { width, height } = Dimensions.get('window');
 
 
 const OnboardingScreen = ({ onFinish }: { onFinish: () => void }) => {
     const { t } = useTranslation();
+    const { theme } = useTheme();
+    const insets = useSafeAreaInsets();
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef<FlatList>(null);
 
@@ -53,7 +57,7 @@ const OnboardingScreen = ({ onFinish }: { onFinish: () => void }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <FlatList
                 ref={flatListRef}
                 data={SLIDES}
@@ -71,7 +75,7 @@ const OnboardingScreen = ({ onFinish }: { onFinish: () => void }) => {
                 renderItem={({ item }) => (
                     <View style={styles.slide}>
                         <View style={styles.imageContainer}>
-                            <View style={styles.circleBg} />
+                            <View style={[styles.circleBg, { backgroundColor: theme.colors.primarySoft }]} />
                             {/* Asegúrate de que la ruta de la imagen sea correcta */}
                             <Image source={item.image} style={styles.image} resizeMode="contain" />
                         </View>
@@ -84,26 +88,26 @@ const OnboardingScreen = ({ onFinish }: { onFinish: () => void }) => {
                                         style={[
                                             styles.miniDot,
                                             {
-                                                backgroundColor: i === currentIndex ? '#000' : '#D1D1D1',
+                                                backgroundColor: i === currentIndex ? theme.colors.primary : theme.colors.border,
                                                 width: i === currentIndex ? 15 : 6
                                             }
                                         ]}
                                     />
                                 ))}
                             </View>
-                            <Text style={styles.title}>{item.title}</Text>
-                            <Text style={styles.description}>{item.description}</Text>
+                            <Text style={[styles.title, { color: theme.colors.textPrimary }]}>{item.title}</Text>
+                            <Text style={[styles.description, { color: theme.colors.textSecondary }]}>{item.description}</Text>
                         </View>
                     </View>
                 )}
             />
 
-            <View style={styles.footer}>
+            <View style={[styles.footer, { paddingBottom: insets.bottom + 24 }]}>
                 <TouchableOpacity onPress={handleComplete}>
-                    <Text style={styles.skipText}>{t('onboarding.skip')}</Text>
+                    <Text style={[styles.skipText, { color: theme.colors.textSecondary }]}>{t('onboarding.skip')}</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+                <TouchableOpacity style={[styles.nextButton, { backgroundColor: theme.colors.primary }]} onPress={handleNext}>
                     <Text style={styles.nextButtonText}>
                         {currentIndex === SLIDES.length - 1 ? t('onboarding.start') : t('onboarding.next')}
                     </Text>
@@ -114,7 +118,7 @@ const OnboardingScreen = ({ onFinish }: { onFinish: () => void }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#FFFFFF' },
+    container: { flex: 1 },
     slide: {
         width: width, // Ocupa exactamente el ancho de la pantalla
         alignItems: 'center',
@@ -132,7 +136,6 @@ const styles = StyleSheet.create({
         width: '90%',
         height: '90%',
         borderRadius: 200,
-        backgroundColor: '#F0F2F5'
     },
     image: { width: '80%', height: '80%' },
     textContainer: { paddingHorizontal: 30, alignItems: 'center' },
@@ -142,13 +145,11 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: '#1A1A1A',
         marginBottom: 10
     },
     description: {
         fontSize: 16,
         textAlign: 'center',
-        color: '#666',
         lineHeight: 22
     },
     footer: {
@@ -156,11 +157,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 40,
-        paddingBottom: 40
     },
-    skipText: { fontSize: 14, fontWeight: '600', color: '#999' },
+    skipText: { fontSize: 14, fontWeight: '600' },
     nextButton: {
-        backgroundColor: '#000',
         borderRadius: 30,
         paddingVertical: 12,
         paddingHorizontal: 30

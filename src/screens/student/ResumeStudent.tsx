@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { ProfileResumeHeader } from '../../components/common/ProfileResumeHeader';
+import { ProfileSummaryHeader } from '../../components/common/ProfileSummaryHeader';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
@@ -104,14 +104,12 @@ export const ResumeStudent: React.FC<ResumeStudentProps> = ({ student, onBack })
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View
                 entering={FadeIn.duration(600).delay(200)}>
-                <ProfileResumeHeader
+                <ProfileSummaryHeader
                     name={fullName}
-                    role={studentDetails?.role === 'student' ? 'Estudiante' : (studentDetails?.role || 'Estudiante')}
-                    avatar={studentDetails?.avatar || 'https://mockmind-api.uifaces.co/content/human/221.jpg'}
+                    role={studentDetails?.role === 'student' ? t('common.students_singular') : (studentDetails?.role || t('common.students_singular'))}
+                    avatar={studentDetails?.avatar}
                     email={studentDetails?.email || ''}
                     onBack={handleBack}
-                    onEdit={() => { }}
-                    showEditButton={false}
                 />
             </Animated.View>
 
@@ -171,7 +169,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
+        paddingHorizontal: 20,
+        paddingTop: 8,
+        paddingBottom: 24,
     },
 });

@@ -14,7 +14,9 @@
         "teachers": "Profesores",
         "students": "Estudiantes",
         "clear": "Limpiar",
-        "coming_soon": "Próximamente"
+        "coming_soon": "Próximamente",
+        "students_singular": "Estudiante",
+        "teachers_singular": "Profesor"
     },
     "login": {
         "welcome": "Bienvenido a DanceFlow",

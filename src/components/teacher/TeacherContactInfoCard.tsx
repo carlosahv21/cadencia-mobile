@@ -17,7 +17,7 @@ const ContactItem: React.FC<ContactItemProps> = ({ icon, label, value, onPress }
 
     return (
         <TouchableOpacity style={styles.itemRow} onPress={onPress}>
-            <View style={[styles.iconBox, { backgroundColor: theme.mode === 'light' ? '#F1F5F9' : '#1E293B' }]}>
+            <View style={[styles.iconBox, { backgroundColor: theme.colors.primarySoft }]}>
                 <FontAwesome name={icon} size={14} color={theme.colors.textSecondary} />
             </View>
             <View style={styles.itemText}>

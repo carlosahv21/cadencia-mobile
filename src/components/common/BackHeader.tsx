@@ -8,18 +8,21 @@ import { useTheme } from '../../contexts/ThemeContext';
 interface BackHeaderProps {
     title: string;
     subtitle?: string;
+    onBack?: () => void;
 }
 
 // Header limpio estilo Agenda: botón circular de volver + título sobre el fondo
-export const BackHeader: React.FC<BackHeaderProps> = ({ title, subtitle }) => {
+export const BackHeader: React.FC<BackHeaderProps> = ({ title, subtitle, onBack }) => {
     const { theme } = useTheme();
     const insets = useSafeAreaInsets();
     const navigation = useNavigation();
 
+    const handleBack = onBack || (() => navigation.canGoBack() && navigation.goBack());
+
     return (
         <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
             <TouchableOpacity
-                onPress={() => navigation.canGoBack() && navigation.goBack()}
+                onPress={handleBack}
                 activeOpacity={0.7}
                 style={[styles.backButton, { backgroundColor: theme.colors.surface }]}
             >

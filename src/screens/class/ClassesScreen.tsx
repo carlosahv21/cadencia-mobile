@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl, Text, TouchableOpacity } from 'react-native';
-import { Card as AntCard } from '@ant-design/react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import { classService } from '../../services/clases.service';
@@ -10,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 // Importación de tus nuevos componentes reutilizables
-import { ManagementHeader } from '../../components/common/ManagementHeader';
+import { SearchBar } from '../../components/common/SearchBar';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { LoadingState } from '../../components/common/LoadingState';
 
@@ -65,14 +64,19 @@ export const ClassesScreen: React.FC<ClassesScreenProps> = ({ onSelectClass }) =
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            {/* 1. Header Reutilizable */}
-            <ManagementHeader
-                title={t('dashboard.attendance.title')}
-                subtitle={t('dashboard.classes.today_classes')}
-                showSearch
-                searchText={searchQuery}
-                onSearchChange={setSearchQuery}
+        <View style={[styles.container, { backgroundColor: theme.colors.background, paddingTop: insets.top + 10 }]}>
+            {/* Header limpio estilo Agenda */}
+            <View style={styles.header}>
+                <Text style={[styles.title, { color: theme.colors.textPrimary }]}>
+                    {t('dashboard.attendance.title')}
+                </Text>
+                <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
+                    {t('dashboard.classes.today_classes')}
+                </Text>
+            </View>
+            <SearchBar
+                value={searchQuery}
+                onChangeText={setSearchQuery}
                 placeholder={t('common.search', { name: t('common.class') })}
             />
 
@@ -81,11 +85,8 @@ export const ClassesScreen: React.FC<ClassesScreenProps> = ({ onSelectClass }) =
                 contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + 20 }]}
                 showsVerticalScrollIndicator={false}
             >
-                {/* 2. Sección de Título Reutilizable */}
                 <SectionHeader
                     title={t('dashboard.classes.title')}
-                    actionText={t('dashboard.classes.view_all')}
-                    onActionPress={() => { }} // Aquí iría la navegación a todas las clases
                     containerStyle={styles.sectionMargin}
                 />
 
@@ -112,30 +113,28 @@ export const ClassesScreen: React.FC<ClassesScreenProps> = ({ onSelectClass }) =
                             onPress={() => onSelectClass(clase)}
                             style={styles.cardWrapper}
                         >
-                            <AntCard style={[styles.classCard, { backgroundColor: theme.colors.surface }]}>
-                                <View style={styles.cardInternal}>
-                                    <Text style={[styles.genreText, { color: theme.colors.primary }]}>
-                                        {clase.genre.toUpperCase()} • {clase.level}
-                                    </Text>
-                                    <Text style={[styles.classNameText, { color: theme.colors.textPrimary }]}>{clase.name}</Text>
+                            <View style={[styles.classCard, { backgroundColor: theme.colors.surface }]}>
+                                <Text style={[styles.genreText, { color: theme.colors.primary }]}>
+                                    {clase.genre.toUpperCase()} • {clase.level}
+                                </Text>
+                                <Text style={[styles.classNameText, { color: theme.colors.textPrimary }]}>{clase.name}</Text>
 
-                                    <View style={styles.footerRow}>
-                                        <View style={styles.metaContainer}>
-                                            <View style={styles.metaItem}>
-                                                <FontAwesome name="clock-o" size={13} color={theme.colors.textSecondary} />
-                                                <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>{clase.duration} min</Text>
-                                            </View>
+                                <View style={[styles.footerRow, { borderTopColor: theme.colors.border }]}>
+                                    <View style={styles.metaContainer}>
+                                        <View style={styles.metaItem}>
+                                            <FontAwesome name="clock-o" size={13} color={theme.colors.textSecondary} />
+                                            <Text style={[styles.metaText, { color: theme.colors.textSecondary }]}>{clase.duration} min</Text>
                                         </View>
-                                        <Button
-                                            title={t('dashboard.attendance.mark_attendance')}
-                                            type="primary"
-                                            size="sm"
-                                            style={styles.actionButton}
-                                            onPress={() => onSelectClass(clase)}
-                                        />
                                     </View>
+                                    <Button
+                                        title={t('dashboard.attendance.mark_attendance')}
+                                        type="primary"
+                                        size="sm"
+                                        style={styles.actionButton}
+                                        onPress={() => onSelectClass(clase)}
+                                    />
                                 </View>
-                            </AntCard>
+                            </View>
                         </TouchableOpacity>
                     </Animated.View>
                 ))}
@@ -155,7 +154,10 @@ export const ClassesScreen: React.FC<ClassesScreenProps> = ({ onSelectClass }) =
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    scrollContent: { marginTop: 20, paddingHorizontal: 20 },
+    header: { paddingHorizontal: 20, marginBottom: 10 },
+    title: { fontSize: 26, fontWeight: '700' },
+    subtitle: { fontSize: 14, marginTop: 2 },
+    scrollContent: { marginTop: 24, paddingHorizontal: 20 },
     sectionMargin: { marginBottom: 20 },
     timelineRow: { flexDirection: 'row', alignItems: 'center', minHeight: 110 },
     hourCol: { width: 60, alignItems: 'center', alignSelf: 'stretch', position: 'relative' },
@@ -164,14 +166,21 @@ const styles = StyleSheet.create({
     timelineDot: { width: 10, height: 10, borderRadius: 5 },
     lineBase: { position: 'absolute', width: 2, left: '50%', marginLeft: -1 },
     cardWrapper: { flex: 1, marginLeft: 10 },
-    classCard: { marginBottom: 15, borderRadius: 16, borderWidth: 0, elevation: 3, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 5 },
-    cardInternal: { padding: 14 },
+    classCard: {
+        marginBottom: 15,
+        borderRadius: 16,
+        padding: 14,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
+    },
     genreText: { fontSize: 10, fontWeight: '700', letterSpacing: 0.5, marginBottom: 4 },
     classNameText: { fontSize: 16, fontWeight: '700', marginBottom: 12 },
-    footerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.05)', paddingTop: 10 },
+    footerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderTopWidth: 1, paddingTop: 10 },
     metaContainer: { flexDirection: 'row', gap: 10 },
     metaItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     metaText: { fontSize: 12, fontWeight: '500' },
     actionButton: { borderRadius: 8, height: 32, paddingHorizontal: 12 },
-    emptyState: { alignItems: 'center', justifyContent: 'center', padding: 40, marginTop: 40 },
 });

@@ -26,29 +26,19 @@ const ClassItem: React.FC<ClassItemProps> = ({ day, time, className, duration, r
         }
     };
 
-    const getIconBg = () => {
-        if (theme.mode === 'light') {
-            switch (type) {
-                case 'salsa': return '#EBF5FF';
-                case 'bachata': return '#F5F3FF';
-                default: return '#F8FAFC';
-            }
-        }
-        return '#1E293B';
-    };
-
+    // Paleta suave derivada del tema (sin hex hardcodeado)
     const getIconColor = () => {
         switch (type) {
-            case 'salsa': return '#2563EB';
-            case 'bachata': return '#8B5CF6';
-            default: return theme.colors.primary;
+            case 'salsa': return theme.colors.primary;
+            case 'bachata': return theme.colors.primaryLight;
+            default: return theme.colors.success;
         }
     };
 
     return (
         <Card onPress={onPress}>
             <View style={styles.itemContent}>
-                <View style={[styles.iconBox, { backgroundColor: getIconBg() }]}>
+                <View style={[styles.iconBox, { backgroundColor: getIconColor() + '20' }]}>
                     <FontAwesome name={getIcon()} size={14} color={getIconColor()} />
                 </View>
                 <View style={styles.textContainer}>

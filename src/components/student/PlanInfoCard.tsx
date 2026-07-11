@@ -110,7 +110,7 @@ export const PlanInfoCard: React.FC<PlanInfoCardProps> = ({
                 <View>
                     <View style={[
                         styles.customBarContainer,
-                        { backgroundColor: theme.mode === 'dark' ? '#334155' : '#E2E8F0' }
+                        { backgroundColor: theme.colors.border }
                     ]}>
                         <View
                             style={[

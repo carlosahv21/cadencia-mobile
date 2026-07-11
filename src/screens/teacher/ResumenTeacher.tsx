@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import { ProfileResumeHeader } from '../../components/common/ProfileResumeHeader';
+import { ProfileSummaryHeader } from '../../components/common/ProfileSummaryHeader';
 import { PaymentSummaryCard } from '../../components/teacher/PaymentSummaryCard';
 import { WeeklyClassesList } from '../../components/teacher/WeeklyClassesList';
 import { TeacherContactInfoCard } from '../../components/teacher/TeacherContactInfoCard';
@@ -106,14 +106,12 @@ export const ResumenTeacher: React.FC<ResumenTeacherProps> = ({ teacher, onBack 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
-                <ProfileResumeHeader
-                    name={header?.full_name || initialTeacherData?.name || 'Profesor'}
-                    role={header?.role_label || 'Profesor'}
-                    avatar={header?.avatar || initialTeacherData?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg'}
+                <ProfileSummaryHeader
+                    name={header?.full_name || initialTeacherData?.name || t('common.teachers_singular')}
+                    role={header?.role_label || t('common.teachers_singular')}
+                    avatar={header?.avatar || initialTeacherData?.avatar}
                     email={header?.email || initialTeacherData?.email || ''}
                     onBack={handleBack}
-                    onEdit={() => { }}
-                    showEditButton={false}
                 />
             </Animated.View>
 
@@ -175,7 +173,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        paddingHorizontal: 16,
-        paddingBottom: 20,
+        paddingHorizontal: 20,
+        paddingTop: 8,
+        paddingBottom: 24,
     },
 });

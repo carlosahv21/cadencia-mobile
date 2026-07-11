@@ -30,8 +30,8 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
         autoplayTimeout={4}
         loop
         showsPagination
-        dotColor="rgba(255, 255, 255, 0.3)"
-        activeDotColor="#ffffff"
+        dotColor="rgba(255, 255, 255, 0.4)"
+        activeDotColor={theme.colors.primary}
         paginationStyle={styles.pagination}
       >
         {images.map((image, index) => (

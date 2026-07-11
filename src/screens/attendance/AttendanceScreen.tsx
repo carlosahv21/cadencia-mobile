@@ -9,7 +9,8 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 
 // Componentes Reutilizables
-import { ManagementHeader } from '../../components/common/ManagementHeader';
+import { BackHeader } from '../../components/common/BackHeader';
+import { SearchBar } from '../../components/common/SearchBar';
 import { StudentRow } from '../../components/attendance/StudentRow';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { Button } from '../../components/common/Button';
@@ -123,14 +124,15 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            {/* Cabecera reutilizable con buscador */}
-            <ManagementHeader
+            {/* Header limpio + buscador */}
+            <BackHeader
                 title={classData.name}
                 subtitle={`${classData.level} • ${new Date().toLocaleDateString()}`}
                 onBack={onBack}
-                showSearch
-                searchText={searchText}
-                onSearchChange={setSearchText}
+            />
+            <SearchBar
+                value={searchText}
+                onChangeText={setSearchText}
                 placeholder={t('common.search', { name: t('common.student') })}
             />
 
@@ -151,7 +153,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
                     >
                         <StudentRow
                             name={`${student.user_first_name} ${student.user_last_name || ''}`.trim()}
-                            avatar={"https://mockmind-api.uifaces.co/content/human/221.jpg"}
+                            avatar={student.avatar}
                             status={attendanceData[student.user_id] || 'absent'}
                             onStatusChange={(newStatus) =>
                                 setAttendanceData({ ...attendanceData, [student.user_id]: newStatus })
@@ -185,23 +187,8 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    scrollView: { flex: 1, marginTop: 10 },
+    scrollView: { flex: 1, marginTop: 14 },
     scrollContent: { paddingHorizontal: 20, paddingTop: 10 },
-    listHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    listTitle: {
-        fontSize: 18,
-        fontWeight: '700',
-    },
-    markAllText: {
-        fontSize: 14,
-        fontWeight: '600',
-    },
     footer: {
         position: 'absolute',
         bottom: 0,
@@ -219,15 +206,4 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5
     },
-    toastContainer: {
-        alignItems: 'center',
-        padding: 15
-    },
-    toastText: {
-        color: '#FFF',
-        marginTop: 12,
-        fontSize: 16,
-        fontWeight: '700',
-        textAlign: 'center'
-    }
 });
