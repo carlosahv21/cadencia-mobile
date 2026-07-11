@@ -268,5 +268,20 @@
                 "body": "For any questions about these terms, write to soporte@danceflow.com."
             }
         }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "search_placeholder": "Search notifications",
+        "mark_all_read": "Mark all read",
+        "unread_count": "{{count}} unread",
+        "empty_title": "No notifications yet",
+        "empty_description": "Check back later",
+        "filters": {
+            "all": "All",
+            "payment": "Payments",
+            "class": "Classes",
+            "system": "System",
+            "registration": "Registrations"
+        }
     }
 }

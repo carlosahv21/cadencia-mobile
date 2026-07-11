@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../common/Button';
 import { NotificationCategory } from '../../types';
 
@@ -14,12 +15,14 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
     onFilterChange,
     style,
 }) => {
+    const { t } = useTranslation();
+
     const filters: Array<{ key: 'ALL' | NotificationCategory; label: string }> = [
-        { key: 'ALL', label: 'Todas' },
-        { key: 'PAYMENT', label: 'Pagos' },
-        { key: 'CLASS', label: 'Clases' },
-        { key: 'SYSTEM', label: 'Sistema' },
-        { key: 'REGISTRATION', label: 'Inscripciones' },
+        { key: 'ALL', label: t('notifications.filters.all') },
+        { key: 'PAYMENT', label: t('notifications.filters.payment') },
+        { key: 'CLASS', label: t('notifications.filters.class') },
+        { key: 'SYSTEM', label: t('notifications.filters.system') },
+        { key: 'REGISTRATION', label: t('notifications.filters.registration') },
     ];
 
     return (

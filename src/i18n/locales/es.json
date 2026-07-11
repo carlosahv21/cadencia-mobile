@@ -276,5 +276,20 @@
                 "body": "Para cualquier consulta sobre estos términos, escríbenos a soporte@danceflow.com."
             }
         }
+    },
+    "notifications": {
+        "title": "Notificaciones",
+        "search_placeholder": "Buscar notificaciones",
+        "mark_all_read": "Marcar leídos",
+        "unread_count": "{{count}} sin leer",
+        "empty_title": "No tienes notificaciones",
+        "empty_description": "Vuelve a revisar más tarde",
+        "filters": {
+            "all": "Todas",
+            "payment": "Pagos",
+            "class": "Clases",
+            "system": "Sistema",
+            "registration": "Inscripciones"
+        }
     }
 }

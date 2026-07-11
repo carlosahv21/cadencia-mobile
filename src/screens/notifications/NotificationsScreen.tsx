@@ -8,10 +8,12 @@ import {
     RefreshControl,
     ActivityIndicator,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNotifications } from '../../contexts/NotificationContext';
 import { DanceFlowNotification, NotificationCategory } from '../../types';
-import { ManagementHeader } from '../../components/common/ManagementHeader';
+import { BackHeader } from '../../components/common/BackHeader';
+import { SearchBar } from '../../components/common/SearchBar';
 import { NotificationCard } from '../../components/notifications/NotificationCard';
 import { NotificationFilters } from '../../components/notifications/NotificationFilters';
 import { EmptyState } from '../../components/common/EmptyState';
@@ -22,6 +24,7 @@ interface NotificationsScreenProps {
 
 export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const {
         notifications,
         isLoading,
@@ -94,14 +97,10 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
 
     const renderHeader = () => (
         <View>
-            <ManagementHeader
-                title="Notificaciones"
-                subtitle={`Tienes ${unreadCount} mensaje${unreadCount !== 1 ? 's' : ''} nuevo${unreadCount !== 1 ? 's' : ''} sin leer`}
-                onBack={() => navigation.goBack()}
-                showSearch={true}
-                searchText={searchText}
-                onSearchChange={onSearchChange}
-                placeholder="Buscar notificaciones"
+            <SearchBar
+                value={searchText}
+                onChangeText={onSearchChange}
+                placeholder={t('notifications.search_placeholder')}
             />
 
             <View style={styles.filterRow}>
@@ -113,13 +112,11 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
 
                 {unreadCount > 0 && (
                     <TouchableOpacity
-                        style={[
-                            styles.markAllButton,
-                        ]}
+                        style={styles.markAllButton}
                         onPress={handleMarkAllAsRead}
                     >
                         <Text style={[styles.markAllButtonText, { color: theme.colors.primary }]}>
-                            Marcar leídos
+                            {t('notifications.mark_all_read')}
                         </Text>
                     </TouchableOpacity>
                 )}
@@ -131,26 +128,29 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         <View>
             <EmptyState
                 icon="bell"
-                title="No tienes notificaciones"
-                description="Intente de nuevo más tarde"
+                title={t('notifications.empty_title')}
+                description={t('notifications.empty_description')}
             />
         </View>
     );
 
     if (isLoading) {
         return (
-            <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
-                <ManagementHeader
-                    title="Notificaciones"
-                    onBack={() => navigation.goBack()}
-                />
-                <ActivityIndicator size="large" color={theme.colors.primary} />
+            <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+                <BackHeader title={t('notifications.title')} />
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={theme.colors.primary} />
+                </View>
             </View>
         );
     }
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <BackHeader
+                title={t('notifications.title')}
+                subtitle={unreadCount > 0 ? t('notifications.unread_count', { count: unreadCount }) : undefined}
+            />
             <FlatList
                 data={filteredNotifications}
                 keyExtractor={(item) => item.id.toString()}
@@ -190,7 +190,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     listContent: {
-        paddingBottom: 20,
+        paddingTop: 10,
+        paddingBottom: 30,
     },
     listContentEmpty: {
         flexGrow: 1,
@@ -199,6 +200,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 16,
+        marginTop: 8,
+        marginBottom: 10,
     },
     filters: {
         flex: 1,

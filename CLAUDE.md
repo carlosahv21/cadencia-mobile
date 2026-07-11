@@ -30,7 +30,9 @@ Provider tree in `App.tsx`: `GestureHandlerRootView > SafeAreaProvider > AuthPro
 
 **State**: React contexts only (`AuthContext`, `ThemeContext`, `NotificationContext`) — no Redux/Zustand. Data fetching via custom hooks in `src/hooks/` that call services.
 
-**Theming**: `useTheme()` from `ThemeContext` provides light/dark palettes defined in `src/theme/` (Electric Blue `#0ea5e9` primary). Style with `theme.colors.*`, not hard-coded colors.
+**Theming**: `useTheme()` from `ThemeContext` provides light/dark palettes defined in `src/theme/` (brand blue `#0c73dc` primary, `gradient`/`primarySoft` tokens). Style with `theme.colors.*`, not hard-coded colors.
+
+**Visual rules**: clean headers (`common/BackHeader`, no gradients), cards on `surface` with radius 16+ and soft shadow (`shadowOpacity` ≤ 0.05). **Generous spacing everywhere** — never cram: ≥14 between header and content, ≥24 top padding for scroll content, ≥28 between sections; when in doubt, add air. Forms: icons beside uppercase labels (primary color), placeholders in inputs, submit button pinned at the bottom, section titles + `Divider` to group fields.
 
 **i18n**: `useTranslation()` with strings in `src/i18n/locales/{es,en}.json`. UI copy and code comments are largely Spanish; keep new user-facing strings in both locale files.
 

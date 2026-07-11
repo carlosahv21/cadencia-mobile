@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
-import { Button } from '../../components/common/Button';
 import { useTranslation } from 'react-i18next';
 import Animated, { FadeInRight, FadeInUp } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 
 // Layout & UI Kit
-import { ScreenContainer } from '../../components/common/ScreenContainer';
-import { ManagementHeader } from '../../components/common/ManagementHeader';
+import { BackHeader } from '../../components/common/BackHeader';
+import { SearchBar } from '../../components/common/SearchBar';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { EmptyState } from '../../components/common/EmptyState';
 
@@ -21,7 +20,7 @@ interface GlobalSearchProps {
     onSelectItem?: (item: any, type: 'student' | 'teacher' | 'class') => void;
 }
 
-export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSelectItem }) => {
+export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onSelectItem }) => {
     const navigation = useNavigation<any>();
     const { theme } = useTheme();
     const { t } = useTranslation();
@@ -72,7 +71,7 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
         return (
             <View style={styles.categoryContainer}>
                 <Text style={[styles.categoryTitle, { color: theme.colors.textSecondary }]}>
-                    {title.toUpperCase()}
+                    {title.toUpperCase()}{total > 0 ? ` (${total})` : ''}
                 </Text>
                 {items.slice(0, 3).map((item, index) => (
                     <Animated.View
@@ -96,15 +95,6 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
                     </Animated.View>
                 ))}
 
-                {total > 3 && (
-                    <Button
-                        title={t('search.view_all_results', { total })}
-                        onPress={() => console.log('View more', type)}
-                        type="primary"
-                        size="sm"
-                        variant="outline"
-                    />
-                )}
             </View>
         );
     };
@@ -144,18 +134,13 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
     };
 
     return (
-        <ScreenContainer
-            withScroll={false}
-            edges={[]} // Dejamos que el header maneje el SafeArea con su gradiente
-        >
-            <ManagementHeader
-                title={t('common.seeker')}
-                onBack={onBack || (() => navigation.goBack())}
-                showSearch
-                searchText={query}
-                onSearchChange={setQuery}
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            <BackHeader title={t('common.seeker')} />
+            <SearchBar
+                value={query}
+                onChangeText={setQuery}
                 placeholder={t('common.search_placeholder')}
-                autoFocus={true}
+                autoFocus
             />
 
             <FlatList
@@ -174,6 +159,7 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
                                 <FlatList
                                     horizontal
                                     data={history}
+                                    contentContainerStyle={styles.historyList}
                                     showsHorizontalScrollIndicator={false}
                                     keyExtractor={(item) => item.id.toString()}
                                     renderItem={({ item, index }) => (
@@ -222,13 +208,15 @@ export const GlobalSearchScreen: React.FC<GlobalSearchProps> = ({ onBack, onSele
                     </View>
                 }
             />
-        </ScreenContainer>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    section: { marginBottom: 25 },
-    scrollContent: { paddingHorizontal: 20, paddingVertical: 15 },
+    container: { flex: 1 },
+    section: { marginBottom: 32 },
+    historyList: { paddingTop: 6 },
+    scrollContent: { paddingHorizontal: 20, paddingTop: 26, paddingBottom: 20 },
     categoryContainer: { marginBottom: 20 },
     historyItem: { alignItems: 'center', marginRight: 16, width: 70 },
     avatarRing: {
