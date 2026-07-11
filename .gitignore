@@ -62,3 +62,8 @@ web-build/
 *.swo
 *~
 .vscode/
+
+# Claude/agent skills (tooling local, no código de la app)
+.agents/
+.claude/
+skills-lock.json
