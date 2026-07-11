@@ -48,17 +48,22 @@
             "duration": "{{minutes}} min"
         },
         "next_class": {
-            "label": "Next Class"
+            "label": "Next Class",
+            "empty": "You're done for today! No more classes scheduled."
         },
         "stats": {
             "students": "Students",
             "revenue": "Revenue",
-            "today_classes": "Today's classes"
+            "today_classes": "Today's classes",
+            "attendance": "Attendance",
+            "in_progress": "{{count}} in progress",
+            "vs_prev": "vs last month"
         },
         "tabs": {
             "home": "Home",
             "attendance": "Attendance",
-            "profile": "Profile"
+            "profile": "Profile",
+            "agenda": "Schedule"
         },
         "attendance": {
             "title": "Attendance Control",
@@ -87,7 +92,11 @@
             "credits_remaining": "Credits remaining",
             "expiration": "Expiration",
             "status": "Status"
-        }
+        },
+        "greeting": "Hello, {{name}}!",
+        "subtitle": "Dance, learn and enjoy every step.",
+        "next_awaits": "Your next class awaits 🕺",
+        "summary": "Summary"
     },
     "profile": {
         "edit_profile": "Edit Profile",

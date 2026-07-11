@@ -18,7 +18,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, role, avatar
 
     return (
         <LinearGradient
-            colors={['#2563EB', '#3B82F6']}
+            colors={theme.colors.gradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.container}

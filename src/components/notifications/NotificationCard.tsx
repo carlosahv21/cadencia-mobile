@@ -32,7 +32,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     const getCategoryColor = (category: NotificationCategory): string => {
         switch (category) {
             case 'PAYMENT': return '#10B981'; // Green
-            case 'CLASS': return '#3B82F6'; // Blue
+            case 'CLASS': return theme.colors.primary;
             case 'SYSTEM': return '#EF4444'; // Red
             case 'ATTENDANCE': return '#8B5CF6'; // Purple
             case 'REGISTRATION': return '#F59E0B'; // Orange
@@ -131,7 +131,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                             {notification.title}
                         </Text>
                         {!notification.is_read && (
-                            <View style={styles.unreadDot} />
+                            <View style={[styles.unreadDot, { backgroundColor: theme.colors.primary }]} />
                         )}
                     </View>
 
@@ -204,7 +204,6 @@ const styles = StyleSheet.create({
         width: 8,
         height: 8,
         borderRadius: 4,
-        backgroundColor: '#0ea5e9',
         marginLeft: 8,
     },
     deleteAction: {

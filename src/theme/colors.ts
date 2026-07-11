@@ -1,10 +1,13 @@
 import { ThemeColors } from '../types';
 
-export const ELECTRIC_BLUE = '#0A84FF';
+export const BRAND_BLUE = '#0c73dc';
 
 export const lightColors: ThemeColors = {
-    primary: ELECTRIC_BLUE,
-    background: '#F8F9FA',
+    primary: BRAND_BLUE,
+    primaryLight: '#3f96ee',
+    primarySoft: '#e8f1fc',
+    gradient: [BRAND_BLUE, '#3f96ee'],
+    background: '#f4f8fd',
     surface: '#FFFFFF',
     textPrimary: '#2D3436',
     textSecondary: '#6C757D',
@@ -15,7 +18,10 @@ export const lightColors: ThemeColors = {
 };
 
 export const darkColors: ThemeColors = {
-    primary: ELECTRIC_BLUE,
+    primary: '#3f96ee',
+    primaryLight: '#6cb0f3',
+    primarySoft: '#12283f',
+    gradient: ['#0a5cb0', BRAND_BLUE],
     background: '#121212',      // Basado en colorBgBase (Layout bodyBg)
     surface: '#1E1E1E',         // Basado en colorBgContainer (Header/Sider Bg)
     textPrimary: '#E0E0E0',     // Basado en colorText

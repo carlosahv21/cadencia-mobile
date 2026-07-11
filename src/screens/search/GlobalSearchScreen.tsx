@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         marginBottom: 10,
         // Sombras suaves Electric Blue
-        shadowColor: '#0ea5e9',
+        shadowColor: '#0c73dc',
         shadowOpacity: 0.08,
         shadowRadius: 10,
         elevation: 3

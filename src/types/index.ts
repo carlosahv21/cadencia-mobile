@@ -104,8 +104,11 @@ export interface DashboardStat {
     id: number;
     label: string;
     value: string | number;
-    icon: string;
-    color: string;
+    icon?: string;
+    color?: string;
+    sub?: string;
+    trend?: string;
+    isPositive?: boolean;
 }
 
 export interface ApiError {
@@ -118,6 +121,9 @@ export type ThemeMode = 'light' | 'dark';
 
 export interface ThemeColors {
     primary: string;
+    primaryLight: string;
+    primarySoft: string;
+    gradient: [string, string];
     background: string;
     surface: string;
     textPrimary: string;

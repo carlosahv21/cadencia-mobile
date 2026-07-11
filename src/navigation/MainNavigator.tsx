@@ -46,8 +46,12 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
   // Role IDs: 1: Admin, 2: Teacher, 3: Student
   const isStaff = user?.role === 'admin' || user?.role === 'teacher';
 
-  const tabs = [
+  // Mitades del tab bar, con el FAB central entre ambas
+  const leftTabs = [
     { key: 'home', title: t('dashboard.tabs.home'), icon: 'home' },
+    { key: 'agenda', title: t('dashboard.tabs.agenda'), icon: 'calendar' },
+  ];
+  const rightTabs = [
     ...(isStaff ? [{ key: 'classes', title: t('dashboard.tabs.attendance'), icon: 'calendar-check-o' }] : []),
     { key: 'profile', title: t('dashboard.tabs.profile'), icon: 'user' },
   ];
@@ -55,6 +59,12 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const renderContent = () => {
     switch (activeTab) {
       case 'home': return <DashboardScreen />;
+      case 'agenda':
+        return (
+          <ClassesScreen
+            onSelectClass={(clase) => navigation.navigate('ResumeClass', { classData: clase })}
+          />
+        );
       case 'classes':
         return selectedClass ? (
           <AttendanceScreen
@@ -67,6 +77,22 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 'profile': return <ProfileScreen />;
       default: return <DashboardScreen />;
     }
+  };
+
+  const renderTab = (tab: { key: string; title: string; icon: string }) => {
+    const isActive = activeTab === tab.key;
+    const color = isActive ? theme.colors.primary : '#94A3B8';
+    return (
+      <TouchableOpacity
+        key={tab.key}
+        onPress={() => setActiveTab(tab.key)}
+        style={styles.tabItem}
+        activeOpacity={0.8}
+      >
+        <FontAwesome name={tab.icon as any} size={22} color={color} />
+        <Text style={[styles.tabTitle, { color }]}>{tab.title}</Text>
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -85,29 +111,17 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
           borderTopColor: theme.colors.border,
         }
       ]}>
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.key;
-          return (
-            <TouchableOpacity
-              key={tab.key}
-              onPress={() => setActiveTab(tab.key)}
-              style={styles.tabItem}
-              activeOpacity={0.8}
-            >
-              <FontAwesome
-                name={tab.icon as any}
-                size={22}
-                color={isActive ? '#3B82F6' : '#94A3B8'} // Azul activo vs gris suave
-              />
-              <Text style={[
-                styles.tabTitle,
-                { color: isActive ? '#3B82F6' : '#94A3B8' }
-              ]}>
-                {tab.title}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
+        {leftTabs.map(renderTab)}
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('GlobalSearch')}
+          activeOpacity={0.85}
+          style={[styles.fab, { backgroundColor: theme.colors.primary, shadowColor: theme.colors.primary }]}
+        >
+          <FontAwesome name="search" size={22} color="#fff" />
+        </TouchableOpacity>
+
+        {rightTabs.map(renderTab)}
       </View>
     </View>
   );
@@ -132,5 +146,17 @@ const styles = StyleSheet.create({
     fontWeight: '600', // Texto en extra negrita
     marginTop: 2,
     letterSpacing: 0.5,
-  }
+  },
+  fab: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -26, // Sobresale del tab bar como en el diseño
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
+    elevation: 6,
+  },
 });

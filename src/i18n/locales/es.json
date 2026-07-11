@@ -48,17 +48,22 @@
             "today_classes": "Tus clases del día"
         },
         "next_class": {
-            "label": "Próxima clase"
+            "label": "Próxima clase",
+            "empty": "¡Has terminado por hoy! No hay más clases programadas."
         },
         "stats": {
             "students": "Estudiantes",
             "revenue": "Ingresos",
-            "today_classes": "Clases de hoy"
+            "today_classes": "Clases de hoy",
+            "attendance": "Asistencia",
+            "in_progress": "{{count}} en curso",
+            "vs_prev": "vs mes anterior"
         },
         "tabs": {
             "home": "Inicio",
             "attendance": "Asistencia",
-            "profile": "Perfil"
+            "profile": "Perfil",
+            "agenda": "Agenda"
         },
         "attendance": {
             "title": "Control de Asistencia",
@@ -87,7 +92,11 @@
             "credits_remaining": "Clases restantes",
             "expiration": "Vencimiento",
             "status": "Estado"
-        }
+        },
+        "greeting": "¡Hola, {{name}}!",
+        "subtitle": "Baila, aprende y disfruta cada paso.",
+        "next_awaits": "Tu próxima clase te espera 🕺",
+        "summary": "Resumen"
     },
     "profile": {
         "edit_profile": "Editar Perfil",

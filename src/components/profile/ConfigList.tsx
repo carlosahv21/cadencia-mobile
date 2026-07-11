@@ -32,7 +32,7 @@ export const ConfigList: React.FC = () => {
                             <FontAwesome name="chevron-right" size={14} color={theme.colors.border} />
                         }
                         thumb={
-                            <IconWrapper name="user" color="#0A84FF" bgColor="rgba(59, 130, 246, 0.1)" />
+                            <IconWrapper name="user" color={theme.colors.primary} bgColor={theme.colors.primarySoft} />
                         }
                         style={[styles.listItem, { borderBottomWidth: 1, borderBottomColor: theme.colors.border }]}
                         styles={{ Line: { borderBottomWidth: 0 } }}
@@ -53,7 +53,7 @@ export const ConfigList: React.FC = () => {
                     </List.Item>
                     <List.Item
                         extra={
-                            <Switch value={true} trackColor={{ false: theme.colors.border, true: '#0A84FF' }} />
+                            <Switch value={true} trackColor={{ false: theme.colors.border, true: theme.colors.primary }} />
                         }
                         thumb={
                             <IconWrapper name="bell" color="#f59e0b" bgColor="rgba(245, 158, 11, 0.1)" />
@@ -80,7 +80,7 @@ export const ConfigList: React.FC = () => {
                             <Switch
                                 value={themeMode === 'dark'}
                                 onValueChange={toggleTheme}
-                                trackColor={{ false: theme.colors.border, true: '#0A84FF' }}
+                                trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
                             />
                         }
                         thumb={

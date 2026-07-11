@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, {
     useSharedValue,
@@ -21,7 +21,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     onNotificationsPress
 }) => {
     const { theme } = useTheme();
-    const { user, academy } = useAuth();
+    const { user } = useAuth();
     const { unreadCount } = useNotifications();
     const { t } = useTranslation();
 
@@ -38,23 +38,20 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         transform: [{ translateY: translateY.value }],
     }));
 
+    const firstName = user?.name?.split(' ')[0] || 'User';
+
     return (
         <Animated.View style={[styles.headerContainer, animatedStyle]}>
             <View style={styles.leftSection}>
-                <TouchableOpacity style={styles.avatarContainer}>
-                    <Image
-                        source={{ uri: user?.avatar || 'https://mockmind-api.uifaces.co/content/human/222.jpg' }}
-                        style={styles.avatar}
-                    />
-                </TouchableOpacity>
-                <View style={styles.userInfo}>
-                    <Text style={[styles.roleText, { color: theme.colors.textSecondary }]}>
-                        {academy?.academy_name || 'DanceFlow Academy'}
-                    </Text>
-                    <Text style={[styles.greetingText, { color: theme.colors.textPrimary }]}>
-                        {t('dashboard.hello')} {user?.name || 'User'}
-                    </Text>
-                </View>
+                <Text style={[styles.greetingText, { color: theme.colors.textPrimary }]}>
+                    {t('dashboard.greeting', { name: firstName })} 👋
+                </Text>
+                <Text style={[styles.subtitleText, { color: theme.colors.textSecondary }]}>
+                    {t('dashboard.subtitle')}
+                </Text>
+                <Text style={[styles.accentText, { color: theme.colors.primary }]}>
+                    {t('dashboard.next_awaits')}
+                </Text>
             </View>
 
             <View style={styles.actionsContainer}>
@@ -85,55 +82,28 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         paddingVertical: 20,
     },
     leftSection: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    avatarContainer: {
-        borderRadius: 25,
-        overflow: 'hidden',
-        marginRight: 12,
-        backgroundColor: '#F3F4F6',
-    },
-    avatar: {
-        width: 44,
-        height: 44,
-    },
-    userInfo: {
-        justifyContent: 'center',
-    },
-    roleText: {
-        fontSize: 12,
-        fontWeight: '400', // Standard body text
-        marginBottom: 2,
+        flex: 1,
+        paddingRight: 12,
     },
     greetingText: {
-        fontSize: 18,
-        fontWeight: '500', // Standard title weight
+        fontSize: 26,
+        fontWeight: '700',
+        marginBottom: 6,
+    },
+    subtitleText: {
+        fontSize: 14,
+        marginBottom: 4,
+    },
+    accentText: {
+        fontSize: 14,
+        fontWeight: '600',
     },
     actionsContainer: {
         flexDirection: 'row',
         gap: 10,
-    },
-    iconButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-    },
-    badge: {
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        borderWidth: 1.5,
-        borderColor: '#FFF',
     },
 });

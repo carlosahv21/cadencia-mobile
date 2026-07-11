@@ -1,21 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { FontAwesome } from '@expo/vector-icons';
 import { DFCard } from '../common/DFCard';
 import { useTheme } from '../../contexts/ThemeContext';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 import { SectionHeader } from './SectionHeader';
+import { DashboardStat } from '../../types';
 
-export const StatsSection = ({ stats }: any) => {
+export const StatsSection = ({ stats }: { stats: DashboardStat[] }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <View style={styles.container}>
             <SectionHeader
-                title="Estadísticas"
+                title={t('dashboard.summary')}
             />
-            <View style={styles.row}>
-                {stats.map((stat: any, index: number) => (
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.row}
+            >
+                {stats.map((stat, index) => (
                     <Animated.View
                         key={stat.id}
                         entering={FadeInRight.duration(500).delay(800 + index * 100)}
@@ -23,43 +30,47 @@ export const StatsSection = ({ stats }: any) => {
                     >
                         <DFCard style={styles.statCard} noPadding>
                             <View style={styles.content}>
-                                {
-                                    stat.icon && (
-                                        <View style={[styles.iconCircle, { backgroundColor: stat.color + '25' }]}>
-                                            <FontAwesome name={stat.icon} size={18} color={stat.color} />
+                                <View style={styles.headerRow}>
+                                    {stat.icon && (
+                                        <View style={[styles.iconCircle, { backgroundColor: (stat.color || theme.colors.primary) + '20' }]}>
+                                            <FontAwesome name={stat.icon as any} size={14} color={stat.color || theme.colors.primary} />
                                         </View>
-                                    )
-                                }
+                                    )}
+                                    <Text style={[styles.label, { color: theme.colors.textPrimary }]} numberOfLines={1}>
+                                        {stat.label}
+                                    </Text>
+                                </View>
 
-                                <Text style={[styles.value, { color: theme.colors.textPrimary }]}>
+                                <Text style={[styles.value, { color: stat.color || theme.colors.textPrimary }]}>
                                     {stat.value}
                                 </Text>
 
-                                <Text style={[styles.label, { color: '#94A3B8' }]}>
-                                    {stat.label}
-                                </Text>
+                                {stat.sub && (
+                                    <Text style={[styles.subText, { color: theme.colors.textSecondary }]} numberOfLines={2}>
+                                        {stat.sub}
+                                    </Text>
+                                )}
 
-                                {/* Tendencia inferior */}
                                 {stat.trend && (
                                     <View style={styles.trendRow}>
+                                        <FontAwesome
+                                            name={stat.isPositive ? 'arrow-up' : 'arrow-down'}
+                                            size={10}
+                                            color={stat.isPositive ? theme.colors.success : theme.colors.error}
+                                        />
                                         <Text style={[
                                             styles.trendText,
-                                            { color: stat.isPositive ? '#22C55E' : '#EF4444' }
+                                            { color: stat.isPositive ? theme.colors.success : theme.colors.error }
                                         ]}>
                                             {stat.trend}
                                         </Text>
-                                        <FontAwesome
-                                            name={stat.isPositive ? "arrow-up" : "arrow-down"}
-                                            size={10}
-                                            color={stat.isPositive ? "#22C55E" : "#EF4444"}
-                                        />
                                     </View>
                                 )}
                             </View>
                         </DFCard>
                     </Animated.View>
                 ))}
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -70,40 +81,46 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        gap: 8,
+        gap: 10,
         paddingBottom: 10
     },
     cardContainer: {
-        flex: 1,
+        width: 160,
     },
     statCard: {
-        borderRadius: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1, // Llena el alto de la fila: todas las cards iguales
+        borderRadius: 18,
         padding: 16,
+        minHeight: 118,
     },
     content: {
-        alignItems: 'center',
-        justifyContent: 'center',
         flex: 1,
     },
+    headerRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginBottom: 10,
+    },
     iconCircle: {
-        width: 44,
-        height: 44,
-        borderRadius: 16,
+        width: 30,
+        height: 30,
+        borderRadius: 9,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 12,
-    },
-    value: {
-        fontSize: 22,
-        fontWeight: '500',
-        marginBottom: 2
     },
     label: {
-        fontSize: 10,
-        fontWeight: '400',
-        letterSpacing: 0.5,
+        fontSize: 13,
+        fontWeight: '600',
+        flexShrink: 1,
+    },
+    value: {
+        fontSize: 24,
+        fontWeight: '700',
+        marginBottom: 4,
+    },
+    subText: {
+        fontSize: 11,
         marginBottom: 6,
     },
     trendRow: {
@@ -113,6 +130,6 @@ const styles = StyleSheet.create({
     },
     trendText: {
         fontSize: 12,
-        fontWeight: '500'
+        fontWeight: '600'
     },
 });

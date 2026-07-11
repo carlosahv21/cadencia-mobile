@@ -59,6 +59,10 @@ export const useDashboardData = () => {
     const kpis = useMemo((): DashboardStat[] => {
         if (!rawKpis) return [];
 
+        // deltas.* es % vs período anterior (null sin datos previos); attendanceRate es diferencia en puntos
+        const trend = (delta: number | null | undefined, suffix = '%') =>
+            delta == null ? undefined : `${delta > 0 ? '+' : ''}${delta}${suffix}`;
+
         return [
             {
                 id: 1,
@@ -66,6 +70,9 @@ export const useDashboardData = () => {
                 value: rawKpis.activeStudents,
                 icon: 'users',
                 color: theme.colors.primary,
+                trend: trend(rawKpis.deltas?.activeStudents),
+                isPositive: (rawKpis.deltas?.activeStudents ?? 0) >= 0,
+                sub: t('dashboard.stats.vs_prev'),
             },
             {
                 id: 2,
@@ -73,6 +80,9 @@ export const useDashboardData = () => {
                 value: `$${rawKpis.monthlyRevenue}`,
                 icon: 'money',
                 color: theme.colors.success,
+                trend: trend(rawKpis.deltas?.monthlyRevenue),
+                isPositive: (rawKpis.deltas?.monthlyRevenue ?? 0) >= 0,
+                sub: t('dashboard.stats.vs_prev'),
             },
             {
                 id: 3,
@@ -80,6 +90,7 @@ export const useDashboardData = () => {
                 value: `${rawKpis.todayClasses}`,
                 icon: 'calendar',
                 color: theme.colors.warning,
+                sub: t('dashboard.stats.in_progress', { count: rawKpis.classesInProgress ?? 0 }),
             },
         ];
     }, [rawKpis, t, theme.colors]);

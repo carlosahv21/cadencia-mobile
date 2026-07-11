@@ -56,7 +56,7 @@ export const notificationService = {
                 name: 'default',
                 importance: Notifications.AndroidImportance.MAX,
                 vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#0ea5e9',
+                lightColor: '#0c73dc',
             });
         }
 
