@@ -1,7 +1,13 @@
 import { Asset } from 'expo-asset';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+
+// projectId de EAS: getExpoPushTokenAsync lo requiere en SDK 54 o falla.
+const PROJECT_ID =
+    Constants.expoConfig?.extra?.eas?.projectId ??
+    (Constants as any).easConfig?.projectId;
 
 // Configuración corregida para cumplir con la interfaz NotificationBehavior
 Notifications.setNotificationHandler({
@@ -45,7 +51,9 @@ export const notificationService = {
         }
 
         try {
-            token = (await Notifications.getExpoPushTokenAsync()).data;
+            token = (await Notifications.getExpoPushTokenAsync(
+                PROJECT_ID ? { projectId: PROJECT_ID } : undefined
+            )).data;
             console.log('✅ Token de notificaciones obtenido:', token);
         } catch (error) {
             console.error('Error al obtener el token de Expo:', error);

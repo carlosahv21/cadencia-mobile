@@ -68,6 +68,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 setPermissions(storedMeta?.permissions ?? null);
                 setModules(storedMeta?.modules ?? []);
                 setSubscription(storedMeta?.subscription ?? null);
+                // Re-registrar push: el token de Expo puede rotar entre sesiones
+                registerPushNotifications(storedUser.id);
             }
         } catch (error) {
             // Silenciamos errores de carga inicial para no asustar al usuario
