@@ -60,7 +60,7 @@ export interface AuthResponse {
     data: {
         token: string;
         user: User;
-        settings: Academy;
+        academy: Academy;
         permissions: string[];
     };
 }

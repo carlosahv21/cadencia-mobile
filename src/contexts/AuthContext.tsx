@@ -89,16 +89,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const response = await authService.login(credentials); // Esto devuelve AuthResponse
 
             if (response.success && response.data) {
-                const { token, user, settings } = response.data;
+                const { token, user, academy } = response.data;
 
                 await Promise.all([
                     storage.saveToken(token),
                     storage.saveUser(user),
-                    storage.saveAcademy(settings),
+                    storage.saveAcademy(academy),
                 ]);
 
                 setUser(user);
-                setAcademy(settings);
+                setAcademy(academy);
 
                 // Registrar notificaciones push después de login exitoso
                 await registerPushNotifications(user.id);
