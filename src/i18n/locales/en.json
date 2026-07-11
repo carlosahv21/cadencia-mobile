@@ -88,7 +88,14 @@
                 "absent": "Absent",
                 "late": "Late",
                 "excused": "Excused"
-            }
+            },
+            "search_students_placeholder": "Search student by name...",
+            "add_students_title": "Take attendance freely",
+            "add_students_hint": "Search students and add them to the attendance list",
+            "selected_count": "{{count}} in the list",
+            "save_count": "Save ({{count}})",
+            "present": "Present",
+            "swipe_hint": "Swipe left to remove"
         },
         "student_plan": {
             "title": "My Plan",

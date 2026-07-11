@@ -88,7 +88,14 @@
                 "absent": "Ausente",
                 "late": "Tarde",
                 "excused": "Justificado"
-            }
+            },
+            "search_students_placeholder": "Buscar alumno por nombre...",
+            "add_students_title": "Pasa lista libremente",
+            "add_students_hint": "Busca alumnos y agrégalos a la lista de asistencia",
+            "selected_count": "{{count}} en la lista",
+            "save_count": "Guardar ({{count}})",
+            "present": "Presente",
+            "swipe_hint": "Desliza a la izquierda para quitar"
         },
         "student_plan": {
             "title": "Mi Plan",

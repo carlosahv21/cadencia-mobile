@@ -59,14 +59,12 @@ export const classService = {
     },
 
     /**
-     * Guarda la asistencia de una clase
+     * Guarda la asistencia de una clase (upsert masivo).
+     * El backend detecta inscrito vs libre (enrollment_type) y descuenta créditos.
      */
-    /**
-     * Guarda la asistencia de una clase
-     */
-    async saveAttendance(attendances: any[]): Promise<any> {
+    async saveAttendance(records: Array<{ class_id: number; student_id: string | number; date: string; status: string }>): Promise<any> {
         try {
-            const response = await api.post("attendances",  attendances );
+            const response = await api.post('attendances/bulk', { attendance_records: records });
             return response.data;
         } catch (error: any) {
             if (error.response?.data) throw error.response.data;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { classService } from '../../services/clases.service';
 import { DanceClass } from '../../types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,6 +18,8 @@ import { Button } from '../../components/common/Button';
 import { showErrorToast, showSuccessToast } from '../../utils/feedback';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
+import { FreeAttendanceMode } from './FreeAttendanceMode';
+import { buildAttendancePayload } from './buildAttendancePayload';
 
 interface AttendanceScreenProps {
     classData: DanceClass;
@@ -26,7 +29,11 @@ interface AttendanceScreenProps {
 export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, onBack }) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const { hasModule } = useAuth();
     const insets = useSafeAreaInsets();
+
+    // Sin módulo de inscripciones: se pasa lista buscando alumnos libremente
+    const registrationsEnabled = hasModule('registrations');
 
     // Estados
     const [loading, setLoading] = useState(true);
@@ -73,8 +80,9 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
     };
 
     useEffect(() => {
-        loadData();
-    }, []);
+        if (registrationsEnabled) loadData();
+        else setLoading(false);
+    }, [registrationsEnabled]);
 
     // Filtro de búsqueda
     const filteredStudents = enrolledStudents.filter(s => {
@@ -100,12 +108,14 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
         setLoading(true);
         try {
             const today = new Date().toISOString().split('T')[0];
-            const payload = enrolledStudents.map((student) => ({
-                class_id: classData.id,
-                student_id: student.user_id,
-                date: today,
-                status: attendanceData[student.user_id] || 'absent'
-            }));
+            const payload = buildAttendancePayload(
+                classData.id,
+                today,
+                enrolledStudents.map((student) => ({
+                    id: String(student.user_id),
+                    status: attendanceData[student.user_id] || 'absent',
+                }))
+            );
 
             await classService.saveAttendance(payload);
 
@@ -118,8 +128,22 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ classData, o
         }
     };
 
-    if (loading && enrolledStudents.length === 0) {
+    if (registrationsEnabled && loading && enrolledStudents.length === 0) {
         return <LoadingState message={t('students.loading')} />;
+    }
+
+    // Modo sin inscripciones: buscar alumnos y armar la lista
+    if (!registrationsEnabled) {
+        return (
+            <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+                <BackHeader
+                    title={classData.name}
+                    subtitle={`${classData.level} • ${new Date().toLocaleDateString()}`}
+                    onBack={onBack}
+                />
+                <FreeAttendanceMode classData={classData} onBack={onBack} />
+            </View>
+        );
     }
 
     return (

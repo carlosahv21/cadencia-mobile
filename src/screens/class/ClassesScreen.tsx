@@ -97,14 +97,13 @@ export const ClassesScreen: React.FC<ClassesScreenProps> = ({ onSelectClass }) =
                         entering={FadeInDown.duration(500).delay(index * 100)}
                         style={styles.timelineRow}
                     >
-                        {/* Columna de Tiempo */}
+                        {/* Columna de Tiempo: hora + punto arriba, línea conecta con la siguiente */}
                         <View style={styles.hourCol}>
-                            <View style={[styles.lineBase, { backgroundColor: theme.colors.border, height: '25%', top: 0 }]} />
-                            <View style={styles.centerContent}>
-                                <Text style={[styles.hourLabel, { color: theme.colors.textSecondary }]}>{clase.hour}</Text>
-                                <View style={[styles.timelineDot, { backgroundColor: index === 0 ? theme.colors.primary : theme.colors.border }]} />
-                            </View>
-                            <View style={[styles.lineBase, { backgroundColor: theme.colors.border, height: '55%', bottom: -15 }]} />
+                            {index < filteredClasses.length - 1 && (
+                                <View style={[styles.connector, { backgroundColor: theme.colors.border }]} />
+                            )}
+                            <Text style={[styles.hourLabel, { color: theme.colors.textSecondary }]}>{clase.hour}</Text>
+                            <View style={[styles.timelineDot, { backgroundColor: index === 0 ? theme.colors.primary : theme.colors.border }]} />
                         </View>
 
                         {/* Card de Clase */}
@@ -159,12 +158,12 @@ const styles = StyleSheet.create({
     subtitle: { fontSize: 14, marginTop: 2 },
     scrollContent: { marginTop: 24, paddingHorizontal: 20 },
     sectionMargin: { marginBottom: 20 },
-    timelineRow: { flexDirection: 'row', alignItems: 'center', minHeight: 110 },
-    hourCol: { width: 60, alignItems: 'center', alignSelf: 'stretch', position: 'relative' },
-    centerContent: { alignItems: 'center', justifyContent: 'center', zIndex: 2, marginTop: 40 },
-    hourLabel: { fontSize: 12, fontWeight: '600', marginBottom: 4 },
-    timelineDot: { width: 10, height: 10, borderRadius: 5 },
-    lineBase: { position: 'absolute', width: 2, left: '50%', marginLeft: -1 },
+    timelineRow: { flexDirection: 'row', alignItems: 'stretch' },
+    hourCol: { width: 52, alignItems: 'center', paddingTop: 16, position: 'relative' },
+    hourLabel: { fontSize: 12, fontWeight: '600', marginBottom: 6 },
+    timelineDot: { width: 10, height: 10, borderRadius: 5, zIndex: 2 },
+    // Línea desde el punto hasta la card siguiente (no sobrepasa la última)
+    connector: { position: 'absolute', width: 2, top: 40, bottom: -15, left: '50%', marginLeft: -1 },
     cardWrapper: { flex: 1, marginLeft: 10 },
     classCard: {
         marginBottom: 15,
