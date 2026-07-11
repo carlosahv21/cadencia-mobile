@@ -1,7 +1,7 @@
 // TypeScript type definitions for DanceFlow Mobile
 
 export interface User {
-    id: number;
+    id: string;
     email: string;
     name: string;
     role: string;
@@ -16,8 +16,15 @@ export interface User {
         start_date: string;
         end_date: string;
     } | null;
-    permissions?: string[];
-    avatar?: string;
+    theme?: 'light' | 'dark';
+    language?: string;
+    hide_tour?: boolean;
+    tour_completed?: boolean;
+    needs_password_change?: boolean;
+    phone?: string | null;
+    avatar?: string | null;
+    gender?: string | null;
+    birthdate?: string | null;
 }
 
 export interface Attendance {
@@ -40,18 +47,25 @@ export interface UserPlan {
 }
 
 export interface Academy {
-    id: number;
-    academy_name: string;
-    logo_url?: string;
+    id: string;
+    name: string;
+    logo_url?: string | null;
+    plan?: string;
     currency?: string;
     date_format?: string;
-    theme?: string;
-    language?: string;
-    contact_email?: string;
-    phone_number?: string;
-    address?: string;
-    primaryColor?: string;
-    secondaryColor?: string;
+    address?: string | null;
+}
+
+// Mapa de permisos por módulo: { classes: { actions: { view: 'all', ... } } }
+export type PermissionsMap = Record<string, { actions: Record<string, string> }>;
+
+export interface Subscription {
+    status: string;
+    is_trial: boolean;
+    trial_ends_at: string | null;
+    plan: { slug: string; name: string };
+    limits: Record<string, number | null>;
+    features: Record<string, { enabled: boolean; limit: number | null }>;
 }
 
 export interface AuthResponse {
@@ -61,7 +75,9 @@ export interface AuthResponse {
         token: string;
         user: User;
         academy: Academy;
-        permissions: string[];
+        subscription: Subscription | null;
+        modules: string[];
+        permissions: PermissionsMap;
     };
 }
 

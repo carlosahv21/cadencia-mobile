@@ -66,7 +66,7 @@ export const authService = {
     /**
      * Update push token
      */
-    updatePushToken: async (userId: number, token: string): Promise<void> => {
+    updatePushToken: async (userId: string, token: string): Promise<void> => {
         try {
             await api.patch(`/users/${userId}/push-token`, {
                 pushToken: token

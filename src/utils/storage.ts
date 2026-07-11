@@ -9,6 +9,7 @@ const REMEMBER_ME_KEY = 'remember_me';
 const THEME_KEY = 'theme_mode';
 const ONBOARDING_KEY = 'has_seen_onboarding';
 const PUSH_TOKEN_KEY = 'push_token';
+const SESSION_META_KEY = 'session_meta'; // permissions, modules, subscription
 
 // Helper para detectar si estamos en Web
 const isWeb = Platform.OS === 'web';
@@ -108,13 +109,26 @@ export const storage = {
         await AsyncStorage.removeItem(PUSH_TOKEN_KEY);
     },
 
+    // Metadatos de sesión (permissions, modules, subscription)
+    async saveSessionMeta(meta: any): Promise<void> {
+        await AsyncStorage.setItem(SESSION_META_KEY, JSON.stringify(meta));
+    },
+    async getSessionMeta(): Promise<any | null> {
+        const data = await AsyncStorage.getItem(SESSION_META_KEY);
+        return data ? JSON.parse(data) : null;
+    },
+    async removeSessionMeta(): Promise<void> {
+        await AsyncStorage.removeItem(SESSION_META_KEY);
+    },
+
     // Limpieza total
     async clearAuth(): Promise<void> {
         await Promise.all([
             this.removeToken(),
             this.removeUser(),
             this.removeAcademy(),
-            this.removePushToken()
+            this.removePushToken(),
+            this.removeSessionMeta()
         ]);
     },
 };

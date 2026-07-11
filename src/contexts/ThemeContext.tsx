@@ -19,21 +19,22 @@ const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const systemColorScheme = useColorScheme();
     const [themeMode, setThemeModeState] = useState<ThemeMode>('light');
-    const { academy } = useAuth();
+    const { user } = useAuth();
 
     useEffect(() => {
         loadThemePreference();
     }, []);
 
+    // El tema viene en el usuario (preferencia guardada en el backend)
     useEffect(() => {
-        if (academy?.theme) {
-            const apiTheme = academy.theme as ThemeMode;
+        if (user?.theme) {
+            const apiTheme = user.theme as ThemeMode;
             if (apiTheme !== themeMode) {
                 setThemeModeState(apiTheme);
                 storage.saveTheme(apiTheme);
             }
         }
-    }, [academy?.theme]);
+    }, [user?.theme]);
 
     const loadThemePreference = async () => {
         try {

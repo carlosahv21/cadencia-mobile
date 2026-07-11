@@ -3,8 +3,7 @@ import { Platform } from 'react-native';
 import { authService } from '../services/auth.service';
 import { notificationService } from '../services/notification.service';
 import { storage } from '../utils/storage';
-import { User, Academy, LoginCredentials } from '../types';
-import axios from 'axios';
+import { User, Academy, LoginCredentials, PermissionsMap, Subscription } from '../types';
 import '../i18n';
 import i18n from '../i18n';
 import * as Localization from 'expo-localization';
@@ -12,10 +11,16 @@ import * as Localization from 'expo-localization';
 interface AuthContextData {
     user: User | null;
     academy: Academy | null;
+    permissions: PermissionsMap | null;
+    modules: string[];
+    subscription: Subscription | null;
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (credentials: LoginCredentials) => Promise<void>;
     logout: () => Promise<void>;
+    can: (module: string, action?: string) => boolean;
+    hasModule: (module: string) => boolean;
+    hasFeature: (feature: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -23,36 +28,40 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [academy, setAcademy] = useState<Academy | null>(null);
+    const [permissions, setPermissions] = useState<PermissionsMap | null>(null);
+    const [modules, setModules] = useState<string[]>([]);
+    const [subscription, setSubscription] = useState<Subscription | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         loadStoredAuth();
     }, []);
 
-    // Effect to sync language with academy settings
+    // Idioma: preferencia del usuario > idioma del dispositivo
     useEffect(() => {
-        if (academy?.language) {
-            i18n.changeLanguage(academy.language);
+        if (user?.language) {
+            i18n.changeLanguage(user.language);
         } else {
-            // If no academy (logout or not logged in), revert to device language
             const deviceLang = Localization.getLocales()[0]?.languageCode ?? 'es';
             i18n.changeLanguage(deviceLang);
         }
-    }, [academy]);
+    }, [user?.language]);
 
     const loadStoredAuth = async () => {
         try {
-            // Gracias a la corrección en storage.ts, esto ya no lanzará 
-            // la excepción de "SecureStore is not a function" en Web.
-            const [storedUser, storedAcademy, token] = await Promise.all([
+            const [storedUser, storedAcademy, storedMeta, token] = await Promise.all([
                 storage.getUser(),
                 storage.getAcademy(),
+                storage.getSessionMeta(),
                 storage.getToken(),
             ]);
 
             if (token && storedUser) {
                 setUser(storedUser);
                 setAcademy(storedAcademy);
+                setPermissions(storedMeta?.permissions ?? null);
+                setModules(storedMeta?.modules ?? []);
+                setSubscription(storedMeta?.subscription ?? null);
             }
         } catch (error) {
             // Silenciamos errores de carga inicial para no asustar al usuario
@@ -62,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    const registerPushNotifications = async (userId: number) => {
+    const registerPushNotifications = async (userId: string) => {
         // Solo registrar en dispositivos físicos (no en web ni emuladores)
         if (Platform.OS === 'web') {
             console.log('⚠️ Notificaciones push no disponibles en web');
@@ -89,16 +98,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const response = await authService.login(credentials); // Esto devuelve AuthResponse
 
             if (response.success && response.data) {
-                const { token, user, academy } = response.data;
+                const { token, user, academy, permissions, modules, subscription } = response.data;
+                const meta = { permissions, modules, subscription };
 
                 await Promise.all([
                     storage.saveToken(token),
                     storage.saveUser(user),
                     storage.saveAcademy(academy),
+                    storage.saveSessionMeta(meta),
+                    ...(user.theme ? [storage.saveTheme(user.theme)] : []),
                 ]);
 
                 setUser(user);
                 setAcademy(academy);
+                setPermissions(permissions ?? null);
+                setModules(modules ?? []);
+                setSubscription(subscription ?? null);
 
                 // Registrar notificaciones push después de login exitoso
                 await registerPushNotifications(user.id);
@@ -113,17 +128,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await storage.clearAuth();
         setUser(null);
         setAcademy(null);
+        setPermissions(null);
+        setModules([]);
+        setSubscription(null);
     };
+
+    const can = (module: string, action: string = 'view') =>
+        !!permissions?.[module]?.actions?.[action];
+
+    const hasModule = (module: string) => modules.includes(module);
+
+    const hasFeature = (feature: string) =>
+        !!subscription?.features?.[feature]?.enabled;
 
     return (
         <AuthContext.Provider
             value={{
                 user,
                 academy,
+                permissions,
+                modules,
+                subscription,
                 isAuthenticated: !!user,
                 isLoading,
                 login,
                 logout,
+                can,
+                hasModule,
+                hasFeature,
             }}
         >
             {children}
