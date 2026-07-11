@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { notificationApiService } from '../services/notificationApi.service';
-import { DanceFlowNotification } from '../types';
+import { PassoNotification } from '../types';
 
 interface NotificationContextData {
-    notifications: DanceFlowNotification[];
+    notifications: PassoNotification[];
     unreadCount: number;
     isLoading: boolean;
     fetchNotifications: () => Promise<void>;
@@ -17,7 +17,7 @@ const NotificationContext = createContext<NotificationContextData>({} as Notific
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
-    const [notifications, setNotifications] = useState<DanceFlowNotification[]>([]);
+    const [notifications, setNotifications] = useState<PassoNotification[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchNotifications = useCallback(async () => {

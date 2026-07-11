@@ -20,7 +20,7 @@
         "teachers_singular": "Teacher"
     },
     "login": {
-        "welcome": "Welcome to DanceFlow",
+        "welcome": "Welcome to Passo",
         "subtitle": "Sign in to continue",
         "email": "Email",
         "email_placeholder": "your@email.com",
@@ -41,7 +41,7 @@
             "count_at_risk": "{{count}} at risk",
             "inactive_days": "Inactive: {{days}} days",
             "empty_state": "No at-risk students",
-            "whatsapp_message": "Hi {{name}}, we miss you at DanceFlow. Hope to see you soon in class!"
+            "whatsapp_message": "Hi {{name}}, we miss you at Passo. Hope to see you soon in class!"
         },
         "classes": {
             "title": "Today's classes",
@@ -254,7 +254,7 @@
         "sections": {
             "s1": {
                 "title": "1. Acceptance of terms",
-                "body": "By using DanceFlow you accept these terms and conditions. If you disagree with any part, you must not use the app. These terms may be updated; continued use implies acceptance of changes."
+                "body": "By using Passo you accept these terms and conditions. If you disagree with any part, you must not use the app. These terms may be updated; continued use implies acceptance of changes."
             },
             "s2": {
                 "title": "2. Account usage",
@@ -266,7 +266,7 @@
             },
             "s4": {
                 "title": "4. Plans and payments",
-                "body": "Plans, prices and payment policies are defined by each academy. DanceFlow displays this information but the commercial relationship is directly between you and your academy."
+                "body": "Plans, prices and payment policies are defined by each academy. Passo displays this information but the commercial relationship is directly between you and your academy."
             },
             "s5": {
                 "title": "5. Service availability",
@@ -274,7 +274,7 @@
             },
             "s6": {
                 "title": "6. Contact",
-                "body": "For any questions about these terms, write to soporte@danceflow.com."
+                "body": "For any questions about these terms, write to soporte@passo.app."
             }
         }
     },

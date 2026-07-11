@@ -19,7 +19,7 @@
         "teachers_singular": "Profesor"
     },
     "login": {
-        "welcome": "Bienvenido a DanceFlow",
+        "welcome": "Bienvenido a Passo",
         "subtitle": "Inicia sesión para continuar",
         "email": "Email",
         "email_placeholder": "tu@email.com",
@@ -40,7 +40,7 @@
             "count_at_risk": "{{count}} en riesgo",
             "inactive_days": "Inactivo: {{days}} días",
             "empty_state": "No hay alumnos en riesgo",
-            "whatsapp_message": "Hola {{name}}, te extrañamos en DanceFlow. ¡Esperamos verte pronto en clase!"
+            "whatsapp_message": "Hola {{name}}, te extrañamos en Passo. ¡Esperamos verte pronto en clase!"
         },
         "classes": {
             "title": "Clases de hoy",
@@ -262,7 +262,7 @@
         "sections": {
             "s1": {
                 "title": "1. Aceptación de los términos",
-                "body": "Al usar DanceFlow aceptas estos términos y condiciones. Si no estás de acuerdo con alguna parte, no debes usar la aplicación. Estos términos pueden actualizarse; el uso continuado implica la aceptación de los cambios."
+                "body": "Al usar Passo aceptas estos términos y condiciones. Si no estás de acuerdo con alguna parte, no debes usar la aplicación. Estos términos pueden actualizarse; el uso continuado implica la aceptación de los cambios."
             },
             "s2": {
                 "title": "2. Uso de la cuenta",
@@ -274,7 +274,7 @@
             },
             "s4": {
                 "title": "4. Planes y pagos",
-                "body": "Los planes, precios y políticas de pago son definidos por cada academia. DanceFlow muestra esta información pero la relación comercial es directamente entre tú y tu academia."
+                "body": "Los planes, precios y políticas de pago son definidos por cada academia. Passo muestra esta información pero la relación comercial es directamente entre tú y tu academia."
             },
             "s5": {
                 "title": "5. Disponibilidad del servicio",
@@ -282,7 +282,7 @@
             },
             "s6": {
                 "title": "6. Contacto",
-                "body": "Para cualquier consulta sobre estos términos, escríbenos a soporte@danceflow.com."
+                "body": "Para cualquier consulta sobre estos términos, escríbenos a soporte@passo.app."
             }
         }
     },

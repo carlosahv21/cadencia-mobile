@@ -69,7 +69,7 @@ export const ProfileScreen = () => {
 
             <Animated.View entering={FadeIn.duration(600).delay(200)}>
                 <ProfileHeader
-                    name={user?.name || 'DanceFlow'}
+                    name={user?.name || 'Passo'}
                     role={user?.role || ''}
                     email={user?.email}
                     avatar={user?.avatar}

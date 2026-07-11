@@ -1,4 +1,4 @@
-// TypeScript type definitions for DanceFlow Mobile
+// TypeScript type definitions for Passo Mobile
 
 export interface User {
     id: string;
@@ -153,7 +153,7 @@ export interface ThemeColors {
 export type NotificationRoleTarget = 'ADMIN' | 'STUDENT' | 'TEACHER' | 'RECEPTIONIST' | 'ALL';
 export type NotificationCategory = 'PAYMENT' | 'CLASS' | 'SYSTEM' | 'ATTENDANCE' | 'REGISTRATION';
 
-export interface DanceFlowNotification {
+export interface PassoNotification {
     id: number;
     user_id: number;
     role_target: NotificationRoleTarget;
@@ -167,6 +167,6 @@ export interface DanceFlowNotification {
 export interface NotificationsResponse {
     success: boolean;
     message: string;
-    data: DanceFlowNotification[];
+    data: PassoNotification[];
     pagination?: Pagination;
 }

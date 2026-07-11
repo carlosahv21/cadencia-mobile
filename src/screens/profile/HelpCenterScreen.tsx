@@ -6,7 +6,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { BackHeader } from '../../components/common/BackHeader';
 import { Button } from '../../components/common/Button';
 
-const SUPPORT_EMAIL = 'soporte@danceflow.com';
+const SUPPORT_EMAIL = 'soporte@passo.app';
 const FAQ_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5'] as const;
 
 export const HelpCenterScreen = () => {

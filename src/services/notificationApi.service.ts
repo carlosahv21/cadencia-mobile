@@ -1,11 +1,11 @@
 import { api } from './api';
-import { DanceFlowNotification, NotificationsResponse } from '../types';
+import { PassoNotification, NotificationsResponse } from '../types';
 
 export const notificationApiService = {
     /**
      * Get all notifications for the current user
      */
-    async getAll(): Promise<DanceFlowNotification[]> {
+    async getAll(): Promise<PassoNotification[]> {
         try {
             const response = await api.get<NotificationsResponse>('/notifications');
             return response.data.data || [];

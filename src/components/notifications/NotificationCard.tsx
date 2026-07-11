@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { useTheme } from '../../contexts/ThemeContext';
-import { DanceFlowNotification, NotificationCategory } from '../../types';
+import { PassoNotification, NotificationCategory } from '../../types';
 
 interface NotificationCardProps {
-    notification: DanceFlowNotification;
-    onPress: (notification: DanceFlowNotification) => void;
-    onDelete?: (notification: DanceFlowNotification) => void;
+    notification: PassoNotification;
+    onPress: (notification: PassoNotification) => void;
+    onDelete?: (notification: PassoNotification) => void;
 }
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({

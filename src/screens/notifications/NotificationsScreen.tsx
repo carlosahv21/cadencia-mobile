@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useNotifications } from '../../contexts/NotificationContext';
-import { DanceFlowNotification, NotificationCategory } from '../../types';
+import { PassoNotification, NotificationCategory } from '../../types';
 import { BackHeader } from '../../components/common/BackHeader';
 import { SearchBar } from '../../components/common/SearchBar';
 import { NotificationCard } from '../../components/notifications/NotificationCard';
@@ -34,7 +34,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         deleteNotification
     } = useNotifications();
 
-    const [filteredNotifications, setFilteredNotifications] = useState<DanceFlowNotification[]>([]);
+    const [filteredNotifications, setFilteredNotifications] = useState<PassoNotification[]>([]);
     const [activeFilter, setActiveFilter] = useState<'ALL' | NotificationCategory>('ALL');
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [searchText, setSearchText] = useState('');
@@ -75,7 +75,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         setFilteredNotifications(filtered);
     };
 
-    const handleNotificationPress = async (notification: DanceFlowNotification) => {
+    const handleNotificationPress = async (notification: PassoNotification) => {
         if (!notification.is_read) {
             await markAsRead(notification.id);
         }
@@ -89,7 +89,7 @@ export const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ naviga
         await markAllAsRead();
     };
 
-    const handleNotificationDelete = async (notification: DanceFlowNotification) => {
+    const handleNotificationDelete = async (notification: PassoNotification) => {
         await deleteNotification(notification.id);
     };
 
