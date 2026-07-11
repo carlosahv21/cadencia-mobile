@@ -149,5 +149,14 @@
         "try_again": "Try searching again",
         "find_hint": "Type the name of a student, teacher or class",
         "view_all_results": "View all results ({{total}})"
+    },
+    "agenda": {
+        "title": "Schedule",
+        "classes": "Classes",
+        "pick_another_day": "Try another day"
+    },
+    "class_resume": {
+        "last_attendees": "Recent attendees",
+        "last_session": "Last session"
     }
 }

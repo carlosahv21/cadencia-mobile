@@ -157,5 +157,14 @@
         "suggested": "Sugeridos",
         "find_hint": "Escribe el nombre de un estudiante, profesor o clase",
         "view_all_results": "Ver todos los resultados ({{total}})"
+    },
+    "agenda": {
+        "title": "Agenda",
+        "classes": "Clases",
+        "pick_another_day": "Prueba con otro día"
+    },
+    "class_resume": {
+        "last_attendees": "Últimas asistencias",
+        "last_session": "Última sesión"
     }
 }

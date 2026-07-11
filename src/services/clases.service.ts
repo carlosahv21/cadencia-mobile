@@ -21,13 +21,27 @@ export const classService = {
     /**
      * Obtiene los alumnos inscritos en una clase específica
      */
-    async getEnrolledStudents(classId: number): Promise<any> {
+    async getEnrolledStudents(classId: number, limit = 1000): Promise<any> {
         try {
-            const response = await api.get(`registrations?class_id=${classId}&limit=1000&order_by=u.first_name&order_direction=asc`);
+            const response = await api.get(`registrations?class_id=${classId}&limit=${limit}&order_by=u.first_name&order_direction=asc`);
             return response.data;
         } catch (error: any) {
             if (error.response?.data) throw error.response.data;
             throw { message: 'Error al cargar los alumnos inscritos', statusCode: 0 };
+        }
+    },
+
+    /**
+     * Obtiene las asistencias más recientes de una clase (para conocer
+     * los asistentes de la última sesión cuando inscripciones está inactivo)
+     */
+    async getRecentAttendances(classId: number, limit = 50): Promise<any> {
+        try {
+            const response = await api.get(`attendances?class_id=${classId}&status=present&order_by=attendances.date&order_direction=desc&limit=${limit}`);
+            return response.data;
+        } catch (error: any) {
+            if (error.response?.data) throw error.response.data;
+            throw { message: 'Error al cargar las asistencias', statusCode: 0 };
         }
     },
 

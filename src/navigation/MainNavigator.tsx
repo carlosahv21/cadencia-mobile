@@ -11,6 +11,7 @@ import { NavigationProp } from '@react-navigation/native';
 // Pantallas
 import { DashboardScreen } from '../screens/dashboard/DashboardScreen';
 import { ClassesScreen } from '../screens/class/ClassesScreen';
+import { AgendaScreen } from '../screens/class/AgendaScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { AttendanceScreen } from '../screens/attendance/AttendanceScreen';
 import { GlobalSearchScreen } from '../screens/search/GlobalSearchScreen';
@@ -61,7 +62,7 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 'home': return <DashboardScreen />;
       case 'agenda':
         return (
-          <ClassesScreen
+          <AgendaScreen
             onSelectClass={(clase) => navigation.navigate('ResumeClass', { classData: clase })}
           />
         );

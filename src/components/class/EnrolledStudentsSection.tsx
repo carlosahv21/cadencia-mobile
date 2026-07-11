@@ -61,18 +61,20 @@ interface EnrolledStudentsSectionProps {
         status: 'present' | 'absent' | 'pending';
     }>;
     onViewAll?: () => void;
+    title?: string;
 }
 
 export const EnrolledStudentsSection: React.FC<EnrolledStudentsSectionProps> = ({
     students,
-    onViewAll
+    onViewAll,
+    title = "Alumnos Inscritos"
 }) => {
     const { theme } = useTheme();
 
     return (
         <View style={styles.container}>
             <SectionHeader
-                title="Alumnos Inscritos"
+                title={title}
             // actionText="Ver Todos"
             // onActionPress={() => onViewAll?.()}
             />
