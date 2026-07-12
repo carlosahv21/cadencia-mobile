@@ -292,5 +292,25 @@
             "system": "System",
             "registration": "Registrations"
         }
+    },
+    "qr": {
+        "my_qr_title": "My QR code",
+        "my_qr_hint": "Show this code at the front desk to register your attendance.",
+        "active": "Active",
+        "inactive": "No active plan",
+        "inactive_hint": "You don't have an active plan or ran out of credits. Please visit the front desk.",
+        "scan_title": "Scan attendance",
+        "scan_hint": "Point the camera at the student's QR code",
+        "scan_error": "Invalid QR code",
+        "camera_permission": "We need camera access to scan QR codes.",
+        "grant_permission": "Allow camera",
+        "confirm_student": "Is this the correct student?",
+        "not_correct": "Not correct",
+        "continue": "Continue",
+        "select_class": "Select the class",
+        "inactive_student": "No active plan or no credits",
+        "scan_another": "Scan another",
+        "no_classes_today": "No classes today",
+        "marked_success": "Attendance registered"
     }
 }

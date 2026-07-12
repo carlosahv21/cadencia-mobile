@@ -300,5 +300,25 @@
             "system": "Sistema",
             "registration": "Inscripciones"
         }
+    },
+    "qr": {
+        "my_qr_title": "Mi código QR",
+        "my_qr_hint": "Muestra este código en recepción para registrar tu asistencia.",
+        "active": "Activo",
+        "inactive": "Sin plan activo",
+        "inactive_hint": "No tienes un plan activo o te quedaste sin cupos. Acércate a recepción.",
+        "scan_title": "Escanear asistencia",
+        "scan_hint": "Apunta la cámara al código QR del alumno",
+        "scan_error": "Código QR no válido",
+        "camera_permission": "Necesitamos acceso a la cámara para escanear los códigos QR.",
+        "grant_permission": "Permitir cámara",
+        "confirm_student": "¿Es este el alumno correcto?",
+        "not_correct": "No es correcto",
+        "continue": "Continuar",
+        "select_class": "Selecciona la clase",
+        "inactive_student": "Sin plan activo o sin cupos",
+        "scan_another": "Escanear otro",
+        "no_classes_today": "No hay clases hoy",
+        "marked_success": "Asistencia registrada"
     }
 }

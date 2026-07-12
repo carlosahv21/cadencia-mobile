@@ -16,12 +16,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.danceflow.mobile"
+      "bundleIdentifier": "com.danceflow.mobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#0ea5e9"
+        "backgroundColor": "#0c73dc"
       },
       "package": "com.danceflow.mobile"
     },
@@ -35,11 +38,17 @@
         "expo-notifications",
         {
           "icon": "./src/assets/icon.png",
-          "color": "#0ea5e9"
+          "color": "#0c73dc"
         }
       ],
       "expo-asset",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permite escanear el código QR de los alumnos para registrar asistencia."
+        }
+      ]
     ],
     "extra": {
       "eas": {

@@ -23,6 +23,8 @@ import { EditProfileScreen } from '../screens/profile/EditProfileScreen';
 import { ChangePasswordScreen } from '../screens/profile/ChangePasswordScreen';
 import { HelpCenterScreen } from '../screens/profile/HelpCenterScreen';
 import { TermsScreen } from '../screens/profile/TermsScreen';
+import { MyQrScreen } from '../screens/attendance/MyQrScreen';
+import { QrScanScreen } from '../screens/attendance/QrScanScreen';
 import { DanceClass } from '../types';
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +42,8 @@ export const MainNavigator = () => {
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
       <Stack.Screen name="Terms" component={TermsScreen} />
+      <Stack.Screen name="MyQr" component={MyQrScreen} />
+      <Stack.Screen name="QrScan" component={QrScanScreen} />
     </Stack.Navigator>
   );
 };
@@ -52,8 +56,17 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedClass, setSelectedClass] = useState<DanceClass | null>(null);
 
-  // Role IDs: 1: Admin, 2: Teacher, 3: Student
-  const isStaff = user?.role === 'admin' || user?.role === 'teacher';
+  const isStaff = user?.role === 'admin' || user?.role === 'teacher' || user?.role === 'receptionist';
+  // Escaneo de QR: solo recepción/admin (no teacher ni student)
+  const canScan = user?.role === 'admin' || user?.role === 'receptionist';
+  const isStudent = user?.role === 'student';
+
+  // El FAB central se adapta al rol
+  const fab = canScan
+    ? { icon: 'qrcode', action: () => navigation.navigate('QrScan') }
+    : isStudent
+      ? { icon: 'qrcode', action: () => navigation.navigate('MyQr') }
+      : { icon: 'search', action: () => navigation.navigate('GlobalSearch') };
 
   // Mitades del tab bar, con el FAB central entre ambas
   const leftTabs = [
@@ -123,11 +136,11 @@ const TabNavigator = ({ navigation }: { navigation: NavigationProp<any> }) => {
         {leftTabs.map(renderTab)}
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('GlobalSearch')}
+          onPress={fab.action}
           activeOpacity={0.85}
           style={[styles.fab, { backgroundColor: theme.colors.primary, shadowColor: theme.colors.primary }]}
         >
-          <FontAwesome name="search" size={22} color="#fff" />
+          <FontAwesome name={fab.icon as any} size={22} color="#fff" />
         </TouchableOpacity>
 
         {rightTabs.map(renderTab)}
